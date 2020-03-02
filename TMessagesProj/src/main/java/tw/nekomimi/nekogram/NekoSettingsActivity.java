@@ -1258,7 +1258,7 @@ public class NekoSettingsActivity extends BaseFragment {
                     } else if (position == sortByContactsRow) {
                         textCell.setTextAndCheck(LocaleController.getString("SortByContacts", R.string.SortByContacts), NekoXConfig.sortByContacts, true);
                     } else if (position == sortBySendTimeRow) {
-                        textCell.setTextAndCheck(LocaleController.getString("SortBySendTime", R.string.SortBySendTime), NekoXConfig.sortBySendTime, false);
+                        textCell.setTextAndCheck(LocaleController.getString("SortBySendTime", R.string.SortBySendTime), NekoXConfig.sortBySendTime, true);
                     }
 
                     break;
