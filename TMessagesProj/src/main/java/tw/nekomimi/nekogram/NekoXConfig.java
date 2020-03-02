@@ -24,6 +24,12 @@ public class NekoXConfig {
     public static boolean showTestBackend;
     public static boolean showBotLogin;
 
+    public static boolean sortByUnread;
+    public static boolean sortByUnmuted;
+    public static boolean sortByUser;
+    public static boolean sortByContacts;
+    public static boolean sortBySendTime;
+
     static {
 
         disableChatAction = preferences.getBoolean("disable_chat_action", false);
@@ -35,6 +41,12 @@ public class NekoXConfig {
 
         showTestBackend = preferences.getBoolean("show_test_backend",false);
         showBotLogin = preferences.getBoolean("show_bot_login",false);
+
+        sortByUnread = preferences.getBoolean("sort_by_unread",true);
+        sortByUnmuted = preferences.getBoolean("sort_by_unmuted",true);
+        sortByUser = preferences.getBoolean("sort_by_user",true);
+        sortByContacts = preferences.getBoolean("sort_by_contacts",true);
+        sortBySendTime = preferences.getBoolean("sort_by_send_time",true);
 
     }
 
@@ -74,5 +86,34 @@ public class NekoXConfig {
 
     }
 
+    public static void toggleSortByUnread() {
+
+        preferences.edit().putBoolean("sort_by_unread", sortByUnread = !sortByUnread).apply();
+
+    }
+
+    public static void toggleSortByUnmuted() {
+
+        preferences.edit().putBoolean("sort_by_unmuted", sortByUnmuted = !sortByUnmuted).apply();
+
+    }
+
+    public static void toggleSortByUser() {
+
+        preferences.edit().putBoolean("sortByUser", sortByUser = !sortByUser).apply();
+
+    }
+
+    public static void toggleSortByContacts() {
+
+        preferences.edit().putBoolean("show_bot_login", sortByContacts = !sortByContacts).apply();
+
+    }
+
+    public static void toggleSortBySendTime() {
+
+        preferences.edit().putBoolean("sort_by_send_time", sortBySendTime = !sortBySendTime).apply();
+
+    }
 
 }

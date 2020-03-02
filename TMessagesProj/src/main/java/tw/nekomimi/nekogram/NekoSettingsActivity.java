@@ -70,6 +70,14 @@ public class NekoSettingsActivity extends BaseFragment {
     private int ipv6Row;
     private int connection2Row;
 
+    private int dialogsRow;
+    private int sortByUnreadRow;
+    private int sortByUnmutedRow;
+    private int sortByUserRow;
+    private int sortByContactsRow;
+    private int sortBySendTimeRow;
+    private int dialogs2Row;
+
     private int dialogsFilterRow;
     private int openFilterByActionBarRow;
     private int openFilterByFabRow;
@@ -78,7 +86,7 @@ public class NekoSettingsActivity extends BaseFragment {
     private int chatRow;
     private int inappCameraRow;
     private int disableChatActionRow;
-     private int useSystemEmojiRow;
+    private int useSystemEmojiRow;
     private int ignoreBlockedRow;
     private int hideProxySponsorChannelRow;
     private int saveCacheToSdcardRow;
@@ -550,13 +558,24 @@ public class NekoSettingsActivity extends BaseFragment {
 
     private void updateRows() {
         rowCount = 0;
+
         connectionRow = rowCount++;
         ipv6Row = rowCount++;
         connection2Row = rowCount++;
+
+        dialogsRow = rowCount++;
+        sortByUnreadRow = rowCount++;
+        sortByUnmutedRow = rowCount++;
+        sortByUserRow = rowCount++;
+        sortByContactsRow = rowCount++;
+        sortBySendTimeRow = rowCount++;
+        dialogs2Row = rowCount++;
+
         dialogsFilterRow = rowCount++;
         openFilterByActionBarRow = rowCount++;
         openFilterByFabRow = rowCount++;
         dialogsFilter2Row = rowCount++;
+
         chatRow = rowCount++;
         inappCameraRow = rowCount++;
         disableChatActionRow = rowCount++;
@@ -1071,6 +1090,19 @@ public class NekoSettingsActivity extends BaseFragment {
                     } else if (position == hideKeyboardOnChatScrollRow) {
                         textCell.setTextAndCheck(LocaleController.getString("HideKeyboardOnChatScroll", R.string.HideKeyboardOnChatScroll), NekoConfig.hideKeyboardOnChatScroll, true);
                     }
+
+                    if (position == sortByUnreadRow) {
+                        textCell.setTextAndCheck(LocaleController.getString("SortByUnread", R.string.SortByUnread), NekoXConfig.sortByUnread, true);
+                    } else if (position == sortByUnmutedRow) {
+                        textCell.setTextAndCheck(LocaleController.getString("SortByUnmuted", R.string.SortByUnmuted), NekoXConfig.sortByUnmuted, true);
+                    } else if (position == sortByUserRow) {
+                        textCell.setTextAndCheck(LocaleController.getString("SortByUser", R.string.SortByUser), NekoXConfig.sortByUser, true);
+                    } else if (position == sortByContactsRow) {
+                        textCell.setTextAndCheck(LocaleController.getString("SortByContacts", R.string.SortByContacts), NekoXConfig.sortByContacts, true);
+                    } else if (position == sortBySendTimeRow) {
+                        textCell.setTextAndCheck(LocaleController.getString("SortBySendTime", R.string.SortBySendTime), NekoXConfig.sortBySendTime, false);
+                    }
+
                     break;
                 }
                 case 4: {
@@ -1085,6 +1117,8 @@ public class NekoSettingsActivity extends BaseFragment {
                         headerCell.setText(LocaleController.getString("Experiment", R.string.Experiment));
                     } else if (position == dialogsFilterRow) {
                         headerCell.setText(LocaleController.getString("OpenDialogsFilterBy", R.string.OpenDialogsFilterBy));
+                    } else if (position == dialogsRow) {
+                        headerCell.setText(LocaleController.getString("DialogsSettings", R.string.DialogsSettings));
                     }
                     break;
                 }
@@ -1110,7 +1144,8 @@ public class NekoSettingsActivity extends BaseFragment {
                     position == unlimitedFavedStickersRow || position == messageMenuRow || position == deleteAccountRow ||
                     position == translationProviderRow || position == smoothKeyboardRow || position == pauseMusicOnRecordRow ||
                     position == disablePhotoSideActionRow || position == unlimitedPinnedDialogsRow || position == openArchiveOnPullRow ||
-                    position == openFilterByActionBarRow || position == openFilterByFabRow || position == hideKeyboardOnChatScrollRow;
+                    position == openFilterByActionBarRow || position == openFilterByFabRow || position == hideKeyboardOnChatScrollRow ||
+                    position == sortByUnreadRow || position == sortByUnmutedRow || position == sortByUserRow || position == sortByContactsRow || position == sortBySendTimeRow;
         }
 
         @Override
@@ -1151,7 +1186,7 @@ public class NekoSettingsActivity extends BaseFragment {
 
         @Override
         public int getItemViewType(int position) {
-            if (position == connection2Row || position == chat2Row || position == experiment2Row || position == dialogsFilter2Row) {
+            if (position == connection2Row || position == chat2Row || position == experiment2Row || position == dialogs2Row || position == dialogsFilter2Row) {
                 return 1;
             } else if (position == nameOrderRow || position == mapPreviewRow || position == stickerSizeRow || position == messageMenuRow ||
                     position == deleteAccountRow || position == translationProviderRow || position == eventTypeRow || position == actionBarDecorationRow) {
@@ -1163,10 +1198,11 @@ public class NekoSettingsActivity extends BaseFragment {
                     position == saveCacheToSdcardRow || position == unlimitedFavedStickersRow ||
                     position == disableFilteringRow || position == smoothKeyboardRow || position == pauseMusicOnRecordRow ||
                     position == disablePhotoSideActionRow || position == unlimitedPinnedDialogsRow || position == openArchiveOnPullRow ||
-                    position == openFilterByActionBarRow || position == openFilterByFabRow || position == hideKeyboardOnChatScrollRow) {
+                    position == openFilterByActionBarRow || position == openFilterByFabRow || position == hideKeyboardOnChatScrollRow ||
+                    position == sortByUnreadRow || position == sortByUnmutedRow || position == sortByUserRow || position == sortByContactsRow || position == sortBySendTimeRow) {
                 return 3;
             } else if (position == settingsRow || position == connectionRow || position == chatRow || position == experimentRow ||
-                    position == dialogsFilterRow) {
+                  position == dialogsRow ||  position == dialogsFilterRow) {
                 return 4;
             } else if (position == needRestartRow) {
                 return 7;
