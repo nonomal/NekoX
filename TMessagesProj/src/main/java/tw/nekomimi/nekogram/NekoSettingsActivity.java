@@ -1038,7 +1038,7 @@ public class NekoSettingsActivity extends BaseFragment {
                     } else if (position == hideProxySponsorChannelRow) {
                         textCell.setTextAndCheck(LocaleController.getString("HideProxySponsorChannel", R.string.HideProxySponsorChannel), NekoConfig.hideProxySponsorChannel, true);
                     } else if (position == saveCacheToSdcardRow) {
-                        textCell.setTextAndCheck(LocaleController.getString("saveCacheToSdcard", R.string.SaveCacheToPrivateDirectory), NekoConfig.saveCacheToSdcard, true);
+                        textCell.setTextAndCheck(LocaleController.getString("SaveCacheToSdcard", R.string.SaveCacheToSdcard), NekoConfig.saveCacheToSdcard, true);
                     } else if (position == useSystemEmojiRow) {
                         textCell.setTextAndCheck(LocaleController.getString("EmojiUseDefault", R.string.EmojiUseDefault), SharedConfig.useSystemEmoji, true);
                     } else if (position == typefaceRow) {
