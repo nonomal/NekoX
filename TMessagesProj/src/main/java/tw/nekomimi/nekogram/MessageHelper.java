@@ -171,6 +171,8 @@ public class MessageHelper extends BaseController {
 
                     }
                 }
+            } else {
+                Toast.makeText(ApplicationLoader.applicationContext,error.code + ": " + error.text,Toast.LENGTH_SHORT).show();
             }
         }), ConnectionsManager.RequestFlagFailOnServerErrors);
     }
