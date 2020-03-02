@@ -542,6 +542,33 @@ public class NekoSettingsActivity extends BaseFragment {
                 }
             }
 
+            if (position == sortByUnreadRow) {
+                NekoXConfig.toggleSortByUnread();
+                if (view instanceof TextCheckCell) {
+                    ((TextCheckCell) view).setChecked(NekoXConfig.sortByUnread);
+                }
+            } else if (position == sortByUnmutedRow) {
+                NekoXConfig.toggleSortByUnmuted();
+                if (view instanceof TextCheckCell) {
+                    ((TextCheckCell) view).setChecked(NekoXConfig.sortByUnmuted);
+                }
+            } else if (position == sortByUserRow) {
+                NekoXConfig.toggleSortByUser();
+                if (view instanceof TextCheckCell) {
+                    ((TextCheckCell) view).setChecked(NekoXConfig.sortByUser);
+                }
+            } else if (position == sortByContactsRow) {
+                NekoXConfig.toggleSortByContacts();
+                if (view instanceof TextCheckCell) {
+                    ((TextCheckCell) view).setChecked(NekoXConfig.sortByContacts);
+                }
+            } else if (position == sortBySendTimeRow) {
+                NekoXConfig.toggleSortBySendTime();
+                if (view instanceof TextCheckCell) {
+                    ((TextCheckCell) view).setChecked(NekoXConfig.sortBySendTime);
+                }
+            }
+
         });
 
         return fragmentView;

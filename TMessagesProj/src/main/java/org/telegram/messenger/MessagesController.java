@@ -368,6 +368,14 @@ public class MessagesController extends BaseController implements NotificationCe
 
         }
 
+        if (NekoXConfig.sortByUnread) {
+            if (dialog1.unread_count < dialog2.unread_count) {
+                return 1;
+            } else if (dialog1.unread_count > dialog2.unread_count) {
+                return -1;
+            }
+        }
+
         if (NekoXConfig.sortBySendTime) {
 
             final MediaDataController mediaDataController = getMediaDataController();
