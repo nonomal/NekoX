@@ -102,6 +102,7 @@ public class NekoSettingsActivity extends BaseFragment {
     private int settingsRow;
     private int typefaceRow;
     private int hidePhoneRow;
+    private int disableUndoRow;
     private int nameOrderRow;
     private int transparentStatusBarRow;
     private int forceTabletRow;
@@ -180,6 +181,11 @@ public class NekoSettingsActivity extends BaseFragment {
                 NekoConfig.toggleHidePhone();
                 if (view instanceof TextCheckCell) {
                     ((TextCheckCell) view).setChecked(NekoConfig.hidePhone);
+                }
+            } else if (position == disableUndoRow) {
+                NekoXConfig.toggleDisableUndo();
+                if (view instanceof TextCheckCell) {
+                    ((TextCheckCell) view).setChecked(NekoXConfig.disableUndo);
                 }
             } else if (position == inappCameraRow) {
                 SharedConfig.toggleInappCamera();
@@ -620,6 +626,7 @@ public class NekoSettingsActivity extends BaseFragment {
         chat2Row = rowCount++;
         settingsRow = rowCount++;
         hidePhoneRow = rowCount++;
+        disableUndoRow = rowCount++;
         typefaceRow = rowCount++;
         transparentStatusBarRow = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? rowCount++ : -1;
         forceTabletRow = rowCount++;
@@ -1075,6 +1082,8 @@ public class NekoSettingsActivity extends BaseFragment {
                         textCell.setTextAndCheck(LocaleController.getString("IPv6", R.string.IPv6), NekoConfig.useIPv6, false);
                     } else if (position == hidePhoneRow) {
                         textCell.setTextAndCheck(LocaleController.getString("HidePhone", R.string.HidePhone), NekoConfig.hidePhone, true);
+                    } else if (position == disableUndoRow) {
+                        textCell.setTextAndCheck(LocaleController.getString("DisableUndo", R.string.DisableUndo), NekoXConfig.disableUndo, true);
                     } else if (position == inappCameraRow) {
                         textCell.setTextAndCheck(LocaleController.getString("DebugMenuEnableCamera", R.string.DebugMenuEnableCamera), SharedConfig.inappCamera, true);
                     } else if (position == disableChatActionRow) {

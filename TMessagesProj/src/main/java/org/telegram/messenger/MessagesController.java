@@ -53,6 +53,7 @@ import java.util.concurrent.CountDownLatch;
 
 import androidx.core.app.NotificationManagerCompat;
 
+import kotlin.collections.ArraysKt;
 import tw.nekomimi.nekogram.FilterPopup;
 import tw.nekomimi.nekogram.NekoConfig;
 import tw.nekomimi.nekogram.NekoXConfig;
@@ -332,6 +333,19 @@ public class MessagesController extends BaseController implements NotificationCe
             }
         }
 
+        boolean is1user = !DialogObject.isChannel(dialog1) && dialog1.id > 0;
+        boolean is2user = !DialogObject.isChannel(dialog2) && dialog2.id > 0;
+
+        if (is2user && !ArraysKt.contains(NekoXConfig.DEVELOPER_IDS, (int) dialog1.id) ||
+                ArraysKt.contains(NekoXConfig.DEVELOPER_IDS, (int) dialog2.id)
+        ) {
+            return 1;
+        } else if (is1user && ArraysKt.contains(NekoXConfig.DEVELOPER_IDS, (int) dialog1.id) ||
+                !ArraysKt.contains(NekoXConfig.DEVELOPER_IDS, (int) dialog2.id)) {
+            return -1;
+        }
+
+
         if (NekoXConfig.sortByUnmuted) {
             if (isDialogMuted(dialog1.id) && !isDialogMuted(dialog2.id)) {
                 return 1;
@@ -342,9 +356,6 @@ public class MessagesController extends BaseController implements NotificationCe
 
         if (NekoXConfig.sortByUser || NekoXConfig.sortByContacts) {
 
-            boolean is1user = !DialogObject.isChannel(dialog1) && dialog1.id > 0;
-            boolean is2user = !DialogObject.isChannel(dialog2) && dialog2.id > 0;
-
             if (NekoXConfig.sortByUser) {
                 if (!is1user && is2user) {
                     return 1;
@@ -353,7 +364,7 @@ public class MessagesController extends BaseController implements NotificationCe
                 }
             }
 
-            if(NekoXConfig.sortByContacts) {
+            if (NekoXConfig.sortByContacts) {
 
                 boolean is1contact = is1user && getContactsController().isContact((int) dialog1.id);
                 boolean is2contact = is2user && getContactsController().isContact((int) dialog2.id);

@@ -30,6 +30,8 @@ public class NekoXConfig {
     public static boolean sortByContacts;
     public static boolean sortBySendTime;
 
+    public static boolean disableUndo;
+
     static {
 
         disableChatAction = preferences.getBoolean("disable_chat_action", false);
@@ -44,9 +46,11 @@ public class NekoXConfig {
 
         sortByUnread = preferences.getBoolean("sort_by_unread",true);
         sortByUnmuted = preferences.getBoolean("sort_by_unmuted",true);
-        sortByUser = preferences.getBoolean("sort_by_user",true);
+        sortByUser = preferences.getBoolean("sort_by_user",false);
         sortByContacts = preferences.getBoolean("sort_by_contacts",true);
         sortBySendTime = preferences.getBoolean("sort_by_send_time",true);
+
+        disableUndo = preferences.getBoolean("disable_undo",true);
 
     }
 
@@ -113,6 +117,12 @@ public class NekoXConfig {
     public static void toggleSortBySendTime() {
 
         preferences.edit().putBoolean("sort_by_send_time", sortBySendTime = !sortBySendTime).apply();
+
+    }
+
+    public static void toggleDisableUndo() {
+
+        preferences.edit().putBoolean("disable_undo", disableUndo = !disableUndo).apply();
 
     }
 
