@@ -171,6 +171,14 @@ public class FilterPopup extends BaseController {
                 }
                 allDialogs.retainAll(filterUnreadDialogs(allDialogs));
                 break;
+            case DialogType.UnmutedAndUnread:
+                for (int i = 0; i < folders.size(); i++) {
+                    folderDialogs.get(i).retainAll(filterUnmutedDialogs(filterUnreadDialogs(folderDialogs.get(i))));
+                    if (!folderDialogs.get(i).isEmpty())
+                        dialogs.add(folders.get(i));
+                }
+                allDialogs.retainAll(filterUnreadDialogs(allDialogs));
+                break;
             case DialogType.Users:
                 for (int i = 0; i < folders.size(); i++) {
                     folderDialogs.get(i).retainAll(dialogsUsers);
@@ -301,6 +309,14 @@ public class FilterPopup extends BaseController {
         if (!temp.isEmpty()) {
             items.add(LocaleController.getString("NotificationsUnread", R.string.NotificationsUnread));
             options.add(DialogType.Unread);
+            unreadCounts.add(getDialogsUnreadCount(temp));
+        }
+
+        temp = new ArrayList<>(allDialogs);
+        temp.retainAll(filterUnmutedDialogs(filterUnreadDialogs(allDialogs)));
+        if (!temp.isEmpty()) {
+            items.add(LocaleController.getString("NotificationsUnmutedAndUnread", R.string.NotificationsUnmutedAndUnread));
+            options.add(DialogType.UnmutedAndUnread);
             unreadCounts.add(getDialogsUnreadCount(temp));
         }
 
@@ -443,9 +459,11 @@ public class FilterPopup extends BaseController {
         public static final int Admin = 11;
         public static final int Unmuted = 12;
         public static final int Unread = 13;
+        public static final int UnmutedAndUnread = 14;
+
 
         public static boolean isDialogsType(int dialogsType) {
-            return dialogsType == 0 || (dialogsType >= 7 && dialogsType <= 13);
+            return dialogsType == 0 || (dialogsType >= 7 && dialogsType <= 14);
         }
     }
 }
