@@ -1171,7 +1171,7 @@ public class NekoSettingsActivity extends BaseFragment {
         @Override
         public boolean isEnabled(RecyclerView.ViewHolder holder) {
             int position = holder.getAdapterPosition();
-            return position == hidePhoneRow || position == inappCameraRow || position == disableChatActionRow || position == ignoreBlockedRow ||
+            return position == hidePhoneRow || position == disableUndoRow || position == inappCameraRow || position == disableChatActionRow || position == ignoreBlockedRow ||
                     position == useSystemEmojiRow || position == ipv6Row || position == typefaceRow || position == nameOrderRow ||
                     position == forceTabletRow || position == mapPreviewRow || position == newYearRow ||
                     position == actionBarDecorationRow || position == eventTypeRow || position == transparentStatusBarRow ||
@@ -1227,7 +1227,7 @@ public class NekoSettingsActivity extends BaseFragment {
             } else if (position == nameOrderRow || position == mapPreviewRow || position == stickerSizeRow || position == messageMenuRow ||
                     position == deleteAccountRow || position == translationProviderRow || position == eventTypeRow || position == actionBarDecorationRow) {
                 return 2;
-            } else if (position == ipv6Row || position == hidePhoneRow || position == inappCameraRow || position == disableChatActionRow ||
+            } else if (position == ipv6Row || position == hidePhoneRow || position == disableUndoRow || position == inappCameraRow || position == disableChatActionRow ||
                     position == transparentStatusBarRow || position == hideProxySponsorChannelRow ||
                     position == ignoreBlockedRow || position == useSystemEmojiRow || position == typefaceRow ||
                     position == forceTabletRow || position == newYearRow ||
