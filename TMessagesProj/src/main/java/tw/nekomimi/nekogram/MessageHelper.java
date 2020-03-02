@@ -123,18 +123,8 @@ public class MessageHelper extends BaseController {
                         if (size == 0) {
                             return;
                         }
-                        HashSet<Integer> ids = new HashSet<>();
-                        for (int a = 0; a < res.messages.size(); a++) {
-                            TLRPC.Message message = res.messages.get(a);
-                            ids.add(message.from_id);
-                            if (message.id > lastMessageId) {
-                                lastMessageId = message.id;
-                            }
-                        }
-                        for (int userId : ids) {
-                            getMessagesController().deleteUserChannelHistory(chat,getMessagesController().getUser(userId),0);
-                        }
-                       /* ArrayList<Long> random_ids = new ArrayList<>();
+                        ArrayList<Integer> ids = new ArrayList<>();
+                        ArrayList<Long> random_ids = new ArrayList<>();
                         int channelId = 0;
                         for (int a = 0; a < res.messages.size(); a++) {
                             TLRPC.Message message = res.messages.get(a);
@@ -151,7 +141,6 @@ public class MessageHelper extends BaseController {
                         }
                         getMessagesController().deleteMessages(ids, random_ids, null, dialog_id, channelId, true, false);
 
-                        */
                         deleteChannelHistory(dialog_id,chat, lastMessageId);
 
                     }
