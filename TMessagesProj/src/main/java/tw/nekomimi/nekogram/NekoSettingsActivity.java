@@ -233,7 +233,7 @@ public class NekoSettingsActivity extends BaseFragment {
                 SharedConfig.useSystemEmoji = !SharedConfig.useSystemEmoji;
                 SharedPreferences.Editor editor = MessagesController.getGlobalMainSettings().edit();
                 editor.putBoolean("useSystemEmoji", SharedConfig.useSystemEmoji);
-                editor.commit();
+                editor.apply();
                 if (view instanceof TextCheckCell) {
                     ((TextCheckCell) view).setChecked(SharedConfig.useSystemEmoji);
                 }
@@ -632,7 +632,7 @@ public class NekoSettingsActivity extends BaseFragment {
         settingsRow = rowCount++;
         hidePhoneRow = rowCount++;
         disableUndoRow = rowCount++;
-        typefaceRow = rowCount++;
+        typefaceRow = Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP ? rowCount++ : -1;
         transparentStatusBarRow = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? rowCount++ : -1;
         forceTabletRow = rowCount++;
         openArchiveOnPullRow = rowCount++;
