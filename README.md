@@ -1,13 +1,12 @@
-# Nekogram
-![Logo](https://raw.githubusercontent.com/Nekogram/Nekogram/master/TMessagesProj/src/main/res/mipmap-xxxhdpi/ic_launcher.png)  
-Nekogram is an UNOFFICIAL app that uses Telegram's API.
+# NekoX
+![Logo](https://raw.githubusercontent.com/NekogramX/NekoX/master/TMessagesProj/src/main/res/mipmap-xxxhdpi/ic_launcher.png)  
+
+NekogramX is an UNOFFICIAL app that uses Telegram's API.
 
 - Google play store: https://play.google.com/store/apps/details?id=tw.nekomimi.nekogram
-- Update news (English): https://t.me/nekoupdates
-- Update news (Chinese): https://t.me/zuragram
-- APKs: https://github.com/Nekogram/Nekogram/releases
-- Feedback: https://t.me/nekosupportbot
-- Feedback: https://github.com/Nekogram/Nekogram/issues
+- Update news (Chinese): https://t.me/NekogramX
+- Feedback: https://t.me/NekoXChat
+- Feedback: https://github.com/NekogramX/NekoX/issues
 
 ## API, Protocol documentation
 

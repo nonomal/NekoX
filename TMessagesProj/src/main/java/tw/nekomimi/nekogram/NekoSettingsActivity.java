@@ -77,10 +77,11 @@ public class NekoSettingsActivity extends BaseFragment {
 
     private int chatRow;
     private int inappCameraRow;
-    private int useSystemEmojiRow;
+    private int disableChatActionRow;
+     private int useSystemEmojiRow;
     private int ignoreBlockedRow;
     private int hideProxySponsorChannelRow;
-    private int saveCacheToPrivateDirectoryRow;
+    private int saveCacheToSdcardRow;
     private int pauseMusicOnRecordRow;
     private int disablePhotoSideActionRow;
     private int hideKeyboardOnChatScrollRow;
@@ -177,6 +178,11 @@ public class NekoSettingsActivity extends BaseFragment {
                 if (view instanceof TextCheckCell) {
                     ((TextCheckCell) view).setChecked(SharedConfig.inappCamera);
                 }
+            } else if (position == disableChatActionRow) {
+                NekoXConfig.toggleDisableChatAction();
+                if (view instanceof TextCheckCell) {
+                    ((TextCheckCell) view).setChecked(NekoXConfig.disableChatAction);
+                }
             } else if (position == forceTabletRow) {
                 NekoConfig.toggleForceTablet();
                 if (view instanceof TextCheckCell) {
@@ -203,10 +209,10 @@ public class NekoSettingsActivity extends BaseFragment {
                         MessagesController.getInstance(a).checkProxyInfo(true);
                     }
                 }
-            } else if (position == saveCacheToPrivateDirectoryRow) {
-                NekoConfig.toggleSaveCacheToPrivateDirectory();
+            } else if (position == saveCacheToSdcardRow) {
+                NekoConfig.toggleSaveCacheToSdcard();
                 if (view instanceof TextCheckCell) {
-                    ((TextCheckCell) view).setChecked(NekoConfig.saveCacheToPrivateDirectory);
+                    ((TextCheckCell) view).setChecked(NekoConfig.saveCacheToSdcard);
                 }
             } else if (position == useSystemEmojiRow) {
                 SharedConfig.useSystemEmoji = !SharedConfig.useSystemEmoji;
@@ -521,9 +527,6 @@ public class NekoSettingsActivity extends BaseFragment {
                 if (view instanceof TextCheckCell) {
                     ((TextCheckCell) view).setChecked(NekoConfig.openFilterByFab);
                 }
-            } else if (position == connection2Row) {
-                NekoConfig.toggleShowHiddenFeature();
-                updateRows();
             } else if (position == hideKeyboardOnChatScrollRow) {
                 NekoConfig.toggleHideKeyboardOnChatScroll();
                 if (view instanceof TextCheckCell) {
@@ -556,10 +559,11 @@ public class NekoSettingsActivity extends BaseFragment {
         dialogsFilter2Row = rowCount++;
         chatRow = rowCount++;
         inappCameraRow = rowCount++;
+        disableChatActionRow = rowCount++;
         useSystemEmojiRow = rowCount++;
         ignoreBlockedRow = rowCount++;
         hideProxySponsorChannelRow = rowCount++;
-        saveCacheToPrivateDirectoryRow = NekoConfig.showHiddenFeature && Build.VERSION.SDK_INT >= Build.VERSION_CODES.N ? rowCount++ : -1;
+        saveCacheToSdcardRow = rowCount++;
         pauseMusicOnRecordRow = rowCount++;
         disablePhotoSideActionRow = rowCount++;
         hideKeyboardOnChatScrollRow = rowCount++;
@@ -584,7 +588,7 @@ public class NekoSettingsActivity extends BaseFragment {
         disableFilteringRow = rowCount++;
         unlimitedFavedStickersRow = rowCount++;
         unlimitedPinnedDialogsRow = rowCount++;
-        deleteAccountRow = NekoConfig.showHiddenFeature ? rowCount++ : -1;
+        deleteAccountRow = rowCount++;
         experiment2Row = rowCount++;
         if (listAdapter != null) {
             listAdapter.notifyDataSetChanged();
@@ -1027,12 +1031,14 @@ public class NekoSettingsActivity extends BaseFragment {
                         textCell.setTextAndCheck(LocaleController.getString("HidePhone", R.string.HidePhone), NekoConfig.hidePhone, true);
                     } else if (position == inappCameraRow) {
                         textCell.setTextAndCheck(LocaleController.getString("DebugMenuEnableCamera", R.string.DebugMenuEnableCamera), SharedConfig.inappCamera, true);
+                    } else if (position == disableChatActionRow) {
+                        textCell.setTextAndCheck(LocaleController.getString("DisableChatAction", R.string.DisableChatAction), NekoXConfig.disableChatAction, true);
                     } else if (position == transparentStatusBarRow) {
                         textCell.setTextAndCheck(LocaleController.getString("TransparentStatusBar", R.string.TransparentStatusBar), NekoConfig.transparentStatusBar, true);
                     } else if (position == hideProxySponsorChannelRow) {
                         textCell.setTextAndCheck(LocaleController.getString("HideProxySponsorChannel", R.string.HideProxySponsorChannel), NekoConfig.hideProxySponsorChannel, true);
-                    } else if (position == saveCacheToPrivateDirectoryRow) {
-                        textCell.setTextAndCheck(LocaleController.getString("SaveCacheToPrivateDirectory", R.string.SaveCacheToPrivateDirectory), NekoConfig.saveCacheToPrivateDirectory, true);
+                    } else if (position == saveCacheToSdcardRow) {
+                        textCell.setTextAndCheck(LocaleController.getString("saveCacheToSdcard", R.string.SaveCacheToPrivateDirectory), NekoConfig.saveCacheToSdcard, true);
                     } else if (position == useSystemEmojiRow) {
                         textCell.setTextAndCheck(LocaleController.getString("EmojiUseDefault", R.string.EmojiUseDefault), SharedConfig.useSystemEmoji, true);
                     } else if (position == typefaceRow) {
@@ -1095,17 +1101,16 @@ public class NekoSettingsActivity extends BaseFragment {
         @Override
         public boolean isEnabled(RecyclerView.ViewHolder holder) {
             int position = holder.getAdapterPosition();
-            return position == hidePhoneRow || position == inappCameraRow || position == ignoreBlockedRow ||
+            return position == hidePhoneRow || position == inappCameraRow || position == disableChatActionRow || position == ignoreBlockedRow ||
                     position == useSystemEmojiRow || position == ipv6Row || position == typefaceRow || position == nameOrderRow ||
                     position == forceTabletRow || position == mapPreviewRow || position == newYearRow ||
                     position == actionBarDecorationRow || position == eventTypeRow || position == transparentStatusBarRow ||
-                    position == hideProxySponsorChannelRow || position == saveCacheToPrivateDirectoryRow ||
+                    position == hideProxySponsorChannelRow || position == saveCacheToSdcardRow ||
                     position == disableFilteringRow || position == stickerSizeRow ||
                     position == unlimitedFavedStickersRow || position == messageMenuRow || position == deleteAccountRow ||
                     position == translationProviderRow || position == smoothKeyboardRow || position == pauseMusicOnRecordRow ||
                     position == disablePhotoSideActionRow || position == unlimitedPinnedDialogsRow || position == openArchiveOnPullRow ||
-                    position == openFilterByActionBarRow || position == openFilterByFabRow || position == connection2Row ||
-                    position == hideKeyboardOnChatScrollRow;
+                    position == openFilterByActionBarRow || position == openFilterByFabRow || position == hideKeyboardOnChatScrollRow;
         }
 
         @Override
@@ -1151,11 +1156,11 @@ public class NekoSettingsActivity extends BaseFragment {
             } else if (position == nameOrderRow || position == mapPreviewRow || position == stickerSizeRow || position == messageMenuRow ||
                     position == deleteAccountRow || position == translationProviderRow || position == eventTypeRow || position == actionBarDecorationRow) {
                 return 2;
-            } else if (position == ipv6Row || position == hidePhoneRow || position == inappCameraRow ||
+            } else if (position == ipv6Row || position == hidePhoneRow || position == inappCameraRow || position == disableChatActionRow ||
                     position == transparentStatusBarRow || position == hideProxySponsorChannelRow ||
                     position == ignoreBlockedRow || position == useSystemEmojiRow || position == typefaceRow ||
                     position == forceTabletRow || position == newYearRow ||
-                    position == saveCacheToPrivateDirectoryRow || position == unlimitedFavedStickersRow ||
+                    position == saveCacheToSdcardRow || position == unlimitedFavedStickersRow ||
                     position == disableFilteringRow || position == smoothKeyboardRow || position == pauseMusicOnRecordRow ||
                     position == disablePhotoSideActionRow || position == unlimitedPinnedDialogsRow || position == openArchiveOnPullRow ||
                     position == openFilterByActionBarRow || position == openFilterByFabRow || position == hideKeyboardOnChatScrollRow) {

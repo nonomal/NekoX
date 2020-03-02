@@ -1,6 +1,10 @@
 package tw.nekomimi.nekogram;
 
+import android.util.Log;
+import android.widget.Toast;
+
 import org.telegram.messenger.AndroidUtilities;
+import org.telegram.messenger.ApplicationLoader;
 import org.telegram.messenger.BaseController;
 import org.telegram.messenger.MessageObject;
 import org.telegram.messenger.UserConfig;
@@ -9,6 +13,7 @@ import org.telegram.tgnet.TLRPC;
 import org.telegram.ui.Cells.ChatMessageCell;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 public class MessageHelper extends BaseController {
 
@@ -97,4 +102,62 @@ public class MessageHelper extends BaseController {
             }
         }), ConnectionsManager.RequestFlagFailOnServerErrors);
     }
+
+    public void deleteChannelHistory(final long dialog_id, TLRPC.Chat chat, final int offset_id) {
+
+        final TLRPC.TL_messages_getHistory req = new TLRPC.TL_messages_getHistory();
+        req.peer = getMessagesController().getInputPeer((int) dialog_id);
+        if (req.peer == null) {
+            return;
+        }
+        req.limit = 100;
+        req.offset_id = offset_id;
+        final int currentReqId = ++lastReqId;
+        getConnectionsManager().sendRequest(req, (response, error) -> AndroidUtilities.runOnUIThread(() -> {
+            if (error == null) {
+                int lastMessageId = offset_id;
+                if (currentReqId == lastReqId) {
+                    if (response != null) {
+                        TLRPC.messages_Messages res = (TLRPC.messages_Messages) response;
+                        int size = res.messages.size();
+                        if (size == 0) {
+                            return;
+                        }
+                        HashSet<Integer> ids = new HashSet<>();
+                        for (int a = 0; a < res.messages.size(); a++) {
+                            TLRPC.Message message = res.messages.get(a);
+                            ids.add(message.from_id);
+                            if (message.id > lastMessageId) {
+                                lastMessageId = message.id;
+                            }
+                        }
+                        for (int userId : ids) {
+                            getMessagesController().deleteUserChannelHistory(chat,getMessagesController().getUser(userId),0);
+                        }
+                       /* ArrayList<Long> random_ids = new ArrayList<>();
+                        int channelId = 0;
+                        for (int a = 0; a < res.messages.size(); a++) {
+                            TLRPC.Message message = res.messages.get(a);
+                            ids.add(message.id);
+                            if (message.random_id != 0) {
+                                random_ids.add(message.random_id);
+                            }
+                            if (message.to_id.channel_id != 0) {
+                                channelId = message.to_id.channel_id;
+                            }
+                            if (message.id > lastMessageId) {
+                                lastMessageId = message.id;
+                            }
+                        }
+                        getMessagesController().deleteMessages(ids, random_ids, null, dialog_id, channelId, true, false);
+
+                        */
+                        deleteChannelHistory(dialog_id,chat, lastMessageId);
+
+                    }
+                }
+            }
+        }), ConnectionsManager.RequestFlagFailOnServerErrors);
+    }
+
 }
