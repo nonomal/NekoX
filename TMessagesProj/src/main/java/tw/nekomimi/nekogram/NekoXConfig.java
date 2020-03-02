@@ -173,11 +173,7 @@ public class NekoXConfig {
         preferences.edit().putBoolean("filter_bots", filterBots = !filterBots).apply();
 
     }
-    public static void toggleFilterBot() {
 
-        preferences.edit().putBoolean("filter_bots", disableUndo = !disableUndo).apply();
-
-    }
     public static void toggleFilterAdmins() {
 
         preferences.edit().putBoolean("filter_admins", filterAdmins = !filterAdmins).apply();

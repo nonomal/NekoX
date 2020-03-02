@@ -945,7 +945,7 @@ public class NekoSettingsActivity extends BaseFragment {
                         break;
                     }
                     case 4: {
-                        NekoXConfig.toggleFilterBot();
+                        NekoXConfig.toggleFilterBots();
                         textCell.setChecked(NekoXConfig.filterBots);
                         break;
                     }
