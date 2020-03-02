@@ -13,6 +13,8 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 
+import com.google.android.search.verification.api.ISearchActionVerificationService;
+
 import org.telegram.messenger.AndroidUtilities;
 import org.telegram.messenger.BaseController;
 import org.telegram.messenger.ChatObject;
@@ -140,6 +142,16 @@ public class FilterPopup extends BaseController {
         return dialogs;
     }
 
+    private ArrayList<TLRPC.Dialog> filterContacts(ArrayList<TLRPC.Dialog> allDialogs) {
+        ArrayList<TLRPC.Dialog> dialogs = new ArrayList<>();
+        for (TLRPC.Dialog dialog : allDialogs) {
+            if (getContactsController().isContact((int) dialog.id)) {
+                dialogs.add(dialog);
+            }
+        }
+        return dialogs;
+    }
+
     public ArrayList<TLRPC.Dialog> getDialogs(int type, int folderId) {
         ArrayList<TLRPC.Dialog> allDialogs = new ArrayList<>(getMessagesController().getDialogs(folderId));
         ArrayList<TLRPC.Dialog> folders = new ArrayList<>();
@@ -186,6 +198,14 @@ public class FilterPopup extends BaseController {
                         dialogs.add(folders.get(i));
                 }
                 allDialogs.retainAll(dialogsUsers);
+                break;
+            case DialogType.Contacts:
+                for (int i = 0; i < folders.size(); i++) {
+                    folderDialogs.get(i).retainAll(filterContacts(dialogsUsers));
+                    if (!folderDialogs.get(i).isEmpty())
+                        dialogs.add(folders.get(i));
+                }
+                allDialogs.retainAll(filterContacts(dialogsUsers));
                 break;
             case DialogType.Groups:
                 for (int i = 0; i < folders.size(); i++) {
@@ -261,6 +281,14 @@ public class FilterPopup extends BaseController {
         if (!temp.isEmpty()) {
             items.add(LocaleController.getString("Users", R.string.Users));
             options.add(DialogType.Users);
+            unreadCounts.add(getDialogsUnreadCount(temp));
+        }
+
+        temp = new ArrayList<>(allDialogs);
+        temp.retainAll(filterContacts(dialogsUsers));
+        if (!temp.isEmpty()) {
+            items.add(LocaleController.getString("Contacts", R.string.Contacts));
+            options.add(DialogType.Contacts);
             unreadCounts.add(getDialogsUnreadCount(temp));
         }
 
@@ -460,10 +488,11 @@ public class FilterPopup extends BaseController {
         public static final int Unmuted = 12;
         public static final int Unread = 13;
         public static final int UnmutedAndUnread = 14;
+        public static final int Contacts = 15;
 
 
         public static boolean isDialogsType(int dialogsType) {
-            return dialogsType == 0 || (dialogsType >= 7 && dialogsType <= 14);
+            return dialogsType == 0 || (dialogsType >= 7 && dialogsType <= 15);
         }
     }
 }

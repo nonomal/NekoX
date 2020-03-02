@@ -3498,6 +3498,9 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
             case FilterPopup.DialogType.Users:
                 title = LocaleController.getString("Users", R.string.Users);
                 break;
+            case FilterPopup.DialogType.Contacts:
+                title = LocaleController.getString("Contacts", R.string.Contacts);
+                break;
             case FilterPopup.DialogType.Groups:
                 title = LocaleController.getString("Groups", R.string.Groups);
                 break;
