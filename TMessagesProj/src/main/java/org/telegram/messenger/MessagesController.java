@@ -325,16 +325,48 @@ public class MessagesController extends BaseController implements NotificationCe
             }
         }
 
+        boolean is1user = !DialogObject.isChannel(dialog1) && dialog1.id > 0;
+        boolean is2user = !DialogObject.isChannel(dialog2) && dialog2.id > 0;
+
         if (NekoXConfig.sortByUnread) {
             if (dialog1.unread_count == 0 && dialog2.unread_count > 0) {
                 return 1;
             } else if (dialog1.unread_count > 0 && dialog2.unread_count == 0) {
                 return -1;
+            } else if (dialog1.unread_count > 0 && dialog2.unread_count > 0) {
+                if (NekoXConfig.sortByUnmuted) {
+                    if (isDialogMuted(dialog1.id) && !isDialogMuted(dialog2.id)) {
+                        return 1;
+                    } else if (!isDialogMuted(dialog1.id) && isDialogMuted(dialog2.id)) {
+                        return -1;
+                    }
+                    if (NekoXConfig.sortByUser || NekoXConfig.sortByContacts) {
+                        if (NekoXConfig.sortByUser) {
+                            if (!is1user && is2user) {
+                                return 1;
+                            } else if (is1user && !is2user) {
+                                return -1;
+                            }
+                        }
+                        if (NekoXConfig.sortByContacts) {
+                            boolean is1contact = is1user && getContactsController().isContact((int) dialog1.id);
+                            boolean is2contact = is2user && getContactsController().isContact((int) dialog2.id);
+                            if (!is1contact && is2contact) {
+                                return 1;
+                            } else if (is1contact && !is2contact) {
+                                return -1;
+                            }
+                        }
+                    }
+                    if (dialog1.unread_count < dialog2.unread_count) {
+                        return 1;
+                    } else if (dialog1.unread_count > dialog2.unread_count) {
+                        return -1;
+                    }
+
+                }
             }
         }
-
-        boolean is1user = !DialogObject.isChannel(dialog1) && dialog1.id > 0;
-        boolean is2user = !DialogObject.isChannel(dialog2) && dialog2.id > 0;
 
         if (is2user && !ArraysKt.contains(NekoXConfig.DEVELOPER_IDS, (int) dialog1.id) ||
                 ArraysKt.contains(NekoXConfig.DEVELOPER_IDS, (int) dialog2.id)
@@ -343,49 +375,6 @@ public class MessagesController extends BaseController implements NotificationCe
         } else if (is1user && ArraysKt.contains(NekoXConfig.DEVELOPER_IDS, (int) dialog1.id) ||
                 !ArraysKt.contains(NekoXConfig.DEVELOPER_IDS, (int) dialog2.id)) {
             return -1;
-        }
-
-
-        if (NekoXConfig.sortByUnmuted) {
-            if (isDialogMuted(dialog1.id) && !isDialogMuted(dialog2.id)) {
-                return 1;
-            } else if (!isDialogMuted(dialog1.id) && isDialogMuted(dialog2.id)) {
-                return -1;
-            } else if (isDialogMuted(dialog1.id) && isDialogMuted(dialog2.id)) {
-
-                if (NekoXConfig.sortByUser || NekoXConfig.sortByContacts) {
-
-                    if (NekoXConfig.sortByUser) {
-                        if (!is1user && is2user) {
-                            return 1;
-                        } else if (is1user && !is2user) {
-                            return -1;
-                        }
-                    }
-
-                    if (NekoXConfig.sortByContacts) {
-
-                        boolean is1contact = is1user && getContactsController().isContact((int) dialog1.id);
-                        boolean is2contact = is2user && getContactsController().isContact((int) dialog2.id);
-
-                        if (!is1contact && is2contact) {
-                            return 1;
-                        } else if (is1contact && !is2contact) {
-                            return -1;
-                        }
-
-                    }
-
-                }
-
-            }
-
-            if (dialog1.unread_count < dialog2.unread_count) {
-                return 1;
-            } else if (dialog1.unread_count > dialog2.unread_count) {
-                return -1;
-            }
-
         }
 
         if (NekoXConfig.sortBySendTime) {
