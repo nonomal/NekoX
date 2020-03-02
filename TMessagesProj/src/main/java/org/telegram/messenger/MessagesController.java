@@ -2138,7 +2138,7 @@ public class MessagesController extends BaseController implements NotificationCe
         }));
     }
 
-    protected void processNewChannelDifferenceParams(int pts, int pts_count, int channelId) {
+    public void processNewChannelDifferenceParams(int pts, int pts_count, int channelId) {
         if (BuildVars.LOGS_ENABLED) {
             FileLog.d("processNewChannelDifferenceParams pts = " + pts + " pts_count = " + pts_count + " channeldId = " + channelId);
         }
