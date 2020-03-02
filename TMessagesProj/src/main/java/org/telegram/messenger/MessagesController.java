@@ -322,6 +322,8 @@ public class MessagesController extends BaseController implements NotificationCe
                 return 1;
             } else if (dialog1.pinnedNum > dialog2.pinnedNum) {
                 return -1;
+            } else {
+                return 0;
             }
         }
 
