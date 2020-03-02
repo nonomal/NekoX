@@ -130,6 +130,16 @@ public class FilterPopup extends BaseController {
         return dialogs;
     }
 
+    private ArrayList<TLRPC.Dialog> filterUnreadDialogs(ArrayList<TLRPC.Dialog> allDialogs) {
+        ArrayList<TLRPC.Dialog> dialogs = new ArrayList<>();
+        for (TLRPC.Dialog dialog : allDialogs) {
+            if (dialog instanceof TLRPC.TL_dialogFolder) continue;
+            if (dialog.unread_count == 0) continue;
+            dialogs.add(dialog);
+        }
+        return dialogs;
+    }
+
     public ArrayList<TLRPC.Dialog> getDialogs(int type, int folderId) {
         ArrayList<TLRPC.Dialog> allDialogs = new ArrayList<>(getMessagesController().getDialogs(folderId));
         ArrayList<TLRPC.Dialog> folders = new ArrayList<>();
@@ -152,6 +162,14 @@ public class FilterPopup extends BaseController {
                         dialogs.add(folders.get(i));
                 }
                 allDialogs.retainAll(filterUnmutedDialogs(allDialogs));
+                break;
+            case DialogType.Unread:
+                for (int i = 0; i < folders.size(); i++) {
+                    folderDialogs.get(i).retainAll(filterUnreadDialogs(folderDialogs.get(i)));
+                    if (!folderDialogs.get(i).isEmpty())
+                        dialogs.add(folders.get(i));
+                }
+                allDialogs.retainAll(filterUnreadDialogs(allDialogs));
                 break;
             case DialogType.Users:
                 for (int i = 0; i < folders.size(); i++) {
@@ -275,6 +293,14 @@ public class FilterPopup extends BaseController {
         if (!temp.isEmpty()) {
             items.add(LocaleController.getString("NotificationsUnmuted", R.string.NotificationsUnmuted));
             options.add(DialogType.Unmuted);
+            unreadCounts.add(getDialogsUnreadCount(temp));
+        }
+
+        temp = new ArrayList<>(allDialogs);
+        temp.retainAll(filterUnreadDialogs(allDialogs));
+        if (!temp.isEmpty()) {
+            items.add(LocaleController.getString("NotificationsUnread", R.string.NotificationsUnread));
+            options.add(DialogType.Unread);
             unreadCounts.add(getDialogsUnreadCount(temp));
         }
 
@@ -416,9 +442,10 @@ public class FilterPopup extends BaseController {
         public static final int Bots = 10;
         public static final int Admin = 11;
         public static final int Unmuted = 12;
+        public static final int Unread = 13;
 
         public static boolean isDialogsType(int dialogsType) {
-            return dialogsType == 0 || (dialogsType >= 7 && dialogsType <= 12);
+            return dialogsType == 0 || (dialogsType >= 7 && dialogsType <= 13);
         }
     }
 }
