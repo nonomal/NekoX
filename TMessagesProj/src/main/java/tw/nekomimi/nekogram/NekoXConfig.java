@@ -32,6 +32,16 @@ public class NekoXConfig {
 
     public static boolean disableUndo;
 
+    public static boolean filterUsers;
+    public static boolean filterContacts;
+    public static boolean filterGroups;
+    public static boolean filterChannels;
+    public static boolean filterBots;
+    public static boolean filterAdmins;
+    public static boolean filterUnmuted;
+    public static boolean filterUnread;
+    public static boolean filterUnmutedAndUnread;
+
     static {
 
         disableChatAction = preferences.getBoolean("disable_chat_action", false);
@@ -51,6 +61,16 @@ public class NekoXConfig {
         sortBySendTime = preferences.getBoolean("sort_by_send_time",true);
 
         disableUndo = preferences.getBoolean("disable_undo",true);
+
+        filterUsers = preferences.getBoolean("filter_users",true);
+        filterContacts = preferences.getBoolean("filter_contacts",true);
+        filterGroups = preferences.getBoolean("filter_groups",true);
+        filterChannels = preferences.getBoolean("filter_channels",true);
+        filterBots = preferences.getBoolean("filter_bots",true);
+        filterAdmins = preferences.getBoolean("filter_admins",true);
+        filterUnmuted = preferences.getBoolean("filter_unmuted",true);
+        filterUnread = preferences.getBoolean("filter_unread",true);
+        filterUnmutedAndUnread = preferences.getBoolean("filter_unmuted_and_unread",true);
 
     }
 
@@ -104,13 +124,13 @@ public class NekoXConfig {
 
     public static void toggleSortByUser() {
 
-        preferences.edit().putBoolean("sortByUser", sortByUser = !sortByUser).apply();
+        preferences.edit().putBoolean("sort_by_user", sortByUser = !sortByUser).apply();
 
     }
 
     public static void toggleSortByContacts() {
 
-        preferences.edit().putBoolean("show_bot_login", sortByContacts = !sortByContacts).apply();
+        preferences.edit().putBoolean("sort_by_contacts", sortByContacts = !sortByContacts).apply();
 
     }
 
@@ -123,6 +143,61 @@ public class NekoXConfig {
     public static void toggleDisableUndo() {
 
         preferences.edit().putBoolean("disable_undo", disableUndo = !disableUndo).apply();
+
+    }
+
+    public static void toggleFilterUsers() {
+
+        preferences.edit().putBoolean("filter_users", filterUsers = !filterUsers).apply();
+
+    }
+
+    public static void toggleFilterContacts() {
+
+        preferences.edit().putBoolean("filter_contacts", filterContacts = !filterContacts).apply();
+
+    }
+
+    public static void toggleFilterGroups() {
+
+        preferences.edit().putBoolean("filterGroups", filterGroups = !filterGroups).apply();
+
+    }
+    public static void toggleFilterChannels() {
+
+        preferences.edit().putBoolean("filter_channels", filterChannels = !filterChannels).apply();
+
+    }
+    public static void toggleFilterBots() {
+
+        preferences.edit().putBoolean("filter_bots", filterBots = !filterBots).apply();
+
+    }
+    public static void toggleFilterBot() {
+
+        preferences.edit().putBoolean("filter_bots", disableUndo = !disableUndo).apply();
+
+    }
+    public static void toggleFilterAdmins() {
+
+        preferences.edit().putBoolean("filter_admins", filterAdmins = !filterAdmins).apply();
+
+    }
+    public static void toggleFilterUnmuted() {
+
+        preferences.edit().putBoolean("filter_unmuted", filterUnmuted = !filterUnmuted).apply();
+
+    }
+
+    public static void toggleDisableFilterUnread() {
+
+        preferences.edit().putBoolean("filter_unread", filterUnread = !filterUnread).apply();
+
+    }
+
+    public static void toggleFilterUnmutedAndUnread() {
+
+        preferences.edit().putBoolean("filter_unmuted_and_unread", filterUnmutedAndUnread = !filterUnmutedAndUnread).apply();
 
     }
 

@@ -278,7 +278,7 @@ public class FilterPopup extends BaseController {
 
         ArrayList<TLRPC.Dialog> temp = new ArrayList<>(allDialogs);
         temp.retainAll(dialogsUsers);
-        if (!temp.isEmpty()) {
+        if (!temp.isEmpty() && NekoXConfig.filterUsers) {
             items.add(LocaleController.getString("Users", R.string.Users));
             options.add(DialogType.Users);
             unreadCounts.add(getDialogsUnreadCount(temp));
@@ -286,7 +286,7 @@ public class FilterPopup extends BaseController {
 
         temp = new ArrayList<>(allDialogs);
         temp.retainAll(filterContacts(dialogsUsers));
-        if (!temp.isEmpty()) {
+        if (!temp.isEmpty() && NekoXConfig.filterContacts) {
             items.add(LocaleController.getString("Contacts", R.string.Contacts));
             options.add(DialogType.Contacts);
             unreadCounts.add(getDialogsUnreadCount(temp));
@@ -294,7 +294,7 @@ public class FilterPopup extends BaseController {
 
         temp = new ArrayList<>(allDialogs);
         temp.retainAll(dialogsGroups);
-        if (!temp.isEmpty()) {
+        if (!temp.isEmpty() && NekoXConfig.filterGroups) {
             items.add(LocaleController.getString("Groups", R.string.Groups));
             options.add(DialogType.Groups);
             unreadCounts.add(getDialogsUnreadCount(temp));
@@ -302,7 +302,7 @@ public class FilterPopup extends BaseController {
 
         temp = new ArrayList<>(allDialogs);
         temp.retainAll(dialogsChannels);
-        if (!temp.isEmpty()) {
+        if (!temp.isEmpty() && NekoXConfig.filterChannels) {
             items.add(LocaleController.getString("Channels", R.string.Channels));
             options.add(DialogType.Channels);
             unreadCounts.add(getDialogsUnreadCount(temp));
@@ -310,7 +310,7 @@ public class FilterPopup extends BaseController {
 
         temp = new ArrayList<>(allDialogs);
         temp.retainAll(dialogsBots);
-        if (!temp.isEmpty()) {
+        if (!temp.isEmpty() && NekoXConfig.filterBots) {
             items.add(LocaleController.getString("Bots", R.string.Bots));
             options.add(DialogType.Bots);
             unreadCounts.add(getDialogsUnreadCount(temp));
@@ -318,7 +318,7 @@ public class FilterPopup extends BaseController {
 
         temp = new ArrayList<>(allDialogs);
         temp.retainAll(dialogsAdmin);
-        if (!temp.isEmpty()) {
+        if (!temp.isEmpty() && NekoXConfig.filterAdmins) {
             items.add(LocaleController.getString("Admins", R.string.Admins));
             options.add(DialogType.Admin);
             unreadCounts.add(getDialogsUnreadCount(temp));
@@ -326,7 +326,7 @@ public class FilterPopup extends BaseController {
 
         temp = new ArrayList<>(allDialogs);
         temp.retainAll(filterUnmutedDialogs(allDialogs));
-        if (!temp.isEmpty()) {
+        if (!temp.isEmpty() && NekoXConfig.filterUnmuted) {
             items.add(LocaleController.getString("NotificationsUnmuted", R.string.NotificationsUnmuted));
             options.add(DialogType.Unmuted);
             unreadCounts.add(getDialogsUnreadCount(temp));
@@ -334,7 +334,7 @@ public class FilterPopup extends BaseController {
 
         temp = new ArrayList<>(allDialogs);
         temp.retainAll(filterUnreadDialogs(allDialogs));
-        if (!temp.isEmpty()) {
+        if (!temp.isEmpty() && NekoXConfig.filterUnread) {
             items.add(LocaleController.getString("NotificationsUnread", R.string.NotificationsUnread));
             options.add(DialogType.Unread);
             unreadCounts.add(getDialogsUnreadCount(temp));
@@ -342,7 +342,7 @@ public class FilterPopup extends BaseController {
 
         temp = new ArrayList<>(allDialogs);
         temp.retainAll(filterUnmutedDialogs(filterUnreadDialogs(allDialogs)));
-        if (!temp.isEmpty()) {
+        if (!temp.isEmpty() && NekoXConfig.filterUnmutedAndUnread) {
             items.add(LocaleController.getString("NotificationsUnmutedAndUnread", R.string.NotificationsUnmutedAndUnread));
             options.add(DialogType.UnmutedAndUnread);
             unreadCounts.add(getDialogsUnreadCount(temp));

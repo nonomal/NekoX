@@ -76,6 +76,7 @@ public class NekoSettingsActivity extends BaseFragment {
     private int sortByUserRow;
     private int sortByContactsRow;
     private int sortBySendTimeRow;
+    private int filterMenuRow;
     private int dialogs2Row;
 
     private int dialogsFilterRow;
@@ -573,6 +574,8 @@ public class NekoSettingsActivity extends BaseFragment {
                 if (view instanceof TextCheckCell) {
                     ((TextCheckCell) view).setChecked(NekoXConfig.sortBySendTime);
                 }
+            } else if (position == filterMenuRow) {
+                showFilterMenuAlert();
             }
 
         });
@@ -602,6 +605,7 @@ public class NekoSettingsActivity extends BaseFragment {
         sortByUserRow = rowCount++;
         sortByContactsRow = rowCount++;
         sortBySendTimeRow = rowCount++;
+        filterMenuRow = rowCount++;
         dialogs2Row = rowCount++;
 
         dialogsFilterRow = rowCount++;
@@ -624,6 +628,7 @@ public class NekoSettingsActivity extends BaseFragment {
         messageMenuRow = rowCount++;
         translationProviderRow = rowCount++;
         chat2Row = rowCount++;
+
         settingsRow = rowCount++;
         hidePhoneRow = rowCount++;
         disableUndoRow = rowCount++;
@@ -857,6 +862,121 @@ public class NekoSettingsActivity extends BaseFragment {
         showDialog(builder.create());
     }
 
+    private void showFilterMenuAlert() {
+        if (getParentActivity() == null) {
+            return;
+        }
+        Context context = getParentActivity();
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle(LocaleController.getString("FilterMenu", R.string.FilterMenu));
+
+        LinearLayout linearLayout = new LinearLayout(context);
+        linearLayout.setOrientation(LinearLayout.VERTICAL);
+
+        LinearLayout linearLayoutInviteContainer = new LinearLayout(context);
+        linearLayoutInviteContainer.setOrientation(LinearLayout.VERTICAL);
+        linearLayout.addView(linearLayoutInviteContainer, LayoutHelper.createLinear(LayoutHelper.MATCH_PARENT, LayoutHelper.WRAP_CONTENT));
+
+        int count = 9;
+        for (int a = 0; a < count; a++) {
+            TextCheckCell textCell = new TextCheckCell(context);
+            switch (a) {
+                case 0: {
+                    textCell.setTextAndCheck(LocaleController.getString("Users", R.string.Users), NekoXConfig.filterUsers, false);
+                    break;
+                }
+                case 1: {
+                    textCell.setTextAndCheck(LocaleController.getString("Contacts", R.string.Contacts), NekoXConfig.filterContacts, false);
+                    break;
+                }
+                case 2: {
+                    textCell.setTextAndCheck(LocaleController.getString("Groups", R.string.Groups), NekoXConfig.filterGroups, false);
+                    break;
+                }
+                case 3: {
+                    textCell.setTextAndCheck(LocaleController.getString("Channels", R.string.Channels), NekoXConfig.filterChannels, false);
+                    break;
+                }
+                case 4: {
+                    textCell.setTextAndCheck(LocaleController.getString("Bots", R.string.Bots), NekoXConfig.filterBots, false);
+                    break;
+                }
+                case 5: {
+                    textCell.setTextAndCheck(LocaleController.getString("Admins", R.string.Admins), NekoXConfig.filterAdmins, false);
+                    break;
+                }
+                case 6: {
+                    textCell.setTextAndCheck(LocaleController.getString("NotificationsUnmuted", R.string.NotificationsUnmuted), NekoXConfig.filterUnmuted, false);
+                    break;
+                }
+                case 7: {
+                    textCell.setTextAndCheck(LocaleController.getString("NotificationsUnread", R.string.NotificationsUnread), NekoXConfig.filterUnread, false);
+                    break;
+                }
+                case 8: {
+                    textCell.setTextAndCheck(LocaleController.getString("NotificationsUnmutedAndUnread", R.string.NotificationsUnmutedAndUnread), NekoXConfig.filterUnmutedAndUnread, false);
+                    break;
+                }
+            }
+            textCell.setTag(a);
+            textCell.setBackgroundDrawable(Theme.getSelectorDrawable(false));
+            linearLayoutInviteContainer.addView(textCell, LayoutHelper.createLinear(LayoutHelper.MATCH_PARENT, LayoutHelper.WRAP_CONTENT));
+            textCell.setOnClickListener(v2 -> {
+                Integer tag = (Integer) v2.getTag();
+                switch (tag) {
+                    case 0: {
+                        NekoXConfig.toggleFilterUsers();
+                        textCell.setChecked(NekoXConfig.filterUsers);
+                        break;
+                    }
+                    case 1: {
+                        NekoXConfig.toggleFilterContacts();
+                        textCell.setChecked(NekoXConfig.filterContacts);
+                        break;
+                    }
+                    case 2: {
+                        NekoXConfig.toggleFilterGroups();
+                        textCell.setChecked(NekoXConfig.filterGroups);
+                        break;
+                    }
+                    case 3: {
+                        NekoXConfig.toggleFilterChannels();
+                        textCell.setChecked(NekoXConfig.filterChannels);
+                        break;
+                    }
+                    case 4: {
+                        NekoXConfig.toggleFilterBot();
+                        textCell.setChecked(NekoXConfig.filterBots);
+                        break;
+                    }
+                    case 5: {
+                        NekoXConfig.toggleFilterAdmins();
+                        textCell.setChecked(NekoXConfig.filterAdmins);
+                        break;
+                    }
+                    case 6: {
+                        NekoXConfig.toggleFilterUnmuted();
+                        textCell.setChecked(NekoXConfig.filterUnmuted);
+                        break;
+                    }
+                    case 7: {
+                        NekoXConfig.toggleDisableFilterUnread();
+                        textCell.setChecked(NekoXConfig.filterUnread);
+                        break;
+                    }
+                    case 8: {
+                        NekoXConfig.toggleFilterUnmutedAndUnread();
+                        textCell.setChecked(NekoXConfig.filterUnmutedAndUnread);
+                        break;
+                    }
+                }
+            });
+        }
+        builder.setPositiveButton(LocaleController.getString("OK", R.string.OK), null);
+        builder.setView(linearLayout);
+        showDialog(builder.create());
+    }
+
     private void showStickerSizeAlert() {
         if (getParentActivity() == null) {
             return;
@@ -1045,6 +1165,8 @@ public class NekoSettingsActivity extends BaseFragment {
                         textCell.setTextAndValue(LocaleController.getString("StickerSize", R.string.StickerSize), String.valueOf(Math.round(NekoConfig.stickerSize)), true);
                     } else if (position == messageMenuRow) {
                         textCell.setText(LocaleController.getString("MessageMenu", R.string.MessageMenu), true);
+                    } else if (position == filterMenuRow) {
+                        textCell.setText(LocaleController.getString("FilterMenu", R.string.FilterMenu), false);
                     } else if (position == deleteAccountRow) {
                         textCell.setText(LocaleController.getString("DeleteAccount", R.string.DeleteAccount), false);
                         textCell.setTextColor(Theme.getColor(Theme.key_windowBackgroundWhiteRedText));
@@ -1181,7 +1303,8 @@ public class NekoSettingsActivity extends BaseFragment {
                     position == translationProviderRow || position == smoothKeyboardRow || position == pauseMusicOnRecordRow ||
                     position == disablePhotoSideActionRow || position == unlimitedPinnedDialogsRow || position == openArchiveOnPullRow ||
                     position == openFilterByActionBarRow || position == openFilterByFabRow || position == hideKeyboardOnChatScrollRow ||
-                    position == sortByUnreadRow || position == sortByUnmutedRow || position == sortByUserRow || position == sortByContactsRow || position == sortBySendTimeRow;
+                    position == sortByUnreadRow || position == sortByUnmutedRow || position == sortByUserRow || position == sortByContactsRow || position == sortBySendTimeRow ||
+                    position == filterMenuRow;
         }
 
         @Override
@@ -1224,7 +1347,7 @@ public class NekoSettingsActivity extends BaseFragment {
         public int getItemViewType(int position) {
             if (position == connection2Row || position == chat2Row || position == experiment2Row || position == dialogs2Row || position == dialogsFilter2Row) {
                 return 1;
-            } else if (position == nameOrderRow || position == mapPreviewRow || position == stickerSizeRow || position == messageMenuRow ||
+            } else if (position == nameOrderRow || position == mapPreviewRow || position == stickerSizeRow || position == messageMenuRow || position == filterMenuRow ||
                     position == deleteAccountRow || position == translationProviderRow || position == eventTypeRow || position == actionBarDecorationRow) {
                 return 2;
             } else if (position == ipv6Row || position == hidePhoneRow || position == disableUndoRow || position == inappCameraRow || position == disableChatActionRow ||
@@ -1238,7 +1361,7 @@ public class NekoSettingsActivity extends BaseFragment {
                     position == sortByUnreadRow || position == sortByUnmutedRow || position == sortByUserRow || position == sortByContactsRow || position == sortBySendTimeRow) {
                 return 3;
             } else if (position == settingsRow || position == connectionRow || position == chatRow || position == experimentRow ||
-                  position == dialogsRow ||  position == dialogsFilterRow) {
+                    position == dialogsRow || position == dialogsFilterRow) {
                 return 4;
             } else if (position == needRestartRow) {
                 return 7;
