@@ -3809,6 +3809,10 @@ public class Theme {
         String themesString = themeConfig.getString("themes2", null);
 
         for (int a = 0; a < UserConfig.MAX_ACCOUNT_COUNT; a++) {
+            UserConfig userConfig = UserConfig.getInstance(a);
+            if (!userConfig.isClientActivated()) {
+                break;
+            }
             remoteThemesHash[a] = themeConfig.getInt("remoteThemesHash" + (a != 0 ? a : ""), 0);
             lastLoadingThemesTime[a] = themeConfig.getInt("lastLoadingThemesTime" + (a != 0 ? a : ""), 0);
         }
@@ -5130,6 +5134,10 @@ public class Theme {
             editor.putString("themes2", array.toString());
         }
         for (int a = 0; a < UserConfig.MAX_ACCOUNT_COUNT; a++) {
+            UserConfig userConfig = UserConfig.getInstance(a);
+            if (!userConfig.isClientActivated()) {
+                break;
+            }
             editor.putInt("remoteThemesHash" + (a != 0 ? a : ""), remoteThemesHash[a]);
             editor.putInt("lastLoadingThemesTime" + (a != 0 ? a : ""), lastLoadingThemesTime[a]);
         }

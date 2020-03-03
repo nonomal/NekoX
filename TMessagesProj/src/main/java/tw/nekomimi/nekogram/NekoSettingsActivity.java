@@ -175,6 +175,9 @@ public class NekoSettingsActivity extends BaseFragment {
                 for (int a = 0; a < UserConfig.MAX_ACCOUNT_COUNT; a++) {
                     if (UserConfig.getInstance(a).isClientActivated()) {
                         ConnectionsManager.native_setUseIpv6(a, NekoConfig.useIPv6);
+                    } else {
+                        // TODO: set on new account login
+                        break;
                     }
                 }
             } else if (position == hidePhoneRow) {
@@ -221,6 +224,8 @@ public class NekoSettingsActivity extends BaseFragment {
                 for (int a = 0; a < UserConfig.MAX_ACCOUNT_COUNT; a++) {
                     if (UserConfig.getInstance(a).isClientActivated()) {
                         MessagesController.getInstance(a).checkProxyInfo(true);
+                    } else {
+                        break;
                     }
                 }
             } else if (position == saveCacheToSdcardRow) {

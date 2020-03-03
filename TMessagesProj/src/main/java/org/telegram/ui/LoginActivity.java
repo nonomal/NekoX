@@ -1708,7 +1708,7 @@ public class LoginActivity extends BaseFragment {
                 for (int a = 0; a < UserConfig.MAX_ACCOUNT_COUNT; a++) {
                     UserConfig userConfig = UserConfig.getInstance(a);
                     if (!userConfig.isClientActivated()) {
-                        continue;
+                        break;
                     }
                     String userPhone = userConfig.getCurrentUser().phone;
                     if (PhoneNumberUtils.compare(phone, userPhone) && ConnectionsManager.native_isTestBackend(currentAccount) == ConnectionsManager.native_isTestBackend(a)) {

@@ -200,6 +200,7 @@ public class DrawerLayoutAdapter extends RecyclerListView.SelectionAdapter {
                 accountNumbers.add(a);
             } else {
                 editor.remove(String.format(Locale.US, "account_pos_%d", a));
+                break;
             }
         }
         editor.apply();

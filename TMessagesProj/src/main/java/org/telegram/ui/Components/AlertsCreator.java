@@ -2411,6 +2411,8 @@ public class AlertsCreator {
                     AccountSelectCell cell1 = (AccountSelectCell) v;
                     delegate.didSelectAccount(cell1.getAccountNumber());
                 });
+            } else {
+                break;
             }
         }
 

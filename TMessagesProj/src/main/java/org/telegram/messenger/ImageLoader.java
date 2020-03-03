@@ -1637,68 +1637,72 @@ public class ImageLoader {
         mediaDirs.put(FileLoader.MEDIA_DIR_CACHE, cachePath);
 
         for (int a = 0; a < UserConfig.MAX_ACCOUNT_COUNT; a++) {
-            final int currentAccount = a;
-            FileLoader.getInstance(a).setDelegate(new FileLoader.FileLoaderDelegate() {
-                @Override
-                public void fileUploadProgressChanged(final String location, long uploadedSize, long totalSize, final boolean isEncrypted) {
-                    fileProgresses.put(location, new long[]{uploadedSize, totalSize});
-                    long currentTime = System.currentTimeMillis();
-                    if (lastProgressUpdateTime == 0 || lastProgressUpdateTime < currentTime - 500) {
-                        lastProgressUpdateTime = currentTime;
+            if (UserConfig.getInstance(a).isClientActivated()) {
+                final int currentAccount = a;
+                FileLoader.getInstance(a).setDelegate(new FileLoader.FileLoaderDelegate() {
+                    @Override
+                    public void fileUploadProgressChanged(final String location, long uploadedSize, long totalSize, final boolean isEncrypted) {
+                        fileProgresses.put(location, new long[]{uploadedSize, totalSize});
+                        long currentTime = System.currentTimeMillis();
+                        if (lastProgressUpdateTime == 0 || lastProgressUpdateTime < currentTime - 500) {
+                            lastProgressUpdateTime = currentTime;
 
-                        AndroidUtilities.runOnUIThread(() -> NotificationCenter.getInstance(currentAccount).postNotificationName(NotificationCenter.FileUploadProgressChanged, location, uploadedSize, totalSize, isEncrypted));
-                    }
-                }
-
-                @Override
-                public void fileDidUploaded(final String location, final TLRPC.InputFile inputFile, final TLRPC.InputEncryptedFile inputEncryptedFile, final byte[] key, final byte[] iv, final long totalFileSize) {
-                    Utilities.stageQueue.postRunnable(() -> {
-                        AndroidUtilities.runOnUIThread(() -> NotificationCenter.getInstance(currentAccount).postNotificationName(NotificationCenter.FileDidUpload, location, inputFile, inputEncryptedFile, key, iv, totalFileSize));
-                        fileProgresses.remove(location);
-                    });
-                }
-
-                @Override
-                public void fileDidFailedUpload(final String location, final boolean isEncrypted) {
-                    Utilities.stageQueue.postRunnable(() -> {
-                        AndroidUtilities.runOnUIThread(() -> NotificationCenter.getInstance(currentAccount).postNotificationName(NotificationCenter.FileDidFailUpload, location, isEncrypted));
-                        fileProgresses.remove(location);
-                    });
-                }
-
-                @Override
-                public void fileDidLoaded(final String location, final File finalFile, final int type) {
-                    fileProgresses.remove(location);
-                    AndroidUtilities.runOnUIThread(() -> {
-                        if (SharedConfig.saveToGallery && telegramPath != null && finalFile != null && (location.endsWith(".mp4") || location.endsWith(".jpg"))) {
-                            if (finalFile.toString().startsWith(telegramPath.toString())) {
-                                AndroidUtilities.addMediaToGallery(finalFile.toString());
-                            }
+                            AndroidUtilities.runOnUIThread(() -> NotificationCenter.getInstance(currentAccount).postNotificationName(NotificationCenter.FileUploadProgressChanged, location, uploadedSize, totalSize, isEncrypted));
                         }
-                        NotificationCenter.getInstance(currentAccount).postNotificationName(NotificationCenter.fileDidLoad, location, finalFile);
-                        ImageLoader.this.fileDidLoaded(location, finalFile, type);
-                    });
-                }
-
-                @Override
-                public void fileDidFailedLoad(final String location, final int canceled) {
-                    fileProgresses.remove(location);
-                    AndroidUtilities.runOnUIThread(() -> {
-                        ImageLoader.this.fileDidFailedLoad(location, canceled);
-                        NotificationCenter.getInstance(currentAccount).postNotificationName(NotificationCenter.fileDidFailToLoad, location, canceled);
-                    });
-                }
-
-                @Override
-                public void fileLoadProgressChanged(final String location, long uploadedSize, long totalSize) {
-                    fileProgresses.put(location, new long[]{uploadedSize, totalSize});
-                    long currentTime = System.currentTimeMillis();
-                    if (lastProgressUpdateTime == 0 || lastProgressUpdateTime < currentTime - 500) {
-                        lastProgressUpdateTime = currentTime;
-                        AndroidUtilities.runOnUIThread(() -> NotificationCenter.getInstance(currentAccount).postNotificationName(NotificationCenter.FileLoadProgressChanged, location, uploadedSize, totalSize));
                     }
-                }
-            });
+
+                    @Override
+                    public void fileDidUploaded(final String location, final TLRPC.InputFile inputFile, final TLRPC.InputEncryptedFile inputEncryptedFile, final byte[] key, final byte[] iv, final long totalFileSize) {
+                        Utilities.stageQueue.postRunnable(() -> {
+                            AndroidUtilities.runOnUIThread(() -> NotificationCenter.getInstance(currentAccount).postNotificationName(NotificationCenter.FileDidUpload, location, inputFile, inputEncryptedFile, key, iv, totalFileSize));
+                            fileProgresses.remove(location);
+                        });
+                    }
+
+                    @Override
+                    public void fileDidFailedUpload(final String location, final boolean isEncrypted) {
+                        Utilities.stageQueue.postRunnable(() -> {
+                            AndroidUtilities.runOnUIThread(() -> NotificationCenter.getInstance(currentAccount).postNotificationName(NotificationCenter.FileDidFailUpload, location, isEncrypted));
+                            fileProgresses.remove(location);
+                        });
+                    }
+
+                    @Override
+                    public void fileDidLoaded(final String location, final File finalFile, final int type) {
+                        fileProgresses.remove(location);
+                        AndroidUtilities.runOnUIThread(() -> {
+                            if (SharedConfig.saveToGallery && telegramPath != null && finalFile != null && (location.endsWith(".mp4") || location.endsWith(".jpg"))) {
+                                if (finalFile.toString().startsWith(telegramPath.toString())) {
+                                    AndroidUtilities.addMediaToGallery(finalFile.toString());
+                                }
+                            }
+                            NotificationCenter.getInstance(currentAccount).postNotificationName(NotificationCenter.fileDidLoad, location, finalFile);
+                            ImageLoader.this.fileDidLoaded(location, finalFile, type);
+                        });
+                    }
+
+                    @Override
+                    public void fileDidFailedLoad(final String location, final int canceled) {
+                        fileProgresses.remove(location);
+                        AndroidUtilities.runOnUIThread(() -> {
+                            ImageLoader.this.fileDidFailedLoad(location, canceled);
+                            NotificationCenter.getInstance(currentAccount).postNotificationName(NotificationCenter.fileDidFailToLoad, location, canceled);
+                        });
+                    }
+
+                    @Override
+                    public void fileLoadProgressChanged(final String location, long uploadedSize, long totalSize) {
+                        fileProgresses.put(location, new long[]{uploadedSize, totalSize});
+                        long currentTime = System.currentTimeMillis();
+                        if (lastProgressUpdateTime == 0 || lastProgressUpdateTime < currentTime - 500) {
+                            lastProgressUpdateTime = currentTime;
+                            AndroidUtilities.runOnUIThread(() -> NotificationCenter.getInstance(currentAccount).postNotificationName(NotificationCenter.FileLoadProgressChanged, location, uploadedSize, totalSize));
+                        }
+                    }
+                });
+            } else {
+                break;
+            }
         }
         FileLoader.setMediaDirs(mediaDirs);
 

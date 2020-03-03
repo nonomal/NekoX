@@ -175,7 +175,11 @@ public class FragmentContextView extends FrameLayout implements NotificationCent
                 builder.setPositiveButton(LocaleController.getString("Stop", R.string.Stop), (dialogInterface, i) -> {
                     if (fragment instanceof DialogsActivity) {
                         for (int a = 0; a < UserConfig.MAX_ACCOUNT_COUNT; a++) {
-                            LocationController.getInstance(a).removeAllLocationSharings();
+                            if (UserConfig.getInstance(a).isClientActivated()) {
+                                LocationController.getInstance(a).removeAllLocationSharings();
+                            } else {
+                                break;
+                            }
                         }
                     } else {
                         LocationController.getInstance(fragment.getCurrentAccount()).removeSharingLocation(((ChatActivity) fragment).getDialogId());
@@ -237,11 +241,15 @@ public class FragmentContextView extends FrameLayout implements NotificationCent
                     account = fragment.getCurrentAccount();
                 } else if (LocationController.getLocationsCount() == 1) {
                     for (int a = 0; a < UserConfig.MAX_ACCOUNT_COUNT; a++) {
-                        ArrayList<LocationController.SharingLocationInfo> arrayList = LocationController.getInstance(a).sharingLocationsUI;
-                        if (!arrayList.isEmpty()) {
-                            LocationController.SharingLocationInfo info = LocationController.getInstance(a).sharingLocationsUI.get(0);
-                            did = info.did;
-                            account = info.messageObject.currentAccount;
+                        if (UserConfig.getInstance(a).isClientActivated()) {
+                            ArrayList<LocationController.SharingLocationInfo> arrayList = LocationController.getInstance(a).sharingLocationsUI;
+                            if (!arrayList.isEmpty()) {
+                                LocationController.SharingLocationInfo info = LocationController.getInstance(a).sharingLocationsUI.get(0);
+                                did = info.did;
+                                account = info.messageObject.currentAccount;
+                                break;
+                            }
+                        } else {
                             break;
                         }
                     }
@@ -384,9 +392,13 @@ public class FragmentContextView extends FrameLayout implements NotificationCent
             NotificationCenter.getGlobalInstance().removeObserver(this, NotificationCenter.liveLocationsCacheChanged);
         } else {
             for (int a = 0; a < UserConfig.MAX_ACCOUNT_COUNT; a++) {
-                NotificationCenter.getInstance(a).removeObserver(this, NotificationCenter.messagePlayingDidReset);
-                NotificationCenter.getInstance(a).removeObserver(this, NotificationCenter.messagePlayingPlayStateChanged);
-                NotificationCenter.getInstance(a).removeObserver(this, NotificationCenter.messagePlayingDidStart);
+                if (UserConfig.getInstance(a).isClientActivated()) {
+                    NotificationCenter.getInstance(a).removeObserver(this, NotificationCenter.messagePlayingDidReset);
+                    NotificationCenter.getInstance(a).removeObserver(this, NotificationCenter.messagePlayingPlayStateChanged);
+                    NotificationCenter.getInstance(a).removeObserver(this, NotificationCenter.messagePlayingDidStart);
+                } else {
+                    break;
+                }
             }
             NotificationCenter.getGlobalInstance().removeObserver(this, NotificationCenter.messagePlayingSpeedChanged);
             NotificationCenter.getGlobalInstance().removeObserver(this, NotificationCenter.didStartedCall);
@@ -406,9 +418,13 @@ public class FragmentContextView extends FrameLayout implements NotificationCent
             checkLiveLocation(true);
         } else {
             for (int a = 0; a < UserConfig.MAX_ACCOUNT_COUNT; a++) {
-                NotificationCenter.getInstance(a).addObserver(this, NotificationCenter.messagePlayingDidReset);
-                NotificationCenter.getInstance(a).addObserver(this, NotificationCenter.messagePlayingPlayStateChanged);
-                NotificationCenter.getInstance(a).addObserver(this, NotificationCenter.messagePlayingDidStart);
+                if (UserConfig.getInstance(a).isClientActivated()) {
+                    NotificationCenter.getInstance(a).addObserver(this, NotificationCenter.messagePlayingDidReset);
+                    NotificationCenter.getInstance(a).addObserver(this, NotificationCenter.messagePlayingPlayStateChanged);
+                    NotificationCenter.getInstance(a).addObserver(this, NotificationCenter.messagePlayingDidStart);
+                } else {
+                    break;
+                }
             }
             NotificationCenter.getGlobalInstance().addObserver(this, NotificationCenter.messagePlayingSpeedChanged);
             NotificationCenter.getGlobalInstance().addObserver(this, NotificationCenter.didStartedCall);
@@ -528,7 +544,11 @@ public class FragmentContextView extends FrameLayout implements NotificationCent
                 String param;
                 ArrayList<LocationController.SharingLocationInfo> infos = new ArrayList<>();
                 for (int a = 0; a < UserConfig.MAX_ACCOUNT_COUNT; a++) {
-                    infos.addAll(LocationController.getInstance(a).sharingLocationsUI);
+                    if (UserConfig.getInstance(a).isClientActivated()) {
+                        infos.addAll(LocationController.getInstance(a).sharingLocationsUI);
+                    } else {
+                        break;
+                    }
                 }
                 if (infos.size() == 1) {
                     LocationController.SharingLocationInfo info = infos.get(0);

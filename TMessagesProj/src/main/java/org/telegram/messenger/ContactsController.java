@@ -83,6 +83,8 @@ public class ContactsController extends BaseController {
                 if (UserConfig.getInstance(a).isClientActivated()) {
                     ConnectionsManager.getInstance(a).resumeNetworkMaybe();
                     ContactsController.getInstance(a).checkContacts();
+                } else {
+                    break;
                 }
             }
         };
@@ -326,6 +328,8 @@ public class ContactsController extends BaseController {
                             found = true;
                             break;
                         }
+                    } else {
+                        break;
                     }
                 }
                 if (!found) {
@@ -368,6 +372,8 @@ public class ContactsController extends BaseController {
                             found = true;
                             break;
                         }
+                    } else {
+                        break;
                     }
                 }
                 if (!found) {
@@ -444,6 +450,8 @@ public class ContactsController extends BaseController {
                                         am.removeAccount(acc, null, null);
                                         break;
                                     }
+                                } else {
+                                    break;
                                 }
                             }
                         }

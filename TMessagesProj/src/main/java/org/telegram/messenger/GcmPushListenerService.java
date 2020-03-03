@@ -135,8 +135,13 @@ public class GcmPushListenerService extends FirebaseMessagingService {
                     }
                     int account = UserConfig.selectedAccount;
                     for (int a = 0; a < UserConfig.MAX_ACCOUNT_COUNT; a++) {
-                        if (UserConfig.getInstance(a).getClientUserId() == accountUserId) {
-                            account = a;
+                        TLRPC.User user = UserConfig.getInstance(a).getCurrentUser();
+                        if (user != null) {
+                            if (UserConfig.getInstance(a).getClientUserId() == accountUserId) {
+                                account = a;
+                                break;
+                            }
+                        } else {
                             break;
                         }
                     }
@@ -953,9 +958,14 @@ public class GcmPushListenerService extends FirebaseMessagingService {
 
     private void onDecryptError() {
         for (int a = 0; a < UserConfig.MAX_ACCOUNT_COUNT; a++) {
-            if (UserConfig.getInstance(a).isClientActivated()) {
-                ConnectionsManager.onInternalPushReceived(a);
-                ConnectionsManager.getInstance(a).resumeNetworkMaybe();
+            TLRPC.User user = UserConfig.getInstance(a).getCurrentUser();
+            if (user != null) {
+                if (UserConfig.getInstance(a).isClientActivated()) {
+                    ConnectionsManager.onInternalPushReceived(a);
+                    ConnectionsManager.getInstance(a).resumeNetworkMaybe();
+                }
+            } else {
+                break;
             }
         }
         countDownLatch.countDown();
@@ -981,11 +991,15 @@ public class GcmPushListenerService extends FirebaseMessagingService {
             SharedConfig.pushString = token;
             for (int a = 0; a < UserConfig.MAX_ACCOUNT_COUNT; a++) {
                 UserConfig userConfig = UserConfig.getInstance(a);
-                userConfig.registeredForPush = false;
-                userConfig.saveConfig(false);
-                if (userConfig.getClientUserId() != 0) {
-                    final int currentAccount = a;
-                    AndroidUtilities.runOnUIThread(() -> MessagesController.getInstance(currentAccount).registerForPush(token));
+                if (userConfig.isClientActivated()) {
+                    userConfig.registeredForPush = false;
+                    userConfig.saveConfig(false);
+                    if (userConfig.getClientUserId() != 0) {
+                        final int currentAccount = a;
+                        AndroidUtilities.runOnUIThread(() -> MessagesController.getInstance(currentAccount).registerForPush(token));
+                    }
+                } else {
+                    break;
                 }
             }
         });

@@ -2034,7 +2034,11 @@ public class LocaleController {
                 }, ConnectionsManager.RequestFlagWithoutLogin);
             } else {
                 for (int a = 0; a < UserConfig.MAX_ACCOUNT_COUNT; a++) {
-                    ConnectionsManager.setLangCode(localeInfo.getLangCode());
+                    if (UserConfig.getInstance(a).isClientActivated()) {
+                        ConnectionsManager.setLangCode(localeInfo.getLangCode());
+                    } else {
+                        break;
+                    }
                 }
                 TLRPC.TL_langpack_getLangPack req = new TLRPC.TL_langpack_getLangPack();
                 req.lang_code = localeInfo.getLangCode();

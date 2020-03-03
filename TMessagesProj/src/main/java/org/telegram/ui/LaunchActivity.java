@@ -794,12 +794,20 @@ public class LaunchActivity extends Activity implements ActionBarLayout.ActionBa
     }
 
     private void switchToAvailableAccountOrLogout() {
-        int account = -1;
+        int account = currentAccount + 1;
+        if (UserConfig.getInstance(account).isClientActivated()) {
+            UserConfig.getInstance(account).dec();
+        }
+        /*
         for (int a = 0; a < UserConfig.MAX_ACCOUNT_COUNT; a++) {
             if (UserConfig.getInstance(a).isClientActivated()) {
                 account = a;
                 break;
             }
+        }
+         */
+        if (UserConfig.getInstance(0).isClientActivated()) {
+            account = 0;
         }
         if (termsOfServiceView != null) {
             termsOfServiceView.setVisibility(View.GONE);
@@ -1642,9 +1650,13 @@ public class LaunchActivity extends Activity implements ActionBarLayout.ActionBa
                                             if (cursor.moveToFirst()) {
                                                 int accountId = Utilities.parseInt(cursor.getString(cursor.getColumnIndex("account_name")));
                                                 for (int a = 0; a < UserConfig.MAX_ACCOUNT_COUNT; a++) {
-                                                    if (UserConfig.getInstance(a).getClientUserId() == accountId) {
-                                                        intentAccount[0] = a;
-                                                        switchToAccount(intentAccount[0], true);
+                                                    if (UserConfig.getInstance(a).isClientActivated()) {
+                                                        if (UserConfig.getInstance(a).getClientUserId() == accountId) {
+                                                            intentAccount[0] = a;
+                                                            switchToAccount(intentAccount[0], true);
+                                                            break;
+                                                        }
+                                                    } else {
                                                         break;
                                                     }
                                                 }

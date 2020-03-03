@@ -93,11 +93,27 @@ public class UserConfig extends BaseController {
         return localInstance;
     }
 
+    public boolean dec() {
+
+        int nextAccount = currentAccount + 1;
+
+        if (!UserConfig.getInstance(nextAccount).isClientActivated()) {
+
+            return false;
+
+        }
+
+        return true;
+
+    }
+
     public static int getActivatedAccountsCount() {
         int count = 0;
         for (int a = 0; a < MAX_ACCOUNT_COUNT; a++) {
             if (AccountInstance.getInstance(a).getUserConfig().isClientActivated()) {
                 count++;
+            } else {
+                break;
             }
         }
         return count;
@@ -489,13 +505,8 @@ public class UserConfig extends BaseController {
         lastHintsSyncTime = (int) (System.currentTimeMillis() / 1000) - 25 * 60 * 60;
         isBot = false;
         resetSavedPassword();
-        boolean hasActivated = false;
-        for (int a = 0; a < MAX_ACCOUNT_COUNT; a++) {
-            if (AccountInstance.getInstance(a).getUserConfig().isClientActivated()) {
-                hasActivated = true;
-                break;
-            }
-        }
+        boolean hasActivated = AccountInstance.getInstance(0).getUserConfig().isClientActivated();
+
         if (!hasActivated) {
             SharedConfig.clearConfig();
         }
@@ -548,4 +559,6 @@ public class UserConfig extends BaseController {
         editor.putBoolean("hasValidDialogLoadIds", true);
         editor.commit();
     }
+
+
 }
