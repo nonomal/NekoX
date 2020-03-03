@@ -25,20 +25,6 @@ import java.util.HashMap;
 
 public class DownloadController extends BaseController implements NotificationCenter.NotificationCenterDelegate {
 
-    public void shift() {
-
-        Instance[currentAccount - 1] = this;
-
-        if (Instance.length < currentAccount + 2 || Instance[currentAccount + 2] == null) {
-
-            Instance[currentAccount + 1] = null;
-
-        }
-
-        currentAccount --;
-
-    }
-
     public interface FileDownloadProgressListener {
         void onFailedDownload(String fileName, boolean canceled);
         void onSuccessDownload(String fileName);

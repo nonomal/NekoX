@@ -1,6 +1,5 @@
 package org.telegram.messenger;
 
-
 import android.os.SystemClock;
 
 import org.telegram.tgnet.RequestDelegate;
@@ -12,20 +11,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class FileRefController extends BaseController {
-
-    public void shift() {
-
-        Instance[currentAccount - 1] = this;
-
-        if (Instance.length < currentAccount + 2 || Instance[currentAccount + 2] == null) {
-
-            Instance[currentAccount + 1] = null;
-
-        }
-
-        currentAccount --;
-
-    }
 
     private class Requester {
         private TLRPC.InputFileLocation location;

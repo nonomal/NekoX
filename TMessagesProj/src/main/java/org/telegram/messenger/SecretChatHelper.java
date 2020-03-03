@@ -32,20 +32,6 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class SecretChatHelper extends BaseController {
 
-    public void shift() {
-
-        Instance[currentAccount - 1] = this;
-
-        if (Instance.length < currentAccount + 2 || Instance[currentAccount + 2] == null) {
-
-            Instance[currentAccount + 1] = null;
-
-        }
-
-        currentAccount --;
-
-    }
-
     public static class TL_decryptedMessageHolder extends TLObject {
         public static int constructor = 0x555555F9;
 

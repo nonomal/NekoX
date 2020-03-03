@@ -76,20 +76,6 @@ public class ContactsController extends BaseController {
 
     public final static int PRIVACY_RULES_TYPE_COUNT = 8;
 
-    public void shift() {
-
-        Instance[currentAccount - 1] = this;
-
-        if (Instance.length < currentAccount + 2 || Instance[currentAccount + 2] == null) {
-
-            Instance[currentAccount + 1] = null;
-
-        }
-
-        currentAccount --;
-
-    }
-
     private class MyContentObserver extends ContentObserver {
 
         private Runnable checkRunnable = () -> {
@@ -325,7 +311,7 @@ public class ContactsController extends BaseController {
     public void checkAppAccount() {
         AccountManager am = AccountManager.get(ApplicationLoader.applicationContext);
         try {
-            Account[] accounts = am.getAccountsByType("moe.wataru.nekogram");
+            Account[] accounts = am.getAccountsByType("tw.nekomimi.nekogram");
             systemAccount = null;
             for (int a = 0; a < accounts.length; a++) {
                 Account acc = accounts[a];
@@ -358,7 +344,7 @@ public class ContactsController extends BaseController {
             readContacts();
             if (systemAccount == null) {
                 try {
-                    systemAccount = new Account("" + UserConfig.getInstance(currentAccount).getClientUserId(), "moe.wataru.nekogram");
+                    systemAccount = new Account("" + UserConfig.getInstance(currentAccount).getClientUserId(), "tw.nekomimi.nekogram");
                     am.addAccountExplicitly(systemAccount, "", null);
                 } catch (Exception ignore) {
 
@@ -371,7 +357,7 @@ public class ContactsController extends BaseController {
         try {
             systemAccount = null;
             AccountManager am = AccountManager.get(ApplicationLoader.applicationContext);
-            Account[] accounts = am.getAccountsByType("moe.wataru.nekogram");
+            Account[] accounts = am.getAccountsByType("tw.nekomimi.nekogram");
             for (int a = 0; a < accounts.length; a++) {
                 Account acc = accounts[a];
                 boolean found = false;
@@ -447,7 +433,7 @@ public class ContactsController extends BaseController {
                 AndroidUtilities.runOnUIThread(() -> {
                     AccountManager am = AccountManager.get(ApplicationLoader.applicationContext);
                     try {
-                        Account[] accounts = am.getAccountsByType("moe.wataru.nekogram");
+                        Account[] accounts = am.getAccountsByType("tw.nekomimi.nekogram");
                         systemAccount = null;
                         for (int a = 0; a < accounts.length; a++) {
                             Account acc = accounts[a];
@@ -465,7 +451,7 @@ public class ContactsController extends BaseController {
 
                     }
                     try {
-                        systemAccount = new Account("" + UserConfig.getInstance(currentAccount).getClientUserId(), "moe.wataru.nekogram");
+                        systemAccount = new Account("" + UserConfig.getInstance(currentAccount).getClientUserId(), "tw.nekomimi.nekogram");
                         am.addAccountExplicitly(systemAccount, "", null);
                     } catch (Exception ignore) {
 
