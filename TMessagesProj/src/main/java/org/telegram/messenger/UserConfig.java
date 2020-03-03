@@ -80,6 +80,7 @@ public class UserConfig extends BaseController {
     public boolean tonCreationFinished;
 
     private static volatile UserConfig[] Instance = new UserConfig[UserConfig.MAX_ACCOUNT_COUNT];
+
     public static UserConfig getInstance(int num) {
         UserConfig localInstance = Instance[num];
         if (localInstance == null) {
@@ -93,57 +94,45 @@ public class UserConfig extends BaseController {
         return localInstance;
     }
 
-    public boolean shift(boolean current) {
+    public void shift() {
 
-        if (currentAccount == 0) return false;
+        if (currentAccount == 0) return;
 
-        File cfgDir = new File(ApplicationLoader.applicationContext.getFilesDir().getParentFile(),"shared_prefs");
+        File cfgDir = new File(ApplicationLoader.applicationContext.getFilesDir().getParentFile(), "shared_prefs");
 
-        if (current) {
+        File currCfg = new File(cfgDir, "userconfig" + currentAccount);
 
-            File currCfg;
+        File prefCfg;
 
-            if (currentAccount == 0) {
+        if (currentAccount == 1) {
 
-                currCfg = new File(cfgDir,"userconfig");
+            prefCfg = new File(cfgDir, "userconfig");
 
-            } else {
+        } else {
 
-                currCfg = new File(cfgDir,"userconfig" + currentAccount);
-
-            }
-
-            File prefCfg;
-
-            if (currentAccount == 1) {
-
-                prefCfg = new File(cfgDir,"userconfig");
-
-            } else {
-
-                prefCfg = new File(cfgDir,"userconfig" + (currentAccount - 1));
-
-            }
-
-            prefCfg.delete();
-
-            currCfg.renameTo(prefCfg);
-
-            Instance[currentAccount] = Instance[currentAccount + 1];
-
-            // TODO: move others file
+            prefCfg = new File(cfgDir, "userconfig" + (currentAccount - 1));
 
         }
+
+        prefCfg.delete();
+
+        currCfg.renameTo(prefCfg);
+
+        Instance[currentAccount] = Instance[currentAccount + 1];
+
+        Instance[currentAccount].currentAccount--;
+
+        // TODO: move others file
 
         if (!UserConfig.getInstance(currentAccount + 1).isClientActivated()) {
 
-            return false;
+            Instance[currentAccount] = null;
+
+            return;
 
         }
 
-        UserConfig.getInstance(currentAccount + 1).shift(false);
-
-        return true;
+        UserConfig.getInstance(currentAccount + 1).shift();
 
     }
 
@@ -355,7 +344,7 @@ public class UserConfig extends BaseController {
             notificationsSignUpSettingsLoaded = preferences.getBoolean("notificationsSignUpSettingsLoaded", false);
             autoDownloadConfigLoadTime = preferences.getLong("autoDownloadConfigLoadTime", 0);
             hasValidDialogLoadIds = preferences.contains("2dialogsLoadOffsetId") || preferences.getBoolean("hasValidDialogLoadIds", false);
-            isBot = preferences.getBoolean("isBot",false);
+            isBot = preferences.getBoolean("isBot", false);
             tonEncryptedData = preferences.getString("tonEncryptedData", null);
             tonPublicKey = preferences.getString("tonPublicKey", null);
             tonKeyName = preferences.getString("tonKeyName", "walletKey" + currentAccount);

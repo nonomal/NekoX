@@ -796,7 +796,7 @@ public class LaunchActivity extends Activity implements ActionBarLayout.ActionBa
     private void switchToAvailableAccountOrLogout() {
         int account = currentAccount + 1;
         if (UserConfig.getInstance(account).isClientActivated()) {
-            UserConfig.getInstance(currentAccount).shift(false);
+            UserConfig.getInstance(currentAccount).shift();
         } else if (UserConfig.getInstance(currentAccount - 1).isClientActivated()) {
             account = currentAccount - 1;
         } else {
