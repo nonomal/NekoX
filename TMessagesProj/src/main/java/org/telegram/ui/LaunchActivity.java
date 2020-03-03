@@ -796,7 +796,11 @@ public class LaunchActivity extends Activity implements ActionBarLayout.ActionBa
     private void switchToAvailableAccountOrLogout() {
         int account = currentAccount + 1;
         if (UserConfig.getInstance(account).isClientActivated()) {
-            UserConfig.getInstance(account).dec();
+            UserConfig.getInstance(currentAccount).shift(false);
+        } else if (UserConfig.getInstance(currentAccount - 1).isClientActivated()) {
+            account = currentAccount - 1;
+        } else {
+            account = -1;
         }
         /*
         for (int a = 0; a < UserConfig.MAX_ACCOUNT_COUNT; a++) {
@@ -806,9 +810,6 @@ public class LaunchActivity extends Activity implements ActionBarLayout.ActionBa
             }
         }
          */
-        if (UserConfig.getInstance(0).isClientActivated()) {
-            account = 0;
-        }
         if (termsOfServiceView != null) {
             termsOfServiceView.setVisibility(View.GONE);
         }

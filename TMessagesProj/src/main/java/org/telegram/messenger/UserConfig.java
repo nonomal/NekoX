@@ -93,15 +93,55 @@ public class UserConfig extends BaseController {
         return localInstance;
     }
 
-    public boolean dec() {
+    public boolean shift(boolean current) {
 
-        int nextAccount = currentAccount + 1;
+        if (currentAccount == 0) return false;
 
-        if (!UserConfig.getInstance(nextAccount).isClientActivated()) {
+        File cfgDir = new File(ApplicationLoader.applicationContext.getFilesDir().getParentFile(),"shared_prefs");
+
+        if (current) {
+
+            File currCfg;
+
+            if (currentAccount == 0) {
+
+                currCfg = new File(cfgDir,"userconfig");
+
+            } else {
+
+                currCfg = new File(cfgDir,"userconfig" + currentAccount);
+
+            }
+
+            File prefCfg;
+
+            if (currentAccount == 1) {
+
+                prefCfg = new File(cfgDir,"userconfig");
+
+            } else {
+
+                prefCfg = new File(cfgDir,"userconfig" + (currentAccount - 1));
+
+            }
+
+            prefCfg.delete();
+
+            currCfg.renameTo(prefCfg);
+
+            Instance[currentAccount] = Instance[currentAccount + 1];
+
+            // TODO: move others file
+
+        }
+
+        if (!UserConfig.getInstance(currentAccount + 1).isClientActivated()) {
 
             return false;
 
         }
+
+        UserConfig.getInstance(currentAccount + 1).shift(false);
 
         return true;
 
