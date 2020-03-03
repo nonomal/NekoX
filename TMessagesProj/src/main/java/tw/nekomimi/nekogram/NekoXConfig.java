@@ -55,9 +55,9 @@ public class NekoXConfig {
         showBotLogin = preferences.getBoolean("show_bot_login",false);
 
         sortByUnread = preferences.getBoolean("sort_by_unread",true);
-        sortByUnmuted = preferences.getBoolean("sort_by_unmuted",true);
+        sortByUnmuted = preferences.getBoolean("sort_by_unmuted",false);
         sortByUser = preferences.getBoolean("sort_by_user",false);
-        sortByContacts = preferences.getBoolean("sort_by_contacts",true);
+        sortByContacts = preferences.getBoolean("sort_by_contacts",false);
         sortBySendTime = preferences.getBoolean("sort_by_send_time",true);
 
         disableUndo = preferences.getBoolean("disable_undo",true);
