@@ -3,7 +3,7 @@
 
 NekogramX is an UNOFFICIAL app that uses Telegram's API.
 
-- Google play store: https://play.google.com/store/apps/details?id=tw.nekomimi.nekogram
+- Google play store: https://play.google.com/store/apps/details?id=moe.wataru.nekogram
 - Update news (Chinese): https://t.me/NekogramX
 - Feedback: https://t.me/NekoXChat
 - Feedback: https://github.com/NekogramX/NekoX/issues
