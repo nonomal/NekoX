@@ -6,8 +6,6 @@ import org.telegram.tgnet.ConnectionsManager;
 
 import java.io.File;
 
-import tw.nekomimi.nekogram.utils.PrefUtil;
-
 public class AccountInstance {
 
     private int currentAccount;
@@ -95,6 +93,34 @@ public class AccountInstance {
 
     public void shift() {
 
+        File cfgDir = new File(ApplicationLoader.applicationContext.getFilesDir().getParentFile(), "shared_prefs");
+
+        File currCfg = new File(cfgDir, "mainconfig" + currentAccount);
+
+        File prefCfg;
+
+        if (currentAccount == 1) {
+
+            prefCfg = new File(cfgDir, "mainconfig");
+
+        } else {
+
+            prefCfg = new File(cfgDir, "mainconfig" + (currentAccount - 1));
+
+        }
+
+        try {
+
+            prefCfg.delete();
+
+            currCfg.renameTo(prefCfg);
+
+        } catch (Exception e) {
+
+            FileLog.e(e);
+
+        }
+
         Instance[currentAccount - 1] = this;
 
         getMessagesController().shift();
@@ -110,9 +136,8 @@ public class AccountInstance {
         getFileLoader().shift();
         getFileRefController().shift();
 
-        PrefUtil.shiftPref(MessagesController.getEmojiSettings(currentAccount),MessagesController.getEmojiSettings(currentAccount - 1));
-        PrefUtil.shiftPref(MessagesController.getMainSettings(currentAccount),MessagesController.getMainSettings(currentAccount - 1));
-        PrefUtil.shiftPref(MessagesController.getNotificationsSettings(currentAccount),MessagesController.getNotificationsSettings(currentAccount - 1));
+
+        // TODO shift shared prefs
 
         currentAccount --;
 
