@@ -3719,7 +3719,7 @@ public class Theme {
                 new int[]    {          0,                            180,                            45,                             0,                            45,                           180,                             0,          0,          0,          0,          0,          0,          0,          0,          0,          0 },
                 new int[]    {          0,                             52,                            46,                            57,                            45,                            64,                            52,          0,          0,          0,          0,          0,          0,          0,          0,          0 }
                 );
-        themes.add(currentDayTheme = currentTheme = defaultTheme = themeInfo);
+        themes.add(currentDayTheme = themeInfo);
         themesDict.put("Blue", themeInfo);
 
         themeInfo = new ThemeInfo();
@@ -3803,7 +3803,7 @@ public class Theme {
                 new int[]    {                            45,                           135,                             0,                           180,                             0,          0,          0,          0,          0,          0,          0,          0,          0,          0 },
                 new int[]    {                            34,                            47,                            52,                            48,                            54,          0,          0,          0,          0,          0,          0,          0,          0,          0 }
                 );
-        themes.add(themeInfo);
+        themes.add(currentTheme = defaultTheme = currentNightTheme = themeInfo);
         themesDict.put("Night", currentNightTheme = themeInfo);
 
         String themesString = themeConfig.getString("themes2", null);
@@ -5435,7 +5435,7 @@ public class Theme {
             currentThemeDeleted = true;
         }
         if (themeInfo == currentNightTheme) {
-            currentNightTheme = themesDict.get("Dark Blue");
+            currentNightTheme = themesDict.get("Night");
         }
 
         themeInfo.removeObservers();
@@ -5769,7 +5769,7 @@ public class Theme {
                         if (currentDayTheme == info) {
                             currentDayTheme = defaultTheme;
                         } else if (currentNightTheme == info) {
-                            currentNightTheme = themesDict.get("Dark Blue");
+                            currentNightTheme = themesDict.get("Night");
                             isNightTheme = true;
                         }
                         if (currentTheme == info) {
