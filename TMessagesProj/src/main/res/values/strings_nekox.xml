@@ -17,7 +17,6 @@
     <string name="SortByUnmuted">Sort By Unmuted</string>
     <string name="SortByUser">Sort By User</string>
     <string name="SortByContacts">Sort By Contacts</string>
-    <string name="SortBySendTime">Sort By Last Message</string>
 
     <string name="DisableUndo">Disable Undo</string>
 
