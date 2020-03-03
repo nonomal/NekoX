@@ -1854,7 +1854,7 @@ public class Theme {
         }
     };
 
-    public static int DEFALT_THEME_ACCENT_ID = 99;
+    public static int DEFALT_THEME_ACCENT_ID = 101;
     public static int selectedAutoNightType = AUTO_NIGHT_TYPE_NONE;
     public static boolean autoNightScheduleByLocation;
     public static float autoNightBrighnessThreshold = 0.25f;
@@ -3849,14 +3849,14 @@ public class Theme {
         ThemeInfo applyingTheme = null;
         SharedPreferences preferences = MessagesController.getGlobalMainSettings();
         try {
-            final ThemeInfo themeDarkBlue = themesDict.get("Dark Blue");
+            final ThemeInfo themeNight = themesDict.get("Night");
 
             String theme = preferences.getString("theme", null);
             if ("Default".equals(theme)) {
                 applyingTheme = themesDict.get("Blue");
                 applyingTheme.currentAccentId = DEFALT_THEME_ACCENT_ID;
             } else if ("Dark".equals(theme)) {
-                applyingTheme = themeDarkBlue;
+                applyingTheme = themeNight;
                 applyingTheme.currentAccentId = 9;
             } else if (theme != null) {
                 applyingTheme = themesDict.get(theme);
@@ -3872,8 +3872,8 @@ public class Theme {
                 applyingTheme = themesDict.get("Blue");
                 applyingTheme.currentAccentId = DEFALT_THEME_ACCENT_ID;
             } else if ("Dark".equals(theme)) {
-                currentNightTheme = themeDarkBlue;
-                themeDarkBlue.currentAccentId = 9;
+                currentNightTheme = themeNight;
+                themeNight.currentAccentId = 9;
             } else if (theme != null) {
                 ThemeInfo t = themesDict.get(theme);
                 if (t != null) {
