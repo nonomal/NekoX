@@ -257,7 +257,7 @@ public class UndoView extends FrameLayout {
         if (currentActionRunnable != null) {
             currentActionRunnable.run();
         }
-        if (NekoXConfig.disableUndo) {
+        if (NekoXConfig.disableUndo && actionRunnable != null) {
             actionRunnable.run();
             return;
         }
@@ -266,7 +266,7 @@ public class UndoView extends FrameLayout {
         currentCancelRunnable = cancelRunnable;
         currentDialogId = did;
         currentAction = action;
-        timeLeft = 5000;
+        timeLeft = 3000;
         currentInfoObject = infoObject;
         lastUpdateTime = SystemClock.elapsedRealtime();
 
