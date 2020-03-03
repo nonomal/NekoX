@@ -117,6 +117,20 @@ public class ConnectionsManager extends BaseController {
         DNS_THREAD_POOL_EXECUTOR = threadPoolExecutor;
     }
 
+    public void shift() {
+
+        Instance[currentAccount - 1] = this;
+
+        if (Instance.length < currentAccount + 2 || Instance[currentAccount + 2] == null) {
+
+            Instance[currentAccount + 1] = null;
+
+        }
+
+        currentAccount --;
+
+    }
+
     private static class ResolvedDomain {
 
         public ArrayList<String> addresses;

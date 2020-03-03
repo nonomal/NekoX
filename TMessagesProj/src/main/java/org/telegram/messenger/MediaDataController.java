@@ -4505,6 +4505,48 @@ public class MediaDataController extends BaseController {
         });
     }
 
+    public void shift() {
+
+        Instance[currentAccount - 1] = this;
+
+        if (Instance.length < currentAccount + 2 || Instance[currentAccount + 2] == null) {
+
+            Instance[currentAccount + 1] = null;
+
+        }
+
+        File cfgDir = new File(ApplicationLoader.applicationContext.getFilesDir().getParentFile(), "shared_prefs");
+
+        File currCfg = new File(cfgDir, "drafts" + currentAccount);
+
+        File prefCfg;
+
+        if (currentAccount == 1) {
+
+            prefCfg = new File(cfgDir, "drafts");
+
+        } else {
+
+            prefCfg = new File(cfgDir, "drafts" + (currentAccount - 1));
+
+        }
+
+        try {
+
+            prefCfg.delete();
+
+            currCfg.renameTo(prefCfg);
+
+        } catch (Exception e) {
+
+            FileLog.e(e);
+
+        }
+
+        currentAccount --;
+
+    }
+
     //---------------- BOT END ----------------
 
     //---------------- EMOJI START ----------------

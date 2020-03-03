@@ -114,13 +114,21 @@ public class UserConfig extends BaseController {
 
         }
 
-        prefCfg.delete();
+        try {
 
-        currCfg.renameTo(prefCfg);
+            prefCfg.delete();
 
-        Instance[currentAccount] = Instance[currentAccount + 1];
+            currCfg.renameTo(prefCfg);
 
-        Instance[currentAccount].currentAccount--;
+        } catch (Exception e) {
+
+            FileLog.e(e);
+
+        }
+
+        Instance[currentAccount - 1] = this;
+
+        getAccountInstance().shift();
 
         // TODO: move others file
 
@@ -133,6 +141,8 @@ public class UserConfig extends BaseController {
         }
 
         UserConfig.getInstance(currentAccount + 1).shift();
+
+        currentAccount --;
 
     }
 

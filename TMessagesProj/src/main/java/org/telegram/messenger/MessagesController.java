@@ -267,6 +267,20 @@ public class MessagesController extends BaseController implements NotificationCe
     private SharedPreferences mainPreferences;
     private SharedPreferences emojiPreferences;
 
+    public void shift() {
+
+        Instance[currentAccount - 1] = this;
+
+        if (Instance.length < currentAccount + 2 || Instance[currentAccount + 2] == null) {
+
+            Instance[currentAccount + 1] = null;
+
+        }
+
+        currentAccount --;
+
+    }
+
     private class UserActionUpdatesSeq extends TLRPC.Updates {
 
     }

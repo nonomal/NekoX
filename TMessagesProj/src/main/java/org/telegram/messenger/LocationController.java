@@ -102,6 +102,20 @@ public class LocationController extends BaseController implements NotificationCe
         return localInstance;
     }
 
+    public void shift() {
+
+        Instance[currentAccount - 1] = this;
+
+        if (Instance.length < currentAccount + 2 || Instance[currentAccount + 2] == null) {
+
+            Instance[currentAccount + 1] = null;
+
+        }
+
+        currentAccount --;
+
+    }
+
     public static class SharingLocationInfo {
         public long did;
         public int mid;

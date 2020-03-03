@@ -4,6 +4,8 @@ import android.content.SharedPreferences;
 
 import org.telegram.tgnet.ConnectionsManager;
 
+import java.io.File;
+
 public class AccountInstance {
 
     private int currentAccount;
@@ -87,5 +89,57 @@ public class AccountInstance {
 
     public SharedPreferences getNotificationsSettings() {
         return MessagesController.getNotificationsSettings(currentAccount);
+    }
+
+    public void shift() {
+
+        File cfgDir = new File(ApplicationLoader.applicationContext.getFilesDir().getParentFile(), "shared_prefs");
+
+        File currCfg = new File(cfgDir, "mainconfig" + currentAccount);
+
+        File prefCfg;
+
+        if (currentAccount == 1) {
+
+            prefCfg = new File(cfgDir, "mainconfig");
+
+        } else {
+
+            prefCfg = new File(cfgDir, "mainconfig" + (currentAccount - 1));
+
+        }
+
+        try {
+
+            prefCfg.delete();
+
+            currCfg.renameTo(prefCfg);
+
+        } catch (Exception e) {
+
+            FileLog.e(e);
+
+        }
+
+        Instance[currentAccount - 1] = this;
+
+        getMessagesController().shift();
+        getMessagesStorage().shift();
+        getContactsController().shift();
+        getMediaDataController().shift();
+        getConnectionsManager().shift();
+        getNotificationsController().shift();
+        getLocationController().shift();
+        getDownloadController().shift();
+        getSecretChatHelper().shift();
+        getStatsController().shift();
+        getFileLoader().shift();
+        getFileRefController().shift();
+
+
+        // TODO shift shared prefs
+
+        currentAccount --;
+
     }
 }

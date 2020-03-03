@@ -28,6 +28,20 @@ import java.util.concurrent.CountDownLatch;
 
 public class FileLoader extends BaseController {
 
+    public void shift() {
+
+        Instance[currentAccount - 1] = this;
+
+        if (Instance.length < currentAccount + 2 || Instance[currentAccount + 2] == null) {
+
+            Instance[currentAccount + 1] = null;
+
+        }
+
+        currentAccount --;
+
+    }
+
     public interface FileLoaderDelegate {
         void fileUploadProgressChanged(String location, long uploadedSize, long totalSize, boolean isEncrypted);
         void fileDidUploaded(String location, TLRPC.InputFile inputFile, TLRPC.InputEncryptedFile inputEncryptedFile, byte[] key, byte[] iv, long totalFileSize);

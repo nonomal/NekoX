@@ -3822,4 +3822,18 @@ public class NotificationsController extends BaseController {
             return "EnableChannel2";
         }
     }
+
+    public void shift() {
+
+        Instance[currentAccount - 1] = this;
+
+        if (Instance.length < currentAccount + 2 || Instance[currentAccount + 2] == null) {
+
+            Instance[currentAccount + 1] = null;
+
+        }
+
+        currentAccount --;
+
+    }
 }

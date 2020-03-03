@@ -261,4 +261,18 @@ public class StatsController extends BaseController {
             statsSaveQueue.postRunnable(saveRunnable);
         }
     }
+
+    public void shift() {
+
+        Instance[currentAccount - 1] = this;
+
+        if (Instance.length < currentAccount + 2 || Instance[currentAccount + 2] == null) {
+
+            Instance[currentAccount + 1] = null;
+
+        }
+
+        currentAccount --;
+
+    }
 }

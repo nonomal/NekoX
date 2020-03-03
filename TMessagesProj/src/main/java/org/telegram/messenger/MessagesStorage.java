@@ -26,6 +26,7 @@ import org.telegram.tgnet.TLRPC;
 import org.telegram.ui.ActionBar.Theme;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -35,7 +36,45 @@ import java.util.Map;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicLong;
 
+import kotlin.io.FilesKt;
+
 public class MessagesStorage extends BaseController {
+
+    public void shift() {
+
+        Instance[currentAccount - 1] = this;
+
+        if (Instance.length < currentAccount + 2 || Instance[currentAccount + 2] == null) {
+
+            Instance[currentAccount + 1] = null;
+
+        }
+
+        File prefDir = ApplicationLoader.getFilesDirFixed();
+        if (currentAccount != 1) {
+            prefDir = new File(ApplicationLoader.getFilesDirFixed(), "account" + (currentAccount - 1) + "/");
+        }
+
+        FilesKt.deleteRecursively(prefDir);
+
+        File filesDir = ApplicationLoader.getFilesDirFixed();
+        if (currentAccount != 0) {
+            filesDir = new File(filesDir, "account" + currentAccount + "/");
+        }
+
+        try {
+            filesDir.renameTo(prefDir);
+        } catch (Exception e) {
+            FileLog.e(e);
+        }
+
+        cacheFile = new File(prefDir, "cache4.db");
+        walCacheFile = new File(prefDir, "cache4.db-wal");
+        shmCacheFile = new File(prefDir, "cache4.db-shm");
+
+        currentAccount --;
+
+    }
 
     public interface IntCallback {
         void run(int param);
