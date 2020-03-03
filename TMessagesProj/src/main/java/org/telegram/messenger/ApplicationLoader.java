@@ -211,6 +211,8 @@ public class ApplicationLoader extends Application {
             if (user != null) {
                 MessagesController.getInstance(a).putUser(user, true);
                 SendMessagesHelper.getInstance(a).checkUnsentMessages();
+            } else {
+                break;
             }
         }
 

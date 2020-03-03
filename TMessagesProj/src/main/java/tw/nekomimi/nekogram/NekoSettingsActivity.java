@@ -75,7 +75,6 @@ public class NekoSettingsActivity extends BaseFragment {
     private int sortByUnmutedRow;
     private int sortByUserRow;
     private int sortByContactsRow;
-    private int sortBySendTimeRow;
     private int filterMenuRow;
     private int dialogs2Row;
 
@@ -569,11 +568,6 @@ public class NekoSettingsActivity extends BaseFragment {
                 if (view instanceof TextCheckCell) {
                     ((TextCheckCell) view).setChecked(NekoXConfig.sortByContacts);
                 }
-            } else if (position == sortBySendTimeRow) {
-                NekoXConfig.toggleSortBySendTime();
-                if (view instanceof TextCheckCell) {
-                    ((TextCheckCell) view).setChecked(NekoXConfig.sortBySendTime);
-                }
             } else if (position == filterMenuRow) {
                 showFilterMenuAlert();
             }
@@ -604,7 +598,6 @@ public class NekoSettingsActivity extends BaseFragment {
         sortByUnmutedRow = rowCount++;
         sortByUserRow = rowCount++;
         sortByContactsRow = rowCount++;
-        sortBySendTimeRow = rowCount++;
         filterMenuRow = rowCount++;
         dialogs2Row = rowCount++;
 
@@ -1257,8 +1250,6 @@ public class NekoSettingsActivity extends BaseFragment {
                         textCell.setTextAndCheck(LocaleController.getString("SortByUser", R.string.SortByUser), NekoXConfig.sortByUser, true);
                     } else if (position == sortByContactsRow) {
                         textCell.setTextAndCheck(LocaleController.getString("SortByContacts", R.string.SortByContacts), NekoXConfig.sortByContacts, true);
-                    } else if (position == sortBySendTimeRow) {
-                        textCell.setTextAndCheck(LocaleController.getString("SortBySendTime", R.string.SortBySendTime), NekoXConfig.sortBySendTime, true);
                     }
 
                     break;
@@ -1303,7 +1294,7 @@ public class NekoSettingsActivity extends BaseFragment {
                     position == translationProviderRow || position == smoothKeyboardRow || position == pauseMusicOnRecordRow ||
                     position == disablePhotoSideActionRow || position == unlimitedPinnedDialogsRow || position == openArchiveOnPullRow ||
                     position == openFilterByActionBarRow || position == openFilterByFabRow || position == hideKeyboardOnChatScrollRow ||
-                    position == sortByUnreadRow || position == sortByUnmutedRow || position == sortByUserRow || position == sortByContactsRow || position == sortBySendTimeRow ||
+                    position == sortByUnreadRow || position == sortByUnmutedRow || position == sortByUserRow || position == sortByContactsRow ||
                     position == filterMenuRow;
         }
 
@@ -1358,7 +1349,7 @@ public class NekoSettingsActivity extends BaseFragment {
                     position == disableFilteringRow || position == smoothKeyboardRow || position == pauseMusicOnRecordRow ||
                     position == disablePhotoSideActionRow || position == unlimitedPinnedDialogsRow || position == openArchiveOnPullRow ||
                     position == openFilterByActionBarRow || position == openFilterByFabRow || position == hideKeyboardOnChatScrollRow ||
-                    position == sortByUnreadRow || position == sortByUnmutedRow || position == sortByUserRow || position == sortByContactsRow || position == sortBySendTimeRow) {
+                    position == sortByUnreadRow || position == sortByUnmutedRow || position == sortByUserRow || position == sortByContactsRow) {
                 return 3;
             } else if (position == settingsRow || position == connectionRow || position == chatRow || position == experimentRow ||
                     position == dialogsRow || position == dialogsFilterRow) {

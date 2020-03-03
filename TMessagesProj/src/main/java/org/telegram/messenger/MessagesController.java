@@ -378,16 +378,13 @@ public class MessagesController extends BaseController implements NotificationCe
             }
         }
 
-        if (NekoXConfig.sortBySendTime) {
-
-            final MediaDataController mediaDataController = getMediaDataController();
-            final long date1 = DialogObject.getLastMessageOrDraftDate(dialog1, mediaDataController.getDraft(dialog1.id));
-            final long date2 = DialogObject.getLastMessageOrDraftDate(dialog2, mediaDataController.getDraft(dialog2.id));
-            if (date1 < date2) {
-                return 1;
-            } else if (date1 > date2) {
-                return -1;
-            }
+        final MediaDataController mediaDataController = getMediaDataController();
+        final long date1 = DialogObject.getLastMessageOrDraftDate(dialog1, mediaDataController.getDraft(dialog1.id));
+        final long date2 = DialogObject.getLastMessageOrDraftDate(dialog2, mediaDataController.getDraft(dialog2.id));
+        if (date1 < date2) {
+            return 1;
+        } else if (date1 > date2) {
+            return -1;
         }
 
         return 0;
