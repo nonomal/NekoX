@@ -3852,12 +3852,12 @@ public class Theme {
             final ThemeInfo themeNight = themesDict.get("Night");
 
             String theme = preferences.getString("theme", null);
-            if ("Default".equals(theme)) {
-                applyingTheme = themesDict.get("Blue");
-                applyingTheme.currentAccentId = DEFALT_THEME_ACCENT_ID;
-            } else if ("Dark".equals(theme)) {
+            if ("Default".equals(theme) || "Night".equals(theme)) {
                 applyingTheme = themeNight;
                 applyingTheme.currentAccentId = 9;
+            } else if ("Day".equals(theme)) {
+                applyingTheme = themesDict.get("Blue");
+                applyingTheme.currentAccentId = DEFALT_THEME_ACCENT_ID;
             } else if (theme != null) {
                 applyingTheme = themesDict.get(theme);
                 if (applyingTheme != null && !themeConfig.contains("lastDayTheme")) {
@@ -3868,12 +3868,12 @@ public class Theme {
             }
 
             theme = preferences.getString("nighttheme", null);
-            if ("Default".equals(theme)) {
+            if ("Default".equals(theme) || "Night".equals(theme)) {
+                applyingTheme = themeNight;
+                applyingTheme.currentAccentId = 9;
+            } else if ("Day".equals(theme)) {
                 applyingTheme = themesDict.get("Blue");
                 applyingTheme.currentAccentId = DEFALT_THEME_ACCENT_ID;
-            } else if ("Dark".equals(theme)) {
-                currentNightTheme = themeNight;
-                themeNight.currentAccentId = 9;
             } else if (theme != null) {
                 ThemeInfo t = themesDict.get(theme);
                 if (t != null) {
