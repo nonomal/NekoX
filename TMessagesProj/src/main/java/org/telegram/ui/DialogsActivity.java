@@ -1056,7 +1056,7 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
                     switchItem.setVisibility(View.GONE);
                 }
                 if (proxyItem != null && proxyItemVisisble) {
-                    //proxyItem.setVisibility(View.GONE);
+                    proxyItem.setVisibility(View.GONE);
                 }
                 if (listView != null) {
                     if (searchString != null) {
