@@ -1854,7 +1854,7 @@ public class Theme {
         }
     };
 
-    public static int DEFALT_THEME_ACCENT_ID = 101;
+    public static int DEFALT_THEME_ACCENT_ID = 99;
     public static int selectedAutoNightType = AUTO_NIGHT_TYPE_NONE;
     public static boolean autoNightScheduleByLocation;
     public static float autoNightBrighnessThreshold = 0.25f;
@@ -3714,7 +3714,7 @@ public class Theme {
                 new int[]    { 0x00000000,                     0xFFF2FBC9,                    0xFFFBF4DF, 	                         0,	                             0,                    0xFFFDEDB4,                    0xFFFCF7B6, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000 },
                 new int[]    { 0x00000000,                     0xFFDFE2A0,                    0xFFE2B991,                    0xFFD7C1E9,                    0xFFDCD1C0,                    0xFFEFB576,                    0xFFC0A2D1, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000 },
                 new int[]    { 0x00000000,                     0xFFC1E1A3,                    0xFFEBE2BA,                    0xFFE8CDD6,                    0xFFE0DFC6,                    0xFFECE771,                    0xFFDECCDE, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000 },
-                new int[]    {         99,                              9,                            10,                            11,                            12,                            13,                            14,          0,          1,          2,          3,          4,          5,          6,          7,          8 },
+                new int[]    {         8,                              9,                            99,                            11,                            12,                            13,                            14,          0,          1,          2,          3,          4,          5,          6,          7,          8 },
                 new String[] {         "",  "p-pXcflrmFIBAAAAvXYQk-mCwZU", "JqSUrO0-mFIBAAAAWwTvLzoWGQI", "O-wmAfBPSFADAAAA4zINVfD_bro", "RepJ5uE_SVABAAAAr4d0YhgB850", "-Xc-np9y2VMCAAAARKr0yNNPYW0", "dhf9pceaQVACAAAAbzdVo4SCiZA",         "",         "",         "",         "",         "",         "",         "",         "",         "" },
                 new int[]    {          0,                            180,                            45,                             0,                            45,                           180,                             0,          0,          0,          0,          0,          0,          0,          0,          0,          0 },
                 new int[]    {          0,                             52,                            46,                            57,                            45,                            64,                            52,          0,          0,          0,          0,          0,          0,          0,          0,          0 }
@@ -3741,7 +3741,7 @@ public class Theme {
                 new int[]    {                            40,                            40,                            31,                            50,                            25,                            34,                            35,                            50,          0,          0,          0,          0,          0,          0,          0,          0,          0,          0 }
                 );
         themes.add(themeInfo);
-        themesDict.put("Dark Blue", currentNightTheme = themeInfo);
+        themesDict.put("Dark Blue", themeInfo);
 
         themeInfo = new ThemeInfo();
         themeInfo.name = "Arctic Blue";
@@ -3804,7 +3804,7 @@ public class Theme {
                 new int[]    {                            34,                            47,                            52,                            48,                            54,          0,          0,          0,          0,          0,          0,          0,          0,          0 }
                 );
         themes.add(themeInfo);
-        themesDict.put("Night", themeInfo);
+        themesDict.put("Night", currentNightTheme = themeInfo);
 
         String themesString = themeConfig.getString("themes2", null);
 
