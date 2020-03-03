@@ -364,9 +364,7 @@ public class ConnectionsManager extends BaseController {
     public static void setLangCode(String langCode) {
         langCode = langCode.replace('_', '-').toLowerCase();
         for (int a = 0; a < UserConfig.MAX_ACCOUNT_COUNT; a++) {
-            if (UserConfig.getInstance(a).isClientActivated()) {
-                native_setLangCode(a, langCode);
-            }
+            native_setLangCode(a, langCode);
         }
     }
 
@@ -376,18 +374,14 @@ public class ConnectionsManager extends BaseController {
             pushString = status;
         }
         for (int a = 0; a < UserConfig.MAX_ACCOUNT_COUNT; a++) {
-            if (UserConfig.getInstance(a).isClientActivated()) {
-                native_setRegId(a, pushString);
-            }
+            native_setRegId(a, pushString);
         }
     }
 
     public static void setSystemLangCode(String langCode) {
         langCode = langCode.replace('_', '-').toLowerCase();
         for (int a = 0; a < UserConfig.MAX_ACCOUNT_COUNT; a++) {
-            if (UserConfig.getInstance(a).isClientActivated()) {
-                native_setSystemLangCode(a, langCode);
-            }
+            native_setSystemLangCode(a, langCode);
         }
     }
 
@@ -653,8 +647,6 @@ public class ConnectionsManager extends BaseController {
             AccountInstance accountInstance = AccountInstance.getInstance(a);
             if (accountInstance.getUserConfig().isClientActivated()) {
                 accountInstance.getMessagesController().checkProxyInfo(true);
-            } else {
-                break;
             }
         }
     }

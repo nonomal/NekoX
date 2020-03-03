@@ -167,12 +167,8 @@ public class ApplicationLoader extends Application {
 
                     boolean isSlow = isConnectionSlow();
                     for (int a = 0; a < UserConfig.MAX_ACCOUNT_COUNT; a++) {
-                        if (UserConfig.getInstance(a).isClientActivated()) {
-                            ConnectionsManager.getInstance(a).checkConnection();
-                            FileLoader.getInstance(a).onNetworkChanged(isSlow);
-                        } else {
-                            break;
-                        }
+                        ConnectionsManager.getInstance(a).checkConnection();
+                        FileLoader.getInstance(a).onNetworkChanged(isSlow);
                     }
                 }
             };
@@ -228,12 +224,8 @@ public class ApplicationLoader extends Application {
 
         MediaController.getInstance();
         for (int a = 0; a < UserConfig.MAX_ACCOUNT_COUNT; a++) {
-            if (UserConfig.getInstance(a).isClientActivated()) {
-                ContactsController.getInstance(a).checkAppAccount();
-                DownloadController.getInstance(a);
-            } else {
-                break;
-            }
+            ContactsController.getInstance(a).checkAppAccount();
+            DownloadController.getInstance(a);
         }
 
         WearDataLayerListenerService.updateWatchConnectionState();

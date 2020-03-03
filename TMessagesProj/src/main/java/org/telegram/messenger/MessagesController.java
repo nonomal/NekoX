@@ -7274,9 +7274,6 @@ public class MessagesController extends BaseController implements NotificationCe
             req.token_type = 2;
             for (int a = 0; a < UserConfig.MAX_ACCOUNT_COUNT; a++) {
                 UserConfig userConfig = UserConfig.getInstance(a);
-                if (!userConfig.isClientActivated()) {
-                    break;
-                }
                 if (a != currentAccount && userConfig.isClientActivated()) {
                     req.other_uids.add(userConfig.getClientUserId());
                 }
@@ -7352,9 +7349,6 @@ public class MessagesController extends BaseController implements NotificationCe
                 if (BuildVars.LOGS_ENABLED) {
                     FileLog.d("add other uid = " + uid + " for account " + currentAccount);
                 }
-            }
-            if (!userConfig.isClientActivated()) {
-                break;
             }
         }
         getConnectionsManager().sendRequest(req, (response, error) -> {

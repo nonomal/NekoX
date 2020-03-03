@@ -22,7 +22,7 @@ import java.io.File;
 public class UserConfig extends BaseController {
 
     public static int selectedAccount;
-    public final static int MAX_ACCOUNT_COUNT = 128;
+    public final static int MAX_ACCOUNT_COUNT = 32;
 
     private final Object sync = new Object();
     private boolean configLoaded;
@@ -80,7 +80,6 @@ public class UserConfig extends BaseController {
     public boolean tonCreationFinished;
 
     private static volatile UserConfig[] Instance = new UserConfig[UserConfig.MAX_ACCOUNT_COUNT];
-
     public static UserConfig getInstance(int num) {
         UserConfig localInstance = Instance[num];
         if (localInstance == null) {
@@ -94,65 +93,11 @@ public class UserConfig extends BaseController {
         return localInstance;
     }
 
-    public void shift() {
-
-        if (currentAccount == 0) return;
-
-        File cfgDir = new File(ApplicationLoader.applicationContext.getFilesDir().getParentFile(), "shared_prefs");
-
-        File currCfg = new File(cfgDir, "userconfig" + currentAccount);
-
-        File prefCfg;
-
-        if (currentAccount == 1) {
-
-            prefCfg = new File(cfgDir, "userconfig");
-
-        } else {
-
-            prefCfg = new File(cfgDir, "userconfig" + (currentAccount - 1));
-
-        }
-
-        try {
-
-            prefCfg.delete();
-
-            currCfg.renameTo(prefCfg);
-
-        } catch (Exception e) {
-
-            FileLog.e(e);
-
-        }
-
-        Instance[currentAccount - 1] = this;
-
-        getAccountInstance().shift();
-
-        // TODO: move others file
-
-        if (!UserConfig.getInstance(currentAccount + 1).isClientActivated()) {
-
-            Instance[currentAccount] = null;
-
-            return;
-
-        }
-
-        UserConfig.getInstance(currentAccount + 1).shift();
-
-        currentAccount --;
-
-    }
-
     public static int getActivatedAccountsCount() {
         int count = 0;
         for (int a = 0; a < MAX_ACCOUNT_COUNT; a++) {
             if (AccountInstance.getInstance(a).getUserConfig().isClientActivated()) {
                 count++;
-            } else {
-                break;
             }
         }
         return count;
@@ -354,7 +299,7 @@ public class UserConfig extends BaseController {
             notificationsSignUpSettingsLoaded = preferences.getBoolean("notificationsSignUpSettingsLoaded", false);
             autoDownloadConfigLoadTime = preferences.getLong("autoDownloadConfigLoadTime", 0);
             hasValidDialogLoadIds = preferences.contains("2dialogsLoadOffsetId") || preferences.getBoolean("hasValidDialogLoadIds", false);
-            isBot = preferences.getBoolean("isBot", false);
+            isBot = preferences.getBoolean("isBot",false);
             tonEncryptedData = preferences.getString("tonEncryptedData", null);
             tonPublicKey = preferences.getString("tonPublicKey", null);
             tonKeyName = preferences.getString("tonKeyName", "walletKey" + currentAccount);
@@ -544,8 +489,13 @@ public class UserConfig extends BaseController {
         lastHintsSyncTime = (int) (System.currentTimeMillis() / 1000) - 25 * 60 * 60;
         isBot = false;
         resetSavedPassword();
-        boolean hasActivated = AccountInstance.getInstance(0).getUserConfig().isClientActivated();
-
+        boolean hasActivated = false;
+        for (int a = 0; a < MAX_ACCOUNT_COUNT; a++) {
+            if (AccountInstance.getInstance(a).getUserConfig().isClientActivated()) {
+                hasActivated = true;
+                break;
+            }
+        }
         if (!hasActivated) {
             SharedConfig.clearConfig();
         }
@@ -598,6 +548,4 @@ public class UserConfig extends BaseController {
         editor.putBoolean("hasValidDialogLoadIds", true);
         editor.commit();
     }
-
-
 }

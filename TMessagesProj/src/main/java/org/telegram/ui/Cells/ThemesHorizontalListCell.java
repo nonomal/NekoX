@@ -811,10 +811,6 @@ public class ThemesHorizontalListCell extends RecyclerListView implements Notifi
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
         for (int a = 0; a < UserConfig.MAX_ACCOUNT_COUNT; a++) {
-            UserConfig userConfig = UserConfig.getInstance(a);
-            if (!userConfig.isClientActivated()) {
-                break;
-            }
             NotificationCenter.getInstance(a).addObserver(this, NotificationCenter.fileDidLoad);
             NotificationCenter.getInstance(a).addObserver(this, NotificationCenter.fileDidFailToLoad);
         }
@@ -824,10 +820,6 @@ public class ThemesHorizontalListCell extends RecyclerListView implements Notifi
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
         for (int a = 0; a < UserConfig.MAX_ACCOUNT_COUNT; a++) {
-            UserConfig userConfig = UserConfig.getInstance(a);
-            if (!userConfig.isClientActivated()) {
-                break;
-            }
             NotificationCenter.getInstance(a).removeObserver(this, NotificationCenter.fileDidLoad);
             NotificationCenter.getInstance(a).removeObserver(this, NotificationCenter.fileDidFailToLoad);
         }

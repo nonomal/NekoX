@@ -1080,8 +1080,6 @@ public class NotificationsController extends BaseController {
                         }
                     }
                 }
-            } else {
-                break;
             }
         }
         return count;
