@@ -107,6 +107,9 @@ public class VoIPService extends VoIPBaseService{
 		return null;
 	}
 
+	public TLRPC.PhoneCall getCall() {
+		return call;
+	}
 
 	@SuppressLint("MissingPermission")
 	@Override

@@ -40,9 +40,11 @@ import android.graphics.drawable.GradientDrawable;
 import android.media.AudioManager;
 import android.os.Build;
 import android.os.Bundle;
+
 import androidx.annotation.IntRange;
 import androidx.annotation.Nullable;
 import androidx.palette.graphics.Palette;
+
 import android.text.Editable;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
@@ -67,6 +69,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.telegram.messenger.AndroidUtilities;
 import org.telegram.messenger.ApplicationLoader;
@@ -92,7 +95,9 @@ import org.telegram.tgnet.TLRPC;
 import org.telegram.ui.ActionBar.AlertDialog;
 import org.telegram.ui.ActionBar.BottomSheet;
 import org.telegram.ui.ActionBar.DarkAlertDialog;
+import org.telegram.ui.ActionBar.SimpleTextView;
 import org.telegram.ui.ActionBar.Theme;
+import org.telegram.ui.Components.AlertsCreator;
 import org.telegram.ui.Components.BackupImageView;
 import org.telegram.ui.Components.CorrectlyMeasuringTextView;
 import org.telegram.ui.Components.CubicBezierInterpolator;
@@ -106,6 +111,8 @@ import org.telegram.ui.Components.voip.FabBackgroundDrawable;
 import org.telegram.ui.Components.voip.VoIPHelper;
 
 import java.io.ByteArrayOutputStream;
+
+import tw.nekomimi.nekogram.NekoXConfig;
 
 public class VoIPActivity extends Activity implements VoIPService.StateListener, NotificationCenter.NotificationCenterDelegate {
 
@@ -1283,6 +1290,33 @@ public class VoIPActivity extends Activity implements VoIPService.StateListener,
                             emojiWrap.setVisibility(View.VISIBLE);
                             emojiWrap.setAlpha(0f);
                             emojiWrap.animate().alpha(1).setDuration(200).setInterpolator(new DecelerateInterpolator()).start();
+                        }
+                        TLRPC.PhoneCall call = VoIPService.getSharedInstance().getCall();
+                        if (call != null && NekoXConfig.developerMode) {
+                            AlertDialog.Builder builder = new AlertDialog.Builder(VoIPActivity.this);
+                            builder.setTitle("Telegram");
+                            String address = "";
+                            for (int index = 0; index < call.connections.size(); index++) {
+                                TLRPC.TL_phoneConnection conn = call.connections.get(index);
+                                if (index != 0) address += ",";
+                                if (conn.ip != null) address += conn.ip;
+                                if (conn.ipv6 != null) {
+                                    address += ",";
+                                    address += conn.ipv6;
+                                }
+                            }
+                            final String addr = address;
+                            builder.setMessage("p2pAllowed: " + call.p2p_allowed + ", addresses: " + address);
+                            builder.setNegativeButton(LocaleController.getString("Copy", R.string.Copy), (x, y) -> {
+                                try {
+                                    AndroidUtilities.addToClipboard(addr);
+                                    Toast.makeText(VoIPActivity.this, LocaleController.getString("TextCopied", R.string.TextCopied), Toast.LENGTH_SHORT).show();
+                                } catch (Exception e) {
+                                    FileLog.e(e);
+                                }
+                            });
+                            builder.setPositiveButton(LocaleController.getString("Cancel", R.string.Cancel), null);
+                            builder.create().show();
                         }
                     }
                 } else if (state == VoIPService.STATE_FAILED) {
