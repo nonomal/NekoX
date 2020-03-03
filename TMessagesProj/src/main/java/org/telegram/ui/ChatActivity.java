@@ -5032,7 +5032,7 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
         replyButton.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 15);
         replyButton.setPadding(AndroidUtilities.dp(14), 0, AndroidUtilities.dp(21), 0);
         replyButton.setBackgroundDrawable(Theme.createSelectorDrawable(Theme.getColor(Theme.key_actionBarActionModeDefaultSelector), 3));
-        replyButton.setTextColor(Theme.getColor(Theme.key_actionBarActionModeDefaultIcon));
+        replyButton.setTextColor(Theme.getColor(Theme.key_actionBarActionModeDefault));
         replyButton.setCompoundDrawablePadding(AndroidUtilities.dp(7));
         replyButton.setTypeface(AndroidUtilities.getTypeface("fonts/rmedium.ttf"));
         Drawable image = context.getResources().getDrawable(R.drawable.input_reply).mutate();
@@ -5064,7 +5064,7 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
         forwardButton.setPadding(AndroidUtilities.dp(21), 0, AndroidUtilities.dp(21), 0);
         forwardButton.setCompoundDrawablePadding(AndroidUtilities.dp(6));
         forwardButton.setBackgroundDrawable(Theme.createSelectorDrawable(Theme.getColor(Theme.key_actionBarActionModeDefaultSelector), 3));
-        forwardButton.setTextColor(Theme.getColor(Theme.key_actionBarActionModeDefaultIcon));
+        forwardButton.setTextColor(Theme.getColor(Theme.key_actionBarActionModeDefault));
         forwardButton.setTypeface(AndroidUtilities.getTypeface("fonts/rmedium.ttf"));
         image = context.getResources().getDrawable(R.drawable.input_forward).mutate();
         image.setColorFilter(new PorterDuffColorFilter(Theme.getColor(Theme.key_actionBarActionModeDefaultIcon), PorterDuff.Mode.MULTIPLY));
