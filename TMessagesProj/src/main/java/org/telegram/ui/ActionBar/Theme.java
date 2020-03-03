@@ -3741,7 +3741,7 @@ public class Theme {
                 new int[]    {                            40,                            40,                            31,                            50,                            25,                            34,                            35,                            50,          0,          0,          0,          0,          0,          0,          0,          0,          0,          0 }
                 );
         themes.add(themeInfo);
-        themesDict.put("Dark Blue", themeInfo);
+        themesDict.put("Dark Blue", currentTheme = defaultTheme = currentDayTheme = themeInfo);
 
         themeInfo = new ThemeInfo();
         themeInfo.name = "Arctic Blue";
@@ -3804,7 +3804,7 @@ public class Theme {
                 new int[]    {                            34,                            47,                            52,                            48,                            54,          0,          0,          0,          0,          0,          0,          0,          0,          0 }
                 );
         themes.add(themeInfo);
-        themesDict.put("Night", currentTheme = defaultTheme = currentNightTheme = themeInfo);
+        themesDict.put("Night", themeInfo);
 
         String themesString = themeConfig.getString("themes2", null);
 
