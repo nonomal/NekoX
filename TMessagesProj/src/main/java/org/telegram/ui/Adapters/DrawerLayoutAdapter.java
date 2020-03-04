@@ -267,7 +267,7 @@ public class DrawerLayoutAdapter extends RecyclerListView.SelectionAdapter {
             //items.add(null); // divider
             items.add(new Item(7, LocaleController.getString("InviteFriends", R.string.InviteFriends), R.drawable.menu_invite));
         }
-        //items.add(new Item(20, LocaleController.getString("Proxy", R.string.Proxy), R.drawable.proxy_on));
+        items.add(new Item(20, LocaleController.getString("Proxy", R.string.Proxy), R.drawable.proxy_on));
         items.add(new Item(9, LocaleController.getString("TelegramFAQ", R.string.TelegramFAQ), R.drawable.menu_help));
     }
 
