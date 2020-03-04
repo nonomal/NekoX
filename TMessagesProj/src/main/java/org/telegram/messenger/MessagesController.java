@@ -11351,7 +11351,24 @@ public class MessagesController extends BaseController implements NotificationCe
         unreadUnmutedDialogs = 0;
         boolean selfAdded = false;
         int selfId = getUserConfig().getClientUserId();
-        Collections.sort(allDialogs, dialogComparator);
+
+        try {
+
+            Collections.sort(allDialogs, dialogComparator);
+
+        } catch (Exception e) {
+
+            FileLog.e(e);
+
+            NekoXConfig.sortByUnread = false;
+            NekoXConfig.sortByUnmuted = false;
+            NekoXConfig.sortByUser = false;
+            NekoXConfig.sortByContacts = false;
+
+            Collections.sort(allDialogs, dialogComparator);
+
+        }
+
         isLeftProxyChannel = true;
         if (proxyDialog != null && proxyDialog.id < 0) {
             TLRPC.Chat chat = getChat(-(int) proxyDialog.id);
