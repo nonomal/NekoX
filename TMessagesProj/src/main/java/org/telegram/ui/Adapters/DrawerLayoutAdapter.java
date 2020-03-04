@@ -165,7 +165,7 @@ public class DrawerLayoutAdapter extends RecyclerListView.SelectionAdapter {
                 TextCheckCell text = (TextCheckCell) holder.itemView;
                 switch (item.id) {
                     case 20: {
-                        text.setTextAndCheck(LocaleController.getString("Proxy", R.string.Proxy), SharedConfig.proxyEnabled, true);
+                        text.setTextAndCheckAndIcon(LocaleController.getString("Proxy", R.string.Proxy), SharedConfig.proxyEnabled, true,item.icon);
                         break;
                     }
                 }
