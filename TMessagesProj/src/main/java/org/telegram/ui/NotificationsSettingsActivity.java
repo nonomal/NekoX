@@ -576,12 +576,13 @@ public class NotificationsSettingsActivity extends BaseFragment implements Notif
                 }
             } else if (position == notificationsServiceRow) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
-                    if (isNotificationListenerEnabled()) {
-                        AlertsCreator.showSimpleToast(null,LocaleController.getString("DisablePushAlert",R.string.DisablePushAlert));
-                    } else {
-                        AlertsCreator.showSimpleToast(null,LocaleController.getString("EnablePushAlert",R.string.EnablePushAlert));
+                    if (openNotificationListenSettings()) {
+                        if (isNotificationListenerEnabled()) {
+                            AlertsCreator.showSimpleToast(null, LocaleController.getString("DisablePushAlert", R.string.DisablePushAlert));
+                        } else {
+                            AlertsCreator.showSimpleToast(null, LocaleController.getString("EnablePushAlert", R.string.EnablePushAlert));
+                        }
                     }
-                    openNotificationListenSettings();
                 } else {
                     SharedPreferences preferences = MessagesController.getNotificationsSettings(currentAccount);
                     enabled = preferences.getBoolean("pushService", getMessagesController().keepAliveService);
@@ -648,7 +649,7 @@ public class NotificationsSettingsActivity extends BaseFragment implements Notif
         return false;
     }
 
-    public void openNotificationListenSettings() {
+    public boolean openNotificationListenSettings() {
         try {
             Intent intent;
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP_MR1) {
@@ -657,6 +658,7 @@ public class NotificationsSettingsActivity extends BaseFragment implements Notif
                 intent = new Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS");
             }
             getParentActivity().startActivity(intent);
+            return true;
         } catch (Exception e) {
             try {
                 Intent intent = new Intent();
@@ -665,10 +667,12 @@ public class NotificationsSettingsActivity extends BaseFragment implements Notif
                 intent.setComponent(cn);
                 intent.putExtra(":settings:show_fragment", "NotificationAccessSettings");
                 getParentActivity().startActivity(intent);
+                return true;
             } catch (Exception ex) {
                 AlertsCreator.showSimpleToast(this,"Open NotificationAccessSettings Error");
             }
         }
+        return false;
     }
 
     @Override
