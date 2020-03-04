@@ -71,10 +71,7 @@ public class NekoSettingsActivity extends BaseFragment {
     private int connection2Row;
 
     private int dialogsRow;
-    private int sortByUnreadRow;
-    private int sortByUnmutedRow;
-    private int sortByUserRow;
-    private int sortByContactsRow;
+    private int sortMenuRow;
     private int filterMenuRow;
     private int dialogs2Row;
 
@@ -546,28 +543,8 @@ public class NekoSettingsActivity extends BaseFragment {
                 if (view instanceof TextCheckCell) {
                     ((TextCheckCell) view).setChecked(NekoConfig.hideKeyboardOnChatScroll);
                 }
-            }
-
-            if (position == sortByUnreadRow) {
-                NekoXConfig.toggleSortByUnread();
-                if (view instanceof TextCheckCell) {
-                    ((TextCheckCell) view).setChecked(NekoXConfig.sortByUnread);
-                }
-            } else if (position == sortByUnmutedRow) {
-                NekoXConfig.toggleSortByUnmuted();
-                if (view instanceof TextCheckCell) {
-                    ((TextCheckCell) view).setChecked(NekoXConfig.sortByUnmuted);
-                }
-            } else if (position == sortByUserRow) {
-                NekoXConfig.toggleSortByUser();
-                if (view instanceof TextCheckCell) {
-                    ((TextCheckCell) view).setChecked(NekoXConfig.sortByUser);
-                }
-            } else if (position == sortByContactsRow) {
-                NekoXConfig.toggleSortByContacts();
-                if (view instanceof TextCheckCell) {
-                    ((TextCheckCell) view).setChecked(NekoXConfig.sortByContacts);
-                }
+            } else if (position == sortMenuRow) {
+                showSortMenuAlert();
             } else if (position == filterMenuRow) {
                 showFilterMenuAlert();
             }
@@ -594,10 +571,7 @@ public class NekoSettingsActivity extends BaseFragment {
         connection2Row = rowCount++;
 
         dialogsRow = rowCount++;
-        sortByUnreadRow = rowCount++;
-        sortByUnmutedRow = rowCount++;
-        sortByUserRow = rowCount++;
-        sortByContactsRow = rowCount++;
+        sortMenuRow = rowCount ++;
         filterMenuRow = rowCount++;
         dialogs2Row = rowCount++;
 
@@ -970,6 +944,84 @@ public class NekoSettingsActivity extends BaseFragment {
         showDialog(builder.create());
     }
 
+    private void showSortMenuAlert() {
+        if (getParentActivity() == null) {
+            return;
+        }
+        Context context = getParentActivity();
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle(LocaleController.getString("SortMenu", R.string.SortMenu));
+
+        LinearLayout linearLayout = new LinearLayout(context);
+        linearLayout.setOrientation(LinearLayout.VERTICAL);
+
+        LinearLayout linearLayoutInviteContainer = new LinearLayout(context);
+        linearLayoutInviteContainer.setOrientation(LinearLayout.VERTICAL);
+        linearLayout.addView(linearLayoutInviteContainer, LayoutHelper.createLinear(LayoutHelper.MATCH_PARENT, LayoutHelper.WRAP_CONTENT));
+
+        int count = 4;
+        for (int a = 0; a < count; a++) {
+            TextCheckCell textCell = new TextCheckCell(context);
+            switch (a) {
+                case 0: {
+                    textCell.setTextAndCheck(LocaleController.getString("SortByUnread", R.string.SortByUnread), NekoXConfig.sortByUnread, false);
+                    break;
+                }
+                case 1: {
+                    textCell.setTextAndCheck(LocaleController.getString("SortByUnmuted", R.string.SortByUnmuted), NekoXConfig.sortByUnmuted, false);
+                    break;
+                }
+                case 2: {
+                    textCell.setTextAndCheck(LocaleController.getString("SortByUser", R.string.SortByUser), NekoXConfig.sortByUser, false);
+                    break;
+                }
+                case 3: {
+                    textCell.setTextAndCheck(LocaleController.getString("SortByContacts", R.string.SortByContacts), NekoXConfig.sortByContacts, false);
+                    break;
+                }
+            }
+            textCell.setTag(a);
+            textCell.setBackgroundDrawable(Theme.getSelectorDrawable(false));
+            linearLayoutInviteContainer.addView(textCell, LayoutHelper.createLinear(LayoutHelper.MATCH_PARENT, LayoutHelper.WRAP_CONTENT));
+            textCell.setOnClickListener(view -> {
+                Integer tag = (Integer) view.getTag();
+                switch (tag) {
+                    case 0: {
+                        NekoXConfig.toggleSortByUnread();
+                        if (view instanceof TextCheckCell) {
+                            ((TextCheckCell) view).setChecked(NekoXConfig.sortByUnread);
+                        }
+                        break;
+                    }
+                    case 1: {
+                        NekoXConfig.toggleSortByUnmuted();
+                        if (view instanceof TextCheckCell) {
+                            ((TextCheckCell) view).setChecked(NekoXConfig.sortByUnmuted);
+                        }
+                        break;
+                    }
+                    case 2: {
+                        NekoXConfig.toggleSortByUser();
+                        if (view instanceof TextCheckCell) {
+                            ((TextCheckCell) view).setChecked(NekoXConfig.sortByUser);
+                        }
+                        break;
+                    }
+                    case 3: {
+                        NekoXConfig.toggleSortByContacts();
+                        if (view instanceof TextCheckCell) {
+                            ((TextCheckCell) view).setChecked(NekoXConfig.sortByContacts);
+                        }
+                        break;
+                    }
+                }
+            });
+        }
+        builder.setPositiveButton(LocaleController.getString("OK", R.string.OK), null);
+        builder.setView(linearLayout);
+        showDialog(builder.create());
+    }
+
     private void showStickerSizeAlert() {
         if (getParentActivity() == null) {
             return;
@@ -1158,6 +1210,8 @@ public class NekoSettingsActivity extends BaseFragment {
                         textCell.setTextAndValue(LocaleController.getString("StickerSize", R.string.StickerSize), String.valueOf(Math.round(NekoConfig.stickerSize)), true);
                     } else if (position == messageMenuRow) {
                         textCell.setText(LocaleController.getString("MessageMenu", R.string.MessageMenu), true);
+                    } else if (position == sortMenuRow) {
+                        textCell.setText(LocaleController.getString("SortMenu", R.string.SortMenu), true);
                     } else if (position == filterMenuRow) {
                         textCell.setText(LocaleController.getString("FilterMenu", R.string.FilterMenu), false);
                     } else if (position == deleteAccountRow) {
@@ -1242,16 +1296,6 @@ public class NekoSettingsActivity extends BaseFragment {
                         textCell.setTextAndCheck(LocaleController.getString("HideKeyboardOnChatScroll", R.string.HideKeyboardOnChatScroll), NekoConfig.hideKeyboardOnChatScroll, true);
                     }
 
-                    if (position == sortByUnreadRow) {
-                        textCell.setTextAndCheck(LocaleController.getString("SortByUnread", R.string.SortByUnread), NekoXConfig.sortByUnread, true);
-                    } else if (position == sortByUnmutedRow) {
-                        textCell.setTextAndCheck(LocaleController.getString("SortByUnmuted", R.string.SortByUnmuted), NekoXConfig.sortByUnmuted, true);
-                    } else if (position == sortByUserRow) {
-                        textCell.setTextAndCheck(LocaleController.getString("SortByUser", R.string.SortByUser), NekoXConfig.sortByUser, true);
-                    } else if (position == sortByContactsRow) {
-                        textCell.setTextAndCheck(LocaleController.getString("SortByContacts", R.string.SortByContacts), NekoXConfig.sortByContacts, true);
-                    }
-
                     break;
                 }
                 case 4: {
@@ -1294,8 +1338,7 @@ public class NekoSettingsActivity extends BaseFragment {
                     position == translationProviderRow || position == smoothKeyboardRow || position == pauseMusicOnRecordRow ||
                     position == disablePhotoSideActionRow || position == unlimitedPinnedDialogsRow || position == openArchiveOnPullRow ||
                     position == openFilterByActionBarRow || position == openFilterByFabRow || position == hideKeyboardOnChatScrollRow ||
-                    position == sortByUnreadRow || position == sortByUnmutedRow || position == sortByUserRow || position == sortByContactsRow ||
-                    position == filterMenuRow;
+                    position == sortMenuRow || position == filterMenuRow;
         }
 
         @Override
@@ -1338,7 +1381,8 @@ public class NekoSettingsActivity extends BaseFragment {
         public int getItemViewType(int position) {
             if (position == connection2Row || position == chat2Row || position == experiment2Row || position == dialogs2Row || position == dialogsFilter2Row) {
                 return 1;
-            } else if (position == nameOrderRow || position == mapPreviewRow || position == stickerSizeRow || position == messageMenuRow || position == filterMenuRow ||
+            } else if (position == nameOrderRow || position == mapPreviewRow || position == stickerSizeRow || position == messageMenuRow ||
+                    position == filterMenuRow || position == sortMenuRow ||
                     position == deleteAccountRow || position == translationProviderRow || position == eventTypeRow || position == actionBarDecorationRow) {
                 return 2;
             } else if (position == ipv6Row || position == hidePhoneRow || position == disableUndoRow || position == inappCameraRow || position == disableChatActionRow ||
@@ -1348,8 +1392,7 @@ public class NekoSettingsActivity extends BaseFragment {
                     position == saveCacheToSdcardRow || position == unlimitedFavedStickersRow ||
                     position == disableFilteringRow || position == smoothKeyboardRow || position == pauseMusicOnRecordRow ||
                     position == disablePhotoSideActionRow || position == unlimitedPinnedDialogsRow || position == openArchiveOnPullRow ||
-                    position == openFilterByActionBarRow || position == openFilterByFabRow || position == hideKeyboardOnChatScrollRow ||
-                    position == sortByUnreadRow || position == sortByUnmutedRow || position == sortByUserRow || position == sortByContactsRow) {
+                    position == openFilterByActionBarRow || position == openFilterByFabRow || position == hideKeyboardOnChatScrollRow) {
                 return 3;
             } else if (position == settingsRow || position == connectionRow || position == chatRow || position == experimentRow ||
                     position == dialogsRow || position == dialogsFilterRow) {

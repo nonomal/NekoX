@@ -13,6 +13,7 @@
     <string name="NotificationsUnmutedAndUnread">Unmuted &amp; Unread</string>
 
     <string name="DialogsSettings">Dialogs Settings</string>
+    <string name="SortMenu">Dialog Sort Settings</string>
     <string name="SortByUnread">Sort By Unread</string>
     <string name="SortByUnmuted">Sort By Unmuted</string>
     <string name="SortByUser">Sort By User</string>

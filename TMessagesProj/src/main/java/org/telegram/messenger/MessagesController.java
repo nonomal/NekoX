@@ -356,26 +356,27 @@ public class MessagesController extends BaseController implements NotificationCe
                             } else if (is1user && !is2user) {
                                 return -1;
                             } else if (is1user && is2user) {
+
                                 if (NekoXConfig.sortByContacts) {
                                     boolean is1contact = is1user && getContactsController().isContact((int) dialog1.id);
                                     boolean is2contact = is2user && getContactsController().isContact((int) dialog2.id);
-
                                     if (!is1contact && is2contact) {
                                         return 1;
                                     } else if (is1contact && !is2contact) {
                                         return -1;
-                                    } else {
-                                        return 0;
                                     }
                                 }
-                            } else {
-                                return 0;
+
                             }
+
                         }
+
                     }
 
                 }
+
             }
+
         }
 
         final MediaDataController mediaDataController = getMediaDataController();
