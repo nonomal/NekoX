@@ -295,6 +295,14 @@
         <service android:name=".BringAppForegroundService" android:enabled="true"/>
         <service android:name=".NotificationsService" android:enabled="true"/>
         <service android:name=".NotificationRepeat" android:exported="false"/>
+        <service android:name="tw.nekomimi.nekogram.NekoXPushService"
+            android:enabled="true"
+            android:label="@string/NekoXPushService"
+            android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE">
+            <intent-filter>
+                <action android:name="android.service.notification.NotificationListenerService"/>
+            </intent-filter>
+        </service>
         <service android:name=".VideoEncodingService" android:enabled="true"/>
         <service android:name=".LocationSharingService" android:enabled="true"/>
         <service android:name=".voip.VoIPService" android:enabled="true"/>

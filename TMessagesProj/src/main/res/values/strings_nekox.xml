@@ -19,6 +19,10 @@
     <string name="SortByUser">Sort By User</string>
     <string name="SortByContacts">Sort By Contacts</string>
 
+    <string name="NekoXPushService">NekoX Push Service</string>
+    <string name="EnablePushAlert">Please enable "NekoX Push Service"</string>
+    <string name="DisablePushAlert">Please disable "NekoX Push Service"</string>
+
     <string name="DisableUndo">Disable Undo</string>
 
     <string name="FilterMenu">Dialogs Filter Menu</string>
