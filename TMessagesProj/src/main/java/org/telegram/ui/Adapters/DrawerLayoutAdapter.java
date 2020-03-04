@@ -161,9 +161,14 @@ public class DrawerLayoutAdapter extends RecyclerListView.SelectionAdapter {
                 break;
             }
             case 6: {
-                TextCheckCell text = (TextCheckCell)holder.itemView;
-                text.setTextAndCheck(LocaleController.getString("Proxy",R.string.Proxy), SharedConfig.proxyEnabled,true);
-                break;
+                Item item = items.get(position);
+                TextCheckCell text = (TextCheckCell) holder.itemView;
+                switch (item.id) {
+                    case 20: {
+                        text.setTextAndCheck(LocaleController.getString("Proxy", R.string.Proxy), SharedConfig.proxyEnabled, true);
+                        break;
+                    }
+                }
             }
         }
     }
@@ -174,8 +179,6 @@ public class DrawerLayoutAdapter extends RecyclerListView.SelectionAdapter {
             return 0;
         } else if (i == 1) {
             return 1;
-        } else if (i == 20) {
-            return 6;
         }
         i -= 2;
         if (accountsShowed) {
@@ -198,6 +201,9 @@ public class DrawerLayoutAdapter extends RecyclerListView.SelectionAdapter {
         }
         if (items.get(i) == null) {
             return 2;
+        }
+        switch (items.get(i).id) {
+            case 20: return 6;
         }
         return 3;
     }
@@ -261,7 +267,7 @@ public class DrawerLayoutAdapter extends RecyclerListView.SelectionAdapter {
             //items.add(null); // divider
             items.add(new Item(7, LocaleController.getString("InviteFriends", R.string.InviteFriends), R.drawable.menu_invite));
         }
-        items.add(new Item(20, LocaleController.getString("Proxy", R.string.Proxy), R.drawable.proxy_on));
+        //items.add(new Item(20, LocaleController.getString("Proxy", R.string.Proxy), R.drawable.proxy_on));
         items.add(new Item(9, LocaleController.getString("TelegramFAQ", R.string.TelegramFAQ), R.drawable.menu_help));
     }
 
