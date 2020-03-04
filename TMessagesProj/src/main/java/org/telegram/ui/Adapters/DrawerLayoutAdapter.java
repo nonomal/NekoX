@@ -103,6 +103,8 @@ public class DrawerLayoutAdapter extends RecyclerListView.SelectionAdapter {
 
     @Override
     public boolean isEnabled(RecyclerView.ViewHolder holder) {
+        long id = holder.getItemId();
+        if (id == 20) return true;
         int itemType = holder.getItemViewType();
         return itemType == 3 || itemType == 4 || itemType == 5;
     }
