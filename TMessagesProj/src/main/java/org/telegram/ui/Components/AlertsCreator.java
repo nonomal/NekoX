@@ -2773,9 +2773,9 @@ public class AlertsCreator {
                         }
 
                         if (channelParticipant != null) {
-                            openRightsEdit(fragment,chatInfo,chat, user.id, participant, channelParticipant.admin_rights, channelParticipant.banned_rights, channelParticipant.rank);
+                            openRightsEdit(fragment,chatInfo,chat, userFinal.id, participant, channelParticipant.admin_rights, channelParticipant.banned_rights, channelParticipant.rank);
                         } else {
-                            openRightsEdit(fragment,chatInfo,chat, user.id, participant, null, null, "");
+                            openRightsEdit(fragment,chatInfo,chat, userFinal.id, participant, null, null, "");
                         }
 
                     }
