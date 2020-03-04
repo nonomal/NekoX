@@ -40,7 +40,9 @@ public class DrawerLayoutAdapter extends RecyclerListView.SelectionAdapter {
     private Context mContext;
     private ArrayList<Item> items = new ArrayList<>(11);
     private ArrayList<Integer> accountNumbers = new ArrayList<>();
-    private boolean accountsShowed = true;
+    private boolean accountsShowed; {
+        accountsShowed = true;
+    }
     private DrawerProfileCell profileCell;
     private RecyclerView.ItemAnimator itemAnimator;
 
