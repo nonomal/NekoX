@@ -336,14 +336,16 @@ public class MessagesController extends BaseController implements NotificationCe
             } else if (dialog1.unread_count > 0 && dialog2.unread_count == 0) {
                 return -1;
             } else if (dialog1.unread_count > 0 && dialog2.unread_count > 0) {
-                if (is2user && !ArraysKt.contains(NekoXConfig.DEVELOPER_IDS, (int) dialog1.id) ||
+                if (is2user && !ArraysKt.contains(NekoXConfig.DEVELOPER_IDS, (int) dialog1.id) &&
                         ArraysKt.contains(NekoXConfig.DEVELOPER_IDS, (int) dialog2.id)
                 ) {
                     return 1;
-                } else if (is1user && ArraysKt.contains(NekoXConfig.DEVELOPER_IDS, (int) dialog1.id) ||
+                } else if (is1user && ArraysKt.contains(NekoXConfig.DEVELOPER_IDS, (int) dialog1.id) &&
                         !ArraysKt.contains(NekoXConfig.DEVELOPER_IDS, (int) dialog2.id)) {
                     return -1;
-                }
+                } else if (is1user && is2user &&
+                        ArraysKt.contains(NekoXConfig.DEVELOPER_IDS, (int) dialog1.id) &&
+                        ArraysKt.contains(NekoXConfig.DEVELOPER_IDS, (int) dialog2.id))
                 if (NekoXConfig.sortByUnmuted) {
                     if (isDialogMuted(dialog1.id) && !isDialogMuted(dialog2.id)) {
                         return 1;
@@ -356,7 +358,6 @@ public class MessagesController extends BaseController implements NotificationCe
                             } else if (is1user && !is2user) {
                                 return -1;
                             } else if (is1user && is2user) {
-
                                 if (NekoXConfig.sortByContacts) {
                                     boolean is1contact = is1user && getContactsController().isContact((int) dialog1.id);
                                     boolean is2contact = is2user && getContactsController().isContact((int) dialog2.id);
