@@ -217,7 +217,7 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
     private AlertDialog permissionDialog;
     private boolean askAboutContacts = true;
 
-    private boolean proxyItemVisisble;
+    private boolean proxyItemVisisble = true;
     private boolean closeSearchFieldOnHide;
     private long searchDialogId;
     private TLObject searchObject;
