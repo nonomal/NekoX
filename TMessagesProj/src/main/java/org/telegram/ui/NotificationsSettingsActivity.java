@@ -37,6 +37,7 @@ import org.telegram.messenger.ApplicationLoader;
 import org.telegram.messenger.SharedConfig;
 import org.telegram.messenger.UserConfig;
 import org.telegram.messenger.Utilities;
+import org.telegram.messenger.XiaomiUtilities;
 import org.telegram.tgnet.ConnectionsManager;
 import org.telegram.tgnet.TLRPC;
 import org.telegram.messenger.FileLog;
@@ -575,6 +576,19 @@ public class NotificationsSettingsActivity extends BaseFragment implements Notif
                     }
                 }
             } else if (position == notificationsServiceRow) {
+                if (XiaomiUtilities.isMIUI() && !XiaomiUtilities.isCustomPermissionGranted(XiaomiUtilities.OP_AUTO_START)) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                    builder.setTitle("Telegram");
+                    builder.setMessage(LocaleController.getString("MIUIPermissionNote",R.string.MIUIPermissionNote));
+                    builder.setPositiveButton(LocaleController.getString("OK",R.string.OK),(_x,_y) -> {
+
+                        getParentActivity().startActivity(XiaomiUtilities.getPermissionManagerIntent());
+
+                    });
+                    builder.setNegativeButton(LocaleController.getString("Cancel",R.string.Cancel),null);
+                    builder.show();
+                    return;
+                }
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
                     if (openNotificationListenSettings()) {
                         if (isNotificationListenerEnabled()) {

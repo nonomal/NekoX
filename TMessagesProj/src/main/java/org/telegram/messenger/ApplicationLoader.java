@@ -257,6 +257,9 @@ public class ApplicationLoader extends Application {
     }
 
     public static void startPushService() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
+            return; // USE NOTIF LISTENER
+        }
         SharedPreferences preferences = MessagesController.getGlobalNotificationsSettings();
         boolean enabled;
         if (preferences.contains("pushService")) {
