@@ -19,7 +19,6 @@ import org.telegram.messenger.ApplicationLoader;
 import org.telegram.messenger.LocaleController;
 import org.telegram.messenger.MessagesController;
 import org.telegram.messenger.R;
-import org.telegram.messenger.SharedConfig;
 import org.telegram.messenger.UserConfig;
 import org.telegram.ui.ActionBar.Theme;
 import org.telegram.ui.Cells.DrawerActionCell;
@@ -28,7 +27,6 @@ import org.telegram.ui.Cells.DrawerAddCell;
 import org.telegram.ui.Cells.DrawerUserCell;
 import org.telegram.ui.Cells.EmptyCell;
 import org.telegram.ui.Cells.DrawerProfileCell;
-import org.telegram.ui.Cells.TextCheckCell;
 import org.telegram.ui.Components.RecyclerListView;
 
 import java.util.ArrayList;
@@ -103,8 +101,6 @@ public class DrawerLayoutAdapter extends RecyclerListView.SelectionAdapter {
 
     @Override
     public boolean isEnabled(RecyclerView.ViewHolder holder) {
-        long id = holder.getItemId();
-        if (id == 20) return true;
         int itemType = holder.getItemViewType();
         return itemType == 3 || itemType == 4 || itemType == 5;
     }
@@ -128,8 +124,6 @@ public class DrawerLayoutAdapter extends RecyclerListView.SelectionAdapter {
             case 5:
                 view = new DrawerAddCell(mContext);
                 break;
-            case 6:
-                view = new TextCheckCell(mContext);
             case 1:
             default:
                 view = new EmptyCell(mContext, AndroidUtilities.dp(8));
@@ -162,16 +156,6 @@ public class DrawerLayoutAdapter extends RecyclerListView.SelectionAdapter {
                 drawerUserCell.setAccount(accountNumbers.get(position - 2));
                 break;
             }
-            case 6: {
-                Item item = items.get(position);
-                TextCheckCell text = (TextCheckCell) holder.itemView;
-                switch (item.id) {
-                    case 20: {
-                        text.setTextAndCheckAndIcon(LocaleController.getString("Proxy", R.string.Proxy), SharedConfig.proxyEnabled, true,item.icon);
-                        break;
-                    }
-                }
-            }
         }
     }
 
@@ -203,9 +187,6 @@ public class DrawerLayoutAdapter extends RecyclerListView.SelectionAdapter {
         }
         if (items.get(i) == null) {
             return 2;
-        }
-        switch (items.get(i).id) {
-            case 20: return 6;
         }
         return 3;
     }
@@ -248,6 +229,7 @@ public class DrawerLayoutAdapter extends RecyclerListView.SelectionAdapter {
             items.add(new Item(8, LocaleController.getString("Settings", R.string.Settings), R.drawable.menu_settings_ny));
             //items.add(null); // divider
             items.add(new Item(7, LocaleController.getString("InviteFriends", R.string.InviteFriends), R.drawable.menu_invite_ny));
+            items.add(new Item(9, LocaleController.getString("TelegramFAQ", R.string.TelegramFAQ), R.drawable.menu_help_ny));
         } else if (eventType == 1) {
             //items.add(new Item(2, LocaleController.getString("NewGroup", R.string.NewGroup), R.drawable.menu_groups_14));
             //items.add(new Item(3, LocaleController.getString("NewSecretChat", R.string.NewSecretChat), R.drawable.menu_secret_14));
@@ -258,6 +240,7 @@ public class DrawerLayoutAdapter extends RecyclerListView.SelectionAdapter {
             items.add(new Item(8, LocaleController.getString("Settings", R.string.Settings), R.drawable.menu_settings_14));
             //items.add(null); // divider
             items.add(new Item(7, LocaleController.getString("InviteFriends", R.string.InviteFriends), R.drawable.menu_secret_ny));
+            items.add(new Item(9, LocaleController.getString("TelegramFAQ", R.string.TelegramFAQ), R.drawable.menu_help));
         } else {
             //items.add(new Item(2, LocaleController.getString("NewGroup", R.string.NewGroup), R.drawable.menu_groups));
             //items.add(new Item(3, LocaleController.getString("NewSecretChat", R.string.NewSecretChat), R.drawable.menu_secret));
@@ -268,9 +251,8 @@ public class DrawerLayoutAdapter extends RecyclerListView.SelectionAdapter {
             items.add(new Item(8, LocaleController.getString("Settings", R.string.Settings), R.drawable.menu_settings));
             //items.add(null); // divider
             items.add(new Item(7, LocaleController.getString("InviteFriends", R.string.InviteFriends), R.drawable.menu_invite));
+            items.add(new Item(9, LocaleController.getString("TelegramFAQ", R.string.TelegramFAQ), R.drawable.menu_help));
         }
-        items.add(new Item(20, LocaleController.getString("Proxy", R.string.Proxy), R.drawable.proxy_on));
-        items.add(new Item(9, LocaleController.getString("TelegramFAQ", R.string.TelegramFAQ), R.drawable.menu_help));
     }
 
     public int getId(int position) {
