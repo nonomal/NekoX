@@ -40,16 +40,14 @@ public class DrawerLayoutAdapter extends RecyclerListView.SelectionAdapter {
     private Context mContext;
     private ArrayList<Item> items = new ArrayList<>(11);
     private ArrayList<Integer> accountNumbers = new ArrayList<>();
-    private boolean accountsShowed; {
-        accountsShowed = true;
-    }
+    private boolean accountsShowed;
     private DrawerProfileCell profileCell;
     private RecyclerView.ItemAnimator itemAnimator;
 
     public DrawerLayoutAdapter(Context context, RecyclerView.ItemAnimator animator) {
         mContext = context;
         itemAnimator = animator;
-        accountsShowed = UserConfig.getActivatedAccountsCount() > 1 && MessagesController.getGlobalMainSettings().getBoolean("accountsShowed", true);
+        accountsShowed = /*UserConfig.getActivatedAccountsCount() > 1 && */MessagesController.getGlobalMainSettings().getBoolean("accountsShowed", true);
         Theme.createDialogsResources(context);
         resetItems();
     }
