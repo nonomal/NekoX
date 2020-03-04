@@ -577,9 +577,9 @@ public class NotificationsSettingsActivity extends BaseFragment implements Notif
             } else if (position == notificationsServiceRow) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
                     if (isNotificationListenerEnabled()) {
-                        AlertsCreator.showSimpleToast(this,LocaleController.getString("DisablePushAlert",R.string.DisablePushAlert));
+                        AlertsCreator.showSimpleToast(null,LocaleController.getString("DisablePushAlert",R.string.DisablePushAlert));
                     } else {
-                        AlertsCreator.showSimpleToast(this,LocaleController.getString("EnablePushAlert",R.string.EnablePushAlert));
+                        AlertsCreator.showSimpleToast(null,LocaleController.getString("EnablePushAlert",R.string.EnablePushAlert));
                     }
                     openNotificationListenSettings();
                 } else {
