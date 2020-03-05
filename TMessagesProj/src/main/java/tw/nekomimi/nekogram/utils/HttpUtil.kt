@@ -2,10 +2,11 @@ package tw.nekomimi.nekogram.utils
 
 import okhttp3.OkHttpClient
 import okhttp3.Request
+import java.util.concurrent.TimeUnit
 
 object HttpUtil {
 
-    val okhttpClient = OkHttpClient().newBuilder().build()
+    val okhttpClient = OkHttpClient().newBuilder().readTimeout(500,TimeUnit.MILLISECONDS).build()
 
     @JvmStatic
     fun get(url: String): String {

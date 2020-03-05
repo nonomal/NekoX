@@ -19,6 +19,22 @@ object ProxyUtil {
 
         runCatching {
 
+            // 从 GITEE 主站 读取
+
+            val list = JSONArray(HttpUtil.get("https://gitee.com/nekoshizuku/ProxyList/raw/master/proxy_list.json")).toString()
+
+            if (list != cacheFile.readText()) {
+
+                cacheFile.writeText(list)
+
+                return true
+
+            }
+
+        }.recover {
+
+            // 从 GITHUB PAGES 读取
+
             val list = JSONArray(HttpUtil.get("https://nekogramx.github.io/ProxyList/proxy_list.json")).toString()
 
             if (list != cacheFile.readText()) {
@@ -31,7 +47,11 @@ object ProxyUtil {
 
         }.recover {
 
-            val list = JSONArray(HttpUtil.get("https://raw.githubusercontent.com/NekogramX/ProxyList/master/proxy_list.json")).toString()
+            // 从 GITHUB 主站读取
+
+            val master = HttpUtil.getByteArray("https://github.com/NekogramX/ProxyList/archive/master.zip")
+
+            val list = JSONArray(String(ZipUtil.read(ByteArrayInputStream(master), "ProxyList-master/proxy_list.json"))).toString()
 
             if (list != cacheFile.readText()) {
 
@@ -43,9 +63,9 @@ object ProxyUtil {
 
         }.recover {
 
-            val master = HttpUtil.getByteArray("https://github.com/NekogramX/ProxyList/archive/master.zip")
+            // 从 GITLAB 读取
 
-            val list = JSONArray(String(ZipUtil.read(ByteArrayInputStream(master), "ProxyList-master/proxy_list.json"))).toString()
+            val list = JSONArray(HttpUtil.get("https://gitlab.com/KazamaWataru/nekox-proxy-list/-/raw/master/proxy_list.json")).toString()
 
             if (list != cacheFile.readText()) {
 
