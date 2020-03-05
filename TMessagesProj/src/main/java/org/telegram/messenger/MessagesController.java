@@ -367,17 +367,35 @@ public class MessagesController extends BaseController implements NotificationCe
                                         return -1;
                                     }
                                 }
-
                             }
-
                         }
-
                     }
-
                 }
-
             }
-
+        } else if (NekoXConfig.sortByUnmuted) {
+            if (dialog1.unread_count == 0 && dialog2.unread_count > 0 && !isDialogMuted(dialog2.id)) {
+                return 1;
+            } else if (dialog1.unread_count > 0 && dialog2.unread_count == 0 && !isDialogMuted(dialog1.id)) {
+                return -1;
+            } else if (dialog1.unread_count > 0 && dialog2.unread_count > 0 && !isDialogMuted(dialog1.id) && !isDialogMuted(dialog2.id)) {
+                if (NekoXConfig.sortByUser) {
+                    if (!is1user && is2user) {
+                        return 1;
+                    } else if (is1user && !is2user) {
+                        return -1;
+                    } else if (is1user && is2user) {
+                        if (NekoXConfig.sortByContacts) {
+                            boolean is1contact = is1user && getContactsController().isContact((int) dialog1.id);
+                            boolean is2contact = is2user && getContactsController().isContact((int) dialog2.id);
+                            if (!is1contact && is2contact) {
+                                return 1;
+                            } else if (is1contact && !is2contact) {
+                                return -1;
+                            }
+                        }
+                    }
+                }
+            }
         }
 
         final MediaDataController mediaDataController = getMediaDataController();
