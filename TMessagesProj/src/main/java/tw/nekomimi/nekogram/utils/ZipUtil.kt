@@ -6,6 +6,24 @@ import java.util.zip.ZipInputStream
 
 object ZipUtil {
 
+    fun read(input: InputStream, path: String): ByteArray {
+
+        ZipInputStream(input).use { zip ->
+
+            while (true) {
+
+                val entry = zip.nextEntry ?: break
+
+                if (entry.name == path) return zip.readBytes()
+
+            }
+
+        }
+
+        error("path not found")
+
+    }
+
     @JvmStatic
     fun unzip(input: InputStream, output: File) {
 
@@ -15,7 +33,7 @@ object ZipUtil {
 
                 val entry = zip.nextEntry ?: break
 
-                val entryFile = File(output,entry.name)
+                val entryFile = File(output, entry.name)
 
                 if (entry.isDirectory) {
 

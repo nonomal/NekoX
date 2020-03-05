@@ -63,6 +63,7 @@ import java.util.List;
 
 import tw.nekomimi.nekogram.utils.FileUtil;
 import tw.nekomimi.nekogram.utils.HttpUtil;
+import tw.nekomimi.nekogram.utils.ProxyUtil;
 
 public class ProxyListActivity extends BaseFragment implements NotificationCenter.NotificationCenterDelegate {
 
@@ -313,13 +314,7 @@ public class ProxyListActivity extends BaseFragment implements NotificationCente
 
             try {
 
-                File save = new File(ApplicationLoader.applicationContext.getFilesDir(), "proxy_list.json");
-
-                String serverList = new JSONArray(HttpUtil.get("https://nekogramx.github.io/ProxyList/proxy_list.json")).toString();
-
-                if (!save.isFile() || !FileUtil.readUtf8String(save).equals(serverList)) {
-
-                    FileUtil.writeUtf8String(serverList, save);
+                if (ProxyUtil.reloadProxyList()) {
 
                     SharedConfig.reloadProxyList();
 

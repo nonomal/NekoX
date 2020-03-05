@@ -39,6 +39,7 @@ import kotlin.text.StringsKt;
 import tw.nekomimi.nekogram.utils.FileUtil;
 import tw.nekomimi.nekogram.NekoConfig;
 import tw.nekomimi.nekogram.VmessLoader;
+import tw.nekomimi.nekogram.utils.ProxyUtil;
 
 public class SharedConfig {
 
@@ -778,7 +779,7 @@ public class SharedConfig {
         internalProxy.isInternal = true;
         proxy.add(internalProxy);
 
-        File proxyListFile = new File(ApplicationLoader.applicationContext.getFilesDir(), "proxy_list.json");
+        File proxyListFile = ProxyUtil.getCacheFile();
 
         if (proxyListFile.isFile()) {
 

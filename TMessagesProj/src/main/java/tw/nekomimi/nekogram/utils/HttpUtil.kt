@@ -8,7 +8,7 @@ object HttpUtil {
     val okhttpClient = OkHttpClient().newBuilder().build()
 
     @JvmStatic
-    operator fun get(url: String): String {
+    fun get(url: String): String {
 
         val request = Request.Builder().url(url).build()
 
@@ -21,4 +21,20 @@ object HttpUtil {
         }
 
     }
+
+    @JvmStatic
+    fun getByteArray(url: String): ByteArray {
+
+        val request = Request.Builder().url(url).build()
+
+        okhttpClient.newCall(request).execute().apply {
+
+            val body = body()
+
+            return body?.bytes() ?: error("HTTP ERROR ${code()}")
+
+        }
+
+    }
+
 }
