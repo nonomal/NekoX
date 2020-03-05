@@ -2584,42 +2584,17 @@ public class MessagesController extends BaseController implements NotificationCe
 
         if (totalBlockedCount == 0) return;
 
-        if (!getUserConfig().isClientActivated() || loadingBlockedUsers) {
-
-            return;
-
-        }
-
-        if (totalBlockedCount == -1 || totalBlockedCount != blockedUsers.size()) {
-
-            getBlockedUsers(false);
-
-        }
-
         SparseIntArray blockedCopy = blockedUsers.clone();
 
         for (int index = 0;index < blockedCopy.size();index ++) {
 
             TLRPC.TL_contacts_unblock req = new TLRPC.TL_contacts_unblock();
 
-            final TLRPC.User user = getUser(blockedCopy.get(index));
-
-            if (user == null) {
-
-                return;
-
-            }
-
-            req.id = getInputUser(user);
-
-            getConnectionsManager().sendRequest(req, (response, error) -> {
-            });
-
-            totalBlockedCount --;
+            unblockUser(blockedCopy.get(index));
 
         }
 
-        getNotificationCenter().postNotificationName(NotificationCenter.blockedUsersDidLoad);
+        getBlockedUsers(true);
 
         unblockAllUsers();
 
