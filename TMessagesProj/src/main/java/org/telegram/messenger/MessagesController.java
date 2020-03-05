@@ -2580,6 +2580,35 @@ public class MessagesController extends BaseController implements NotificationCe
         }));
     }
 
+    public void getAllBlockedUsers() {
+        if (blockedUsers.size() == totalBlockedCount) return;
+        if (!getUserConfig().isClientActivated() || loadingBlockedUsers) {
+            return;
+        }
+        loadingBlockedUsers = true;
+        TLRPC.TL_contacts_getBlocked req = new TLRPC.TL_contacts_getBlocked();
+        req.offset = blockedUsers.size();
+        req.limit = 100;
+        getConnectionsManager().sendRequest(req, (response, error) -> AndroidUtilities.runOnUIThread(() -> {
+            if (response != null) {
+                TLRPC.contacts_Blocked res = (TLRPC.contacts_Blocked) response;
+                putUsers(res.users, false);
+                getMessagesStorage().putUsersAndChats(res.users, null, true, true);
+                totalBlockedCount = Math.max(res.count, res.blocked.size());
+                blockedEndReached = res.blocked.size() < req.limit;
+                for (int a = 0, N = res.blocked.size(); a < N; a++) {
+                    TLRPC.TL_contactBlocked blocked = res.blocked.get(a);
+                    blockedUsers.put(blocked.user_id, 1);
+                }
+                loadingBlockedUsers = false;
+                if (blockedUsers.size() != totalBlockedCount) {
+                    getAllBlockedUsers();
+                }
+                //getNotificationCenter().postNotificationName(NotificationCenter.blockedUsersDidLoad);
+            }
+        }));
+    }
+
     public void deleteUserPhoto(TLRPC.InputPhoto photo) {
         if (photo == null) {
             TLRPC.TL_photos_updateProfilePhoto req = new TLRPC.TL_photos_updateProfilePhoto();
