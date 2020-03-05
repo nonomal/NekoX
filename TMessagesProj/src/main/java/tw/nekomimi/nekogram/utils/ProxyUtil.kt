@@ -47,7 +47,7 @@ object ProxyUtil {
 
         }.recover {
 
-            // 从 GITHUB 主站读取
+            // 从 GITHUB 主站 读取
 
             val master = HttpUtil.getByteArray("https://github.com/NekogramX/ProxyList/archive/master.zip")
 
