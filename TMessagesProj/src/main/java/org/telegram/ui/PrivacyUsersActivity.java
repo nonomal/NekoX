@@ -137,11 +137,7 @@ public class PrivacyUsersActivity extends BaseFragment implements NotificationCe
                     if (getMessagesController().totalBlockedCount != 0) {
                         builder.setMessage(LocaleController.getString("UnblockAllWarn", R.string.UnblockAllWarn));
                         builder.setPositiveButton(LocaleController.getString("UnblockAll", R.string.UnblockAll), (dialog, which) -> {
-                            getMessagesController().getAllBlockedUsers();
-                            SparseIntArray allBlocked = getMessagesController().blockedUsers.clone();
-                            for (int index = 0; index < allBlocked.size(); index++) {
-                                getMessagesController().unblockUser(allBlocked.get(index));
-                            }
+                            getMessagesController().unblockAllUsers();
                         });
                         builder.setNegativeButton(LocaleController.getString("Cancel", R.string.Cancel), null);
                     } else {

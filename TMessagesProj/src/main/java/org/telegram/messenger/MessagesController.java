@@ -2580,33 +2580,28 @@ public class MessagesController extends BaseController implements NotificationCe
         }));
     }
 
-    public void getAllBlockedUsers() {
-        if (blockedUsers.size() == totalBlockedCount) return;
+    public void unblockAllUsers() {
+        if (blockedUsers.size() == 0) return;
         if (!getUserConfig().isClientActivated() || loadingBlockedUsers) {
             return;
         }
-        loadingBlockedUsers = true;
-        TLRPC.TL_contacts_getBlocked req = new TLRPC.TL_contacts_getBlocked();
-        req.offset = blockedUsers.size();
-        req.limit = 100;
-        getConnectionsManager().sendRequest(req, (response, error) -> AndroidUtilities.runOnUIThread(() -> {
-            if (response != null) {
-                TLRPC.contacts_Blocked res = (TLRPC.contacts_Blocked) response;
-                putUsers(res.users, false);
-                getMessagesStorage().putUsersAndChats(res.users, null, true, true);
-                totalBlockedCount = Math.max(res.count, res.blocked.size());
-                blockedEndReached = res.blocked.size() < req.limit;
-                for (int a = 0, N = res.blocked.size(); a < N; a++) {
-                    TLRPC.TL_contactBlocked blocked = res.blocked.get(a);
-                    blockedUsers.put(blocked.user_id, 1);
-                }
-                loadingBlockedUsers = false;
-                if (blockedUsers.size() != totalBlockedCount) {
-                    getAllBlockedUsers();
-                }
-                //getNotificationCenter().postNotificationName(NotificationCenter.blockedUsersDidLoad);
+        while (totalBlockedCount == -1 || totalBlockedCount != blockedUsers.size()) {
+            getBlockedUsers(false);
+        }
+
+        for (int index = 0;index < totalBlockedCount;index ++) {
+            TLRPC.TL_contacts_unblock req = new TLRPC.TL_contacts_unblock();
+            final TLRPC.User user = getUser(blockedUsers.get(index));
+            if (user == null) {
+                return;
             }
-        }));
+            req.id = getInputUser(user);
+            getConnectionsManager().sendRequest(req, (response, error) -> {
+            });
+        }
+        totalBlockedCount = 0;
+        blockedUsers.clear();
+        getNotificationCenter().postNotificationName(NotificationCenter.blockedUsersDidLoad);
     }
 
     public void deleteUserPhoto(TLRPC.InputPhoto photo) {
