@@ -2772,10 +2772,12 @@ public class AlertsCreator {
                             channelParticipant = null;
                         }
 
+                        TLRPC.User u = MessagesController.getInstance(currentAccount).getUser(participant.user_id);
+
                         if (channelParticipant != null) {
-                            openRightsEdit(fragment,chatInfo,chat, userFinal.id, participant, channelParticipant.admin_rights, channelParticipant.banned_rights, channelParticipant.rank);
+                            openRightsEdit(fragment,chatInfo,chat, u.id, participant, channelParticipant.admin_rights, channelParticipant.banned_rights, channelParticipant.rank);
                         } else {
-                            openRightsEdit(fragment,chatInfo,chat, userFinal.id, participant, null, null, "");
+                            openRightsEdit(fragment,chatInfo,chat, u.id, participant, null, null, "");
                         }
 
                     }
@@ -2836,7 +2838,7 @@ public class AlertsCreator {
     }
 
     private static void openRightsEdit(BaseFragment f, TLRPC.ChatFull chatInfo, TLRPC.Chat currentChat, int user_id, TLRPC.ChatParticipant participant, TLRPC.TL_chatAdminRights adminRights, TLRPC.TL_chatBannedRights bannedRights, String rank) {
-        ChatRightsEditActivity fragment = new ChatRightsEditActivity(user_id, currentChat.id, adminRights, currentChat.default_banned_rights, bannedRights, rank, 2, true, false);
+        ChatRightsEditActivity fragment = new ChatRightsEditActivity(user_id, currentChat.id, adminRights, currentChat.default_banned_rights, bannedRights, rank, 1, true, false);
         fragment.setDelegate(new ChatRightsEditActivity.ChatRightsEditActivityDelegate() {
             @Override
             public void didChangeOwner(TLRPC.User user) {
