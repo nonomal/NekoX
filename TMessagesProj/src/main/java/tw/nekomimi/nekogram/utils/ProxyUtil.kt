@@ -23,7 +23,7 @@ object ProxyUtil {
 
             val list = JSONArray(HttpUtil.get("https://gitee.com/nekoshizuku/ProxyList/raw/master/proxy_list.json")).toString()
 
-            if (list != cacheFile.readText()) {
+            if (!cacheFile.isFile || list != cacheFile.readText()) {
 
                 cacheFile.writeText(list)
 
@@ -37,7 +37,7 @@ object ProxyUtil {
 
             val list = JSONArray(HttpUtil.get("https://nekogramx.github.io/ProxyList/proxy_list.json")).toString()
 
-            if (list != cacheFile.readText()) {
+            if (!cacheFile.isFile || list != cacheFile.readText()) {
 
                 cacheFile.writeText(list)
 
@@ -51,7 +51,7 @@ object ProxyUtil {
 
             val list = JSONArray(HttpUtil.get("https://gitlab.com/KazamaWataru/nekox-proxy-list/-/raw/master/proxy_list.json")).toString()
 
-            if (list != cacheFile.readText()) {
+            if (!cacheFile.isFile || list != cacheFile.readText()) {
 
                 cacheFile.writeText(list)
 
@@ -67,7 +67,7 @@ object ProxyUtil {
 
             val list = JSONArray(String(ZipUtil.read(ByteArrayInputStream(master), "ProxyList-master/proxy_list.json"))).toString()
 
-            if (list != cacheFile.readText()) {
+            if (!cacheFile.isFile || list != cacheFile.readText()) {
 
                 cacheFile.writeText(list)
 
