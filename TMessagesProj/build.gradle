@@ -51,8 +51,10 @@ android {
     defaultConfig.applicationId = "moe.wataru.nekogram"
 
    // sourceSets.main.jniLibs.srcDirs = ['./jni/']
-    sourceSets.main.jniLibs.srcDirs = ['jniLibs']
-
+    sourceSets.main {
+        jniLibs.srcDir 'jniLibs'
+        jni.srcDirs = [] //disable automatic ndk-build call
+    }
     /*
 
     externalNativeBuild {
@@ -201,7 +203,6 @@ android {
     flavorDimensions "minApi"
 
     productFlavors {
-        /*
         armv7 {
             ndk {
                 abiFilters "armeabi-v7a"
@@ -264,7 +265,7 @@ android {
             }
             /*sourceSets.debugAsan {
                 manifest.srcFile 'config/debug/AndroidManifest_SDK23.xml'
-            }
+            }*/
             sourceSets.release {
                 manifest.srcFile 'config/release/AndroidManifest_SDK23.xml'
             }
@@ -283,14 +284,16 @@ android {
             minSdkVersion 23
         }
 
-         */
+
         afat {
             sourceSets.debug {
                 manifest.srcFile 'config/debug/AndroidManifest_SDK23.xml'
             }
-            /*sourceSets.debugAsan {
+            /*
+            sourceSets.debugAsan {
                 manifest.srcFile 'config/debug/AndroidManifest_SDK23.xml'
-            }*/
+            }
+             */
             sourceSets.release {
                 manifest.srcFile 'config/release/AndroidManifest_SDK23.xml'
             }
@@ -319,12 +322,14 @@ android {
 
         vectorDrawables.generatedDensities = ['mdpi', 'hdpi', 'xhdpi', 'xxhdpi']
 
+        /*
         externalNativeBuild {
             ndkBuild {
                 arguments "NDK_APPLICATION_MK:=jni/Application.mk", "APP_PLATFORM:=android-16", "--jobs=8"
                 abiFilters "armeabi-v7a", "arm64-v8a", "x86", "x86_64"
             }
         }
+         */
 
         manifestPlaceholders = [applicationClassName: "ApplicationLoader"]
     }
