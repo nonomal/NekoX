@@ -50,7 +50,8 @@ android {
 
     defaultConfig.applicationId = "moe.wataru.nekogram"
 
-    sourceSets.main.jniLibs.srcDirs = ['./jni/']
+   // sourceSets.main.jniLibs.srcDirs = ['./jni/']
+    sourceSets.main.jniLibs.srcDirs = ['jniLibs']
 
     /*
 
