@@ -2559,7 +2559,7 @@ public class MessagesController extends BaseController implements NotificationCe
         loadingBlockedUsers = true;
         TLRPC.TL_contacts_getBlocked req = new TLRPC.TL_contacts_getBlocked();
         req.offset = reset ? 0 : blockedUsers.size();
-        req.limit = reset ? 20 : 100;
+        req.limit = 100;
         getConnectionsManager().sendRequest(req, (response, error) -> AndroidUtilities.runOnUIThread(() -> {
             if (response != null) {
                 TLRPC.contacts_Blocked res = (TLRPC.contacts_Blocked) response;
@@ -2581,27 +2581,48 @@ public class MessagesController extends BaseController implements NotificationCe
     }
 
     public void unblockAllUsers() {
-        if (blockedUsers.size() == 0) return;
+
+        if (totalBlockedCount == 0) return;
+
         if (!getUserConfig().isClientActivated() || loadingBlockedUsers) {
+
             return;
-        }
-        while (totalBlockedCount == -1 || totalBlockedCount != blockedUsers.size()) {
-            getBlockedUsers(false);
+
         }
 
-        for (int index = 0;index < totalBlockedCount;index ++) {
+        if (totalBlockedCount == -1 || totalBlockedCount != blockedUsers.size()) {
+
+            getBlockedUsers(false);
+
+        }
+
+        SparseIntArray blockedCopy = blockedUsers.clone();
+
+        for (int index = 0;index < blockedCopy.size();index ++) {
+
             TLRPC.TL_contacts_unblock req = new TLRPC.TL_contacts_unblock();
-            final TLRPC.User user = getUser(blockedUsers.get(index));
+
+            final TLRPC.User user = getUser(blockedCopy.get(index));
+
             if (user == null) {
+
                 return;
+
             }
+
             req.id = getInputUser(user);
+
             getConnectionsManager().sendRequest(req, (response, error) -> {
             });
+
+            totalBlockedCount --;
+
         }
-        totalBlockedCount = 0;
-        blockedUsers.clear();
+
         getNotificationCenter().postNotificationName(NotificationCenter.blockedUsersDidLoad);
+
+        unblockAllUsers();
+
     }
 
     public void deleteUserPhoto(TLRPC.InputPhoto photo) {
