@@ -133,16 +133,21 @@ public class PrivacyUsersActivity extends BaseFragment implements NotificationCe
                     finishFragment();
                 } else if (id == unblock_all) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(getParentActivity());
-                    builder.setMessage(LocaleController.getString("UnblockAllWarn", R.string.UnblockAllWarn));
                     builder.setTitle(LocaleController.getString("UnblockAll", R.string.UnblockAll));
-                    builder.setPositiveButton(LocaleController.getString("UnblockAll", R.string.UnblockAll), (dialog, which) -> {
-                        getMessagesController().getAllBlockedUsers();
-                        SparseIntArray allBlocked = getMessagesController().blockedUsers.clone();
-                        for (int index = 0;index < allBlocked.size();index ++) {
-                            getMessagesController().unblockUser(allBlocked.get(index));
-                        }
-                    });
-                    builder.setNegativeButton(LocaleController.getString("Cancel",R.string.Cancel),null);
+                    if (getMessagesController().totalBlockedCount != 0) {
+                        builder.setMessage(LocaleController.getString("UnblockAllWarn", R.string.UnblockAllWarn));
+                        builder.setPositiveButton(LocaleController.getString("UnblockAll", R.string.UnblockAll), (dialog, which) -> {
+                            getMessagesController().getAllBlockedUsers();
+                            SparseIntArray allBlocked = getMessagesController().blockedUsers.clone();
+                            for (int index = 0; index < allBlocked.size(); index++) {
+                                getMessagesController().unblockUser(allBlocked.get(index));
+                            }
+                        });
+                        builder.setNegativeButton(LocaleController.getString("Cancel", R.string.Cancel), null);
+                    } else {
+                        builder.setMessage(LocaleController.getString("NoBlockedUsers",R.string.NoBlockedUsers));
+                        builder.setPositiveButton(LocaleController.getString("OK",R.string.OK),null);
+                    }
                     showDialog(builder.create());
                 }
             }
