@@ -2582,8 +2582,6 @@ public class MessagesController extends BaseController implements NotificationCe
 
     public void unblockAllUsers() {
 
-        getBlockedUsers(true);
-
         if (totalBlockedCount <= 0) return;
 
         SparseIntArray blockedCopy = blockedUsers.clone();
@@ -2594,7 +2592,7 @@ public class MessagesController extends BaseController implements NotificationCe
 
         }
 
-        if (totalBlockedCount != 0) {
+        if (totalBlockedCount > 0) {
 
             getBlockedUsers(true);
 
