@@ -15,6 +15,8 @@ import android.content.SharedPreferences;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.os.SystemClock;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
@@ -57,6 +59,7 @@ import kotlin.collections.ArraysKt;
 import tw.nekomimi.nekogram.FilterPopup;
 import tw.nekomimi.nekogram.NekoConfig;
 import tw.nekomimi.nekogram.NekoXConfig;
+import tw.nekomimi.nekogram.utils.UIUtil;
 
 public class MessagesController extends BaseController implements NotificationCenter.NotificationCenterDelegate {
 
@@ -2594,7 +2597,11 @@ public class MessagesController extends BaseController implements NotificationCe
             totalBlockedCount--;
             blockedUsers.delete(user_id);
 
-            getNotificationCenter().postNotificationName(NotificationCenter.blockedUsersDidLoad);
+            UIUtil.runOnUIThread(() -> {
+
+                getNotificationCenter().postNotificationName(NotificationCenter.blockedUsersDidLoad);
+
+            });
 
             if (blockedUsers.size() == 0 && totalBlockedCount > 0) getBlockedUsers(true);
 
