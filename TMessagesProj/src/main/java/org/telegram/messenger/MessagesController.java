@@ -2588,15 +2588,17 @@ public class MessagesController extends BaseController implements NotificationCe
 
         for (int index = 0;index < blockedCopy.size();index ++) {
 
-            TLRPC.TL_contacts_unblock req = new TLRPC.TL_contacts_unblock();
-
             unblockUser(blockedCopy.get(index));
 
         }
 
-        getBlockedUsers(true);
+        if (totalBlockedCount != 0) {
 
-        unblockAllUsers();
+            getBlockedUsers(true);
+
+            unblockAllUsers();
+
+        }
 
     }
 

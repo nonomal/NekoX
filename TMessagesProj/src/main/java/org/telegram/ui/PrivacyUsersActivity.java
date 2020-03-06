@@ -155,7 +155,7 @@ public class PrivacyUsersActivity extends BaseFragment implements NotificationCe
 
             ActionBarMenuItem otherItem = menu.addItem(0, R.drawable.ic_ab_other);
             otherItem.setContentDescription(LocaleController.getString("AccDescrMoreOptions", R.string.AccDescrMoreOptions));
-            otherItem.addSubItem(unblock_all, R.drawable.msg_retry, LocaleController.getString("UnblockAll", R.string.UnblockAll));
+            otherItem.addSubItem(unblock_all, LocaleController.getString("UnblockAll", R.string.UnblockAll));
 
         }
 
