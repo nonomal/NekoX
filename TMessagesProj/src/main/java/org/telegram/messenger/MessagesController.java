@@ -56,9 +56,11 @@ import java.util.concurrent.CountDownLatch;
 import androidx.core.app.NotificationManagerCompat;
 
 import kotlin.collections.ArraysKt;
+import kotlin.concurrent.ThreadsKt;
 import tw.nekomimi.nekogram.FilterPopup;
 import tw.nekomimi.nekogram.NekoConfig;
 import tw.nekomimi.nekogram.NekoXConfig;
+import tw.nekomimi.nekogram.utils.ThreadUtil;
 import tw.nekomimi.nekogram.utils.UIUtil;
 
 public class MessagesController extends BaseController implements NotificationCenter.NotificationCenterDelegate {
@@ -2587,28 +2589,41 @@ public class MessagesController extends BaseController implements NotificationCe
 
         if (totalBlockedCount == 0) return;
 
-        if (totalBlockedCount == -1) getBlockedUsers(true);
+        if (blockedUsers.size() == 0) getBlockedUsers(true);
 
-        TLRPC.TL_contacts_unblock req = new TLRPC.TL_contacts_unblock();
-        int user_id = blockedUsers.keyAt(0);
-        req.id = getInputUser(user_id);
-        getConnectionsManager().sendRequest(req, (response, error) -> {
+        SparseIntArray blockedCopy = blockedUsers.clone();
 
-            totalBlockedCount--;
-            blockedUsers.delete(user_id);
+        for (int index = 0;index < blockedCopy.size();index ++) {
 
-            UIUtil.runOnUIThread(() -> {
+            TLRPC.TL_contacts_unblock req = new TLRPC.TL_contacts_unblock();
+            int user_id = blockedCopy.keyAt(index);
+            req.id = getInputUser(user_id);
+            getConnectionsManager().sendRequest(req, (response, error) -> {
 
-                getNotificationCenter().postNotificationName(NotificationCenter.blockedUsersDidLoad);
+                totalBlockedCount--;
+                blockedUsers.delete(user_id);
+
+                UIUtil.runOnUIThread(() -> {
+
+                    getNotificationCenter().postNotificationName(NotificationCenter.blockedUsersDidLoad);
+
+                });
+
+                if (blockedUsers.size() == 0 && totalBlockedCount > 0) getBlockedUsers(true);
 
             });
 
-            if (blockedUsers.size() == 0 && totalBlockedCount > 0) getBlockedUsers(true);
+            ThreadUtil.sleep(20);
 
-            unblockAllUsers();
+        }
 
-        });
+        while (blockedUsers.size() > 0) {
 
+            ThreadUtil.sleep(100);
+
+        }
+
+        unblockAllUsers();
 
     }
 
