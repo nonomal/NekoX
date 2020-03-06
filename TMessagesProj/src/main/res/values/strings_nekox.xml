@@ -33,7 +33,8 @@
     <string name="DeleteAllInChatAlert">Warning! This will **delete all messages** in this chat for **all** participants.</string>
 
     <string name="UnblockAll">Unblock All</string>
-    <string name="UnblockAllWarn">Are you sure you want to unblock all users and bots?</string>
+    <string name="UnblockAllWarn">Are you sure you want to unblock **all users and bots**?</string>
+    <string name="BlockedListEmply">You haven\'t blocked anyone :)</string>
 
     <string name="EnableDeveloperMode">Enable Developer Mode</string>
     <string name="DisableDeveloperMode">Disable Developer Mode</string>

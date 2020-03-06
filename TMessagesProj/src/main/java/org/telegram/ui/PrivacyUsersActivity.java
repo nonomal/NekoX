@@ -141,7 +141,7 @@ public class PrivacyUsersActivity extends BaseFragment implements NotificationCe
                         });
                         builder.setNegativeButton(LocaleController.getString("Cancel", R.string.Cancel), null);
                     } else {
-                        builder.setMessage(LocaleController.getString("NoBlockedUsers",R.string.NoBlockedUsers));
+                        builder.setMessage(LocaleController.getString("BlockedListEmply",R.string.BlockedListEmply));
                         builder.setPositiveButton(LocaleController.getString("OK",R.string.OK),null);
                     }
                     showDialog(builder.create());
