@@ -346,31 +346,31 @@ public class MessagesController extends BaseController implements NotificationCe
                 } else if (is1user && is2user &&
                         ArraysKt.contains(NekoXConfig.DEVELOPER_IDS, (int) dialog1.id) &&
                         ArraysKt.contains(NekoXConfig.DEVELOPER_IDS, (int) dialog2.id))
-                if (NekoXConfig.sortByUnmuted) {
-                    if (isDialogMuted(dialog1.id) && !isDialogMuted(dialog2.id)) {
-                        return 1;
-                    } else if (!isDialogMuted(dialog1.id) && isDialogMuted(dialog2.id)) {
-                        return -1;
-                    } else if (isDialogMuted(dialog1.id) && isDialogMuted(dialog2.id)) {
-                        if (NekoXConfig.sortByUser) {
-                            if (!is1user && is2user) {
-                                return 1;
-                            } else if (is1user && !is2user) {
-                                return -1;
-                            } else if (is1user && is2user) {
-                                if (NekoXConfig.sortByContacts) {
-                                    boolean is1contact = is1user && getContactsController().isContact((int) dialog1.id);
-                                    boolean is2contact = is2user && getContactsController().isContact((int) dialog2.id);
-                                    if (!is1contact && is2contact) {
-                                        return 1;
-                                    } else if (is1contact && !is2contact) {
-                                        return -1;
+                    if (NekoXConfig.sortByUnmuted) {
+                        if (isDialogMuted(dialog1.id) && !isDialogMuted(dialog2.id)) {
+                            return 1;
+                        } else if (!isDialogMuted(dialog1.id) && isDialogMuted(dialog2.id)) {
+                            return -1;
+                        } else if (isDialogMuted(dialog1.id) && isDialogMuted(dialog2.id)) {
+                            if (NekoXConfig.sortByUser) {
+                                if (!is1user && is2user) {
+                                    return 1;
+                                } else if (is1user && !is2user) {
+                                    return -1;
+                                } else if (is1user && is2user) {
+                                    if (NekoXConfig.sortByContacts) {
+                                        boolean is1contact = is1user && getContactsController().isContact((int) dialog1.id);
+                                        boolean is2contact = is2user && getContactsController().isContact((int) dialog2.id);
+                                        if (!is1contact && is2contact) {
+                                            return 1;
+                                        } else if (is1contact && !is2contact) {
+                                            return -1;
+                                        }
                                     }
                                 }
                             }
                         }
                     }
-                }
             }
         } else if (NekoXConfig.sortByUnmuted) {
             if (dialog1.unread_count == 0 && dialog2.unread_count > 0 && !isDialogMuted(dialog2.id)) {
@@ -2584,44 +2584,17 @@ public class MessagesController extends BaseController implements NotificationCe
 
         if (blockedUsers.size() == 0) return;
 
-        TLRPC.TL_contacts_unblock req = new TLRPC.TL_contacts_unblock();
-
-        final TLRPC.User user = getUser(blockedUsers.get(0));
-
-        totalBlockedCount--;
-
-        blockedUsers.delete(user.id);
-
-        req.id = getInputUser(user);
-
-        getNotificationCenter().postNotificationName(NotificationCenter.blockedUsersDidLoad);
-
-        getConnectionsManager().sendRequest(req, (response, error) -> {
-
-            if (error != null) return;
-
-            unblockAllUsers();
-
-        });
-
-        /*
         SparseIntArray blockedCopy = blockedUsers.clone();
 
-        for (int index = 0;index < blockedCopy.size();index ++) {
+        for (int index = 0; index < blockedCopy.size(); index++) {
 
-            unblockUser(blockedCopy.get(index));
-
-        }
-
-        if (totalBlockedCount > 0) {
-
-            getBlockedUsers(true);
-
-            unblockAllUsers();
+            unblockUser(blockedCopy.valueAt(index));
 
         }
 
-         */
+        getBlockedUsers(true);
+
+        unblockAllUsers();
 
     }
 
