@@ -2595,7 +2595,7 @@ public class MessagesController extends BaseController implements NotificationCe
 
             getNotificationCenter().postNotificationName(NotificationCenter.blockedUsersDidLoad);
 
-            if (blockedUsers.size() != totalBlockedCount) getBlockedUsers(true);
+            if (blockedUsers.size() == 0 && totalBlockedCount > 0) getBlockedUsers(true);
 
             unblockAllUsers();
 
