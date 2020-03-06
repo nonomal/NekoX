@@ -21,7 +21,7 @@ object ProxyUtil {
 
             // 从 GITEE 主站 读取
 
-            val list = JSONArray(HttpUtil.get("https://gitee.com/nekoshizuku/ProxyList/raw/master/proxy_list.json")).toString()
+            val list = JSONArray(HttpUtil.get("https://gitee.com/nekoshizuku/AwesomeRepo/raw/master/proxy_list.json")).toString()
 
             if (!cacheFile.isFile || list != cacheFile.readText()) {
 
