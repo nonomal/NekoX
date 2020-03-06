@@ -2603,13 +2603,7 @@ public class MessagesController extends BaseController implements NotificationCe
                 totalBlockedCount--;
                 blockedUsers.delete(user_id);
 
-                UIUtil.runOnUIThread(() -> {
-
-                    getNotificationCenter().postNotificationName(NotificationCenter.blockedUsersDidLoad);
-
-                });
-
-                if (blockedUsers.size() == 0 && totalBlockedCount > 0) getBlockedUsers(true);
+                UIUtil.runOnUIThread(() -> getNotificationCenter().postNotificationName(NotificationCenter.blockedUsersDidLoad));
 
             });
 
