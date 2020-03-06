@@ -2582,8 +2582,29 @@ public class MessagesController extends BaseController implements NotificationCe
 
     public void unblockAllUsers() {
 
-        if (totalBlockedCount <= 0) return;
+        if (blockedUsers.size() == 0) return;
 
+        TLRPC.TL_contacts_unblock req = new TLRPC.TL_contacts_unblock();
+
+        final TLRPC.User user = getUser(blockedUsers.get(0));
+
+        totalBlockedCount--;
+
+        blockedUsers.delete(user.id);
+
+        req.id = getInputUser(user);
+
+        getNotificationCenter().postNotificationName(NotificationCenter.blockedUsersDidLoad);
+
+        getConnectionsManager().sendRequest(req, (response, error) -> {
+
+            if (error != null) return;
+
+            unblockAllUsers();
+
+        });
+
+        /*
         SparseIntArray blockedCopy = blockedUsers.clone();
 
         for (int index = 0;index < blockedCopy.size();index ++) {
@@ -2599,6 +2620,8 @@ public class MessagesController extends BaseController implements NotificationCe
             unblockAllUsers();
 
         }
+
+         */
 
     }
 
