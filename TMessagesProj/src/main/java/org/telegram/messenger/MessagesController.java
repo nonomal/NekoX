@@ -2587,11 +2587,12 @@ public class MessagesController extends BaseController implements NotificationCe
         if (totalBlockedCount == -1) getBlockedUsers(true);
 
         TLRPC.TL_contacts_unblock req = new TLRPC.TL_contacts_unblock();
-        totalBlockedCount--;
         int user_id = blockedUsers.keyAt(0);
-        blockedUsers.delete(user_id);
         req.id = getInputUser(user_id);
         getConnectionsManager().sendRequest(req, (response, error) -> {
+
+            totalBlockedCount--;
+            blockedUsers.delete(user_id);
 
             getNotificationCenter().postNotificationName(NotificationCenter.blockedUsersDidLoad);
 
