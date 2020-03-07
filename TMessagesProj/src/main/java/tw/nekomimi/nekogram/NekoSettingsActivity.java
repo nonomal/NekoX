@@ -18,36 +18,13 @@ import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import org.telegram.messenger.AndroidUtilities;
-import org.telegram.messenger.FileLog;
-import org.telegram.messenger.LocaleController;
-import org.telegram.messenger.MessagesController;
-import org.telegram.messenger.NotificationCenter;
-import org.telegram.messenger.R;
-import org.telegram.messenger.SharedConfig;
-import org.telegram.messenger.UserConfig;
+import org.telegram.messenger.*;
 import org.telegram.tgnet.ConnectionsManager;
 import org.telegram.tgnet.TLRPC;
-import org.telegram.ui.ActionBar.ActionBar;
-import org.telegram.ui.ActionBar.ActionBarMenuItem;
-import org.telegram.ui.ActionBar.AlertDialog;
-import org.telegram.ui.ActionBar.BaseFragment;
-import org.telegram.ui.ActionBar.BottomSheet;
-import org.telegram.ui.ActionBar.Theme;
-import org.telegram.ui.ActionBar.ThemeDescription;
-import org.telegram.ui.Cells.EmptyCell;
-import org.telegram.ui.Cells.HeaderCell;
-import org.telegram.ui.Cells.NotificationsCheckCell;
-import org.telegram.ui.Cells.RadioColorCell;
-import org.telegram.ui.Cells.ShadowSectionCell;
-import org.telegram.ui.Cells.TextCheckCell;
-import org.telegram.ui.Cells.TextDetailSettingsCell;
-import org.telegram.ui.Cells.TextInfoPrivacyCell;
-import org.telegram.ui.Cells.TextSettingsCell;
+import org.telegram.ui.ActionBar.*;
+import org.telegram.ui.Cells.*;
 import org.telegram.ui.Components.AlertsCreator;
 import org.telegram.ui.Components.LayoutHelper;
 import org.telegram.ui.Components.RecyclerListView;
@@ -108,6 +85,11 @@ public class NekoSettingsActivity extends BaseFragment {
     private int newYearRow;
     private int actionBarDecorationRow;
     private int needRestartRow;
+
+    private int privacyRow;
+    private int disableSystemAccountRow;
+    private int privacy2Row;
+
 
     private int experimentRow;
     private int smoothKeyboardRow;
@@ -547,6 +529,11 @@ public class NekoSettingsActivity extends BaseFragment {
                 showSortMenuAlert();
             } else if (position == filterMenuRow) {
                 showFilterMenuAlert();
+            } else if (position == disableSystemAccountRow) {
+                NekoXConfig.toggleDisableSystemAccount();
+                if (view instanceof TextCheckCell) {
+                    ((TextCheckCell) view).setChecked(NekoXConfig.disableSystemAccount);
+                }
             }
 
         });
@@ -571,7 +558,7 @@ public class NekoSettingsActivity extends BaseFragment {
         connection2Row = rowCount++;
 
         dialogsRow = rowCount++;
-        sortMenuRow = rowCount ++;
+        sortMenuRow = rowCount++;
         filterMenuRow = rowCount++;
         dialogs2Row = rowCount++;
 
@@ -608,6 +595,11 @@ public class NekoSettingsActivity extends BaseFragment {
         newYearRow = rowCount++;
         actionBarDecorationRow = rowCount++;
         needRestartRow = rowCount++;
+
+        privacyRow = rowCount++;
+        disableSystemAccountRow = rowCount++;
+        privacy2Row = rowCount++;
+
         experimentRow = rowCount++;
         smoothKeyboardRow = !AndroidUtilities.isTablet() ? rowCount++ : -1;
         disableFilteringRow = rowCount++;
@@ -1294,7 +1286,10 @@ public class NekoSettingsActivity extends BaseFragment {
                         textCell.setTextAndCheck(LocaleController.getString("TapOnFab", R.string.TapOnFab), NekoConfig.openFilterByFab, false);
                     } else if (position == hideKeyboardOnChatScrollRow) {
                         textCell.setTextAndCheck(LocaleController.getString("HideKeyboardOnChatScroll", R.string.HideKeyboardOnChatScroll), NekoConfig.hideKeyboardOnChatScroll, true);
+                    } else if (position == disableSystemAccountRow) {
+                        textCell.setTextAndCheck(LocaleController.getString("DisableSystemAccount", R.string.DisableSystemAccount), NekoXConfig.disableSystemAccount, true);
                     }
+
 
                     break;
                 }
@@ -1312,6 +1307,8 @@ public class NekoSettingsActivity extends BaseFragment {
                         headerCell.setText(LocaleController.getString("OpenDialogsFilterBy", R.string.OpenDialogsFilterBy));
                     } else if (position == dialogsRow) {
                         headerCell.setText(LocaleController.getString("DialogsSettings", R.string.DialogsSettings));
+                    } else if (position == privacyRow) {
+                        headerCell.setText(LocaleController.getString("PrivacyTitle", R.string.PrivacyTitle));
                     }
                     break;
                 }
@@ -1379,7 +1376,8 @@ public class NekoSettingsActivity extends BaseFragment {
 
         @Override
         public int getItemViewType(int position) {
-            if (position == connection2Row || position == chat2Row || position == experiment2Row || position == dialogs2Row || position == dialogsFilter2Row) {
+            if (position == connection2Row || position == chat2Row || position == experiment2Row || position == dialogs2Row || position == dialogsFilter2Row
+                    || position == privacy2Row) {
                 return 1;
             } else if (position == nameOrderRow || position == mapPreviewRow || position == stickerSizeRow || position == messageMenuRow ||
                     position == filterMenuRow || position == sortMenuRow ||
@@ -1392,10 +1390,11 @@ public class NekoSettingsActivity extends BaseFragment {
                     position == saveCacheToSdcardRow || position == unlimitedFavedStickersRow ||
                     position == disableFilteringRow || position == smoothKeyboardRow || position == pauseMusicOnRecordRow ||
                     position == disablePhotoSideActionRow || position == unlimitedPinnedDialogsRow || position == openArchiveOnPullRow ||
-                    position == openFilterByActionBarRow || position == openFilterByFabRow || position == hideKeyboardOnChatScrollRow) {
+                    position == openFilterByActionBarRow || position == openFilterByFabRow || position == hideKeyboardOnChatScrollRow ||
+                    position == disableSystemAccountRow) {
                 return 3;
             } else if (position == settingsRow || position == connectionRow || position == chatRow || position == experimentRow ||
-                    position == dialogsRow || position == dialogsFilterRow) {
+                    position == dialogsRow || position == dialogsFilterRow || position == privacyRow) {
                 return 4;
             } else if (position == needRestartRow) {
                 return 7;

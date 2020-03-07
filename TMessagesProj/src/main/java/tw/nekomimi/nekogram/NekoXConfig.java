@@ -41,6 +41,8 @@ public class NekoXConfig {
     public static boolean filterUnread;
     public static boolean filterUnmutedAndUnread;
 
+    public static boolean disableSystemAccount;
+
     static {
 
         disableChatAction = preferences.getBoolean("disable_chat_action", false);
@@ -69,6 +71,8 @@ public class NekoXConfig {
         filterUnmuted = preferences.getBoolean("filter_unmuted",true);
         filterUnread = preferences.getBoolean("filter_unread",true);
         filterUnmutedAndUnread = preferences.getBoolean("filter_unmuted_and_unread",true);
+
+        disableSystemAccount = preferences.getBoolean("disable_system_account",true);
 
     }
 
@@ -186,6 +190,12 @@ public class NekoXConfig {
     public static void toggleFilterUnmutedAndUnread() {
 
         preferences.edit().putBoolean("filter_unmuted_and_unread", filterUnmutedAndUnread = !filterUnmutedAndUnread).apply();
+
+    }
+
+    public static void toggleDisableSystemAccount() {
+
+        preferences.edit().putBoolean("disable_system_account", disableSystemAccount = !disableSystemAccount).apply();
 
     }
 

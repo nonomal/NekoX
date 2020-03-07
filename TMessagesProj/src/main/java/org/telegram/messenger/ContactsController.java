@@ -36,6 +36,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.concurrent.ConcurrentHashMap;
 
+import tw.nekomimi.nekogram.NekoXConfig;
+
 public class ContactsController extends BaseController {
 
     private Account systemAccount;
@@ -309,6 +311,9 @@ public class ContactsController extends BaseController {
     }
 
     public void checkAppAccount() {
+        if (NekoXConfig.disableSystemAccount) {
+            return;
+        }
         AccountManager am = AccountManager.get(ApplicationLoader.applicationContext);
         try {
             Account[] accounts = am.getAccountsByType("moe.wataru.nekogram");
@@ -319,7 +324,7 @@ public class ContactsController extends BaseController {
                 for (int b = 0; b < UserConfig.MAX_ACCOUNT_COUNT; b++) {
                     TLRPC.User user = UserConfig.getInstance(b).getCurrentUser();
                     if (user != null) {
-                        if (acc.name.equals("" + user.id)) {
+                        if (acc.name.equals(formatName(user.first_name,user.last_name))) {
                             if (b == currentAccount) {
                                 systemAccount = acc;
                             }
@@ -344,7 +349,8 @@ public class ContactsController extends BaseController {
             readContacts();
             if (systemAccount == null) {
                 try {
-                    systemAccount = new Account("" + UserConfig.getInstance(currentAccount).getClientUserId(), "moe.wataru.nekogram");
+                    TLRPC.User user = UserConfig.getInstance(currentAccount).getCurrentUser();
+                    systemAccount = new Account(formatName(user.first_name,user.last_name), "moe.wataru.nekogram");
                     am.addAccountExplicitly(systemAccount, "", null);
                 } catch (Exception ignore) {
 
@@ -360,21 +366,29 @@ public class ContactsController extends BaseController {
             Account[] accounts = am.getAccountsByType("moe.wataru.nekogram");
             for (int a = 0; a < accounts.length; a++) {
                 Account acc = accounts[a];
-                boolean found = false;
-                for (int b = 0; b < UserConfig.MAX_ACCOUNT_COUNT; b++) {
-                    TLRPC.User user = UserConfig.getInstance(b).getCurrentUser();
-                    if (user != null) {
-                        if (acc.name.equals("" + user.id)) {
-                            found = true;
-                            break;
-                        }
-                    }
-                }
-                if (!found) {
+                if (NekoXConfig.disableSystemAccount) {
                     try {
                         am.removeAccount(accounts[a], null, null);
                     } catch (Exception ignore) {
 
+                    }
+                } else {
+                    boolean found = false;
+                    for (int b = 0; b < UserConfig.MAX_ACCOUNT_COUNT; b++) {
+                        TLRPC.User user = UserConfig.getInstance(b).getCurrentUser();
+                        if (user != null) {
+                            if (acc.name.equals(formatName(user.first_name, user.last_name))) {
+                                found = true;
+                                break;
+                            }
+                        }
+                    }
+                    if (!found) {
+                        try {
+                            am.removeAccount(accounts[a], null, null);
+                        } catch (Exception ignore) {
+
+                        }
                     }
                 }
             }
